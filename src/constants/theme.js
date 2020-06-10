@@ -55,6 +55,7 @@ export default {
     secondary: '#00ACD4',
     tertiary: '#1e425c',
     error: '#e44a3c',
+    success: '#9FD8CB',
     white: '#fff',
     baseColor: '#605d5b',
     grey: '#949494',

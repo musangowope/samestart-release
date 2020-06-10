@@ -1,15 +1,24 @@
-import removeWhiteSpaces from '../functions/removeWhiteSpaces.func';
+import { removeWhiteSpaces } from 'functions/removeWhiteSpaces.func';
 import groupArrayItemsWithCommonProp from '../functions/groupArrayItemsWithCommonProp.func';
 
 const getSubjectGrade = (courseName) => {
+  const courseNameWithNoSpaces = removeWhiteSpaces(courseName);
+
   const gradeString = 'grade';
-  const gradeStringStartPos = courseName.toLowerCase().indexOf(gradeString);
+  const gradeStringStartPos = courseNameWithNoSpaces
+    .toLowerCase()
+    .indexOf(gradeString);
 
   const subjectName = removeWhiteSpaces(
-    courseName.substring(0, gradeStringStartPos),
+    courseNameWithNoSpaces.substring(0, gradeStringStartPos),
   );
 
-  const grade = courseName[courseName.length - 1];
+  console.log(courseNameWithNoSpaces);
+
+  const grade = courseNameWithNoSpaces.substring(
+    gradeStringStartPos + gradeString.length,
+    courseNameWithNoSpaces.length,
+  );
   return {
     subjectName,
     grade,
@@ -20,10 +29,10 @@ export default (courses = []) => {
   const groupedSubjectsObj = groupArrayItemsWithCommonProp(
     courses.map((course) => {
       const { subjectName = '', grade = '' } = getSubjectGrade(
-        course.title.rendered,
+        course.course_title,
       );
       return {
-        courseId: course.id,
+        courseId: course.course_id,
         subjectName,
         grade,
       };
@@ -33,9 +42,14 @@ export default (courses = []) => {
 
   return Object.keys(groupedSubjectsObj).map((subjectName) => ({
     subjectName: subjectName,
-    gradesSelection: groupedSubjectsObj[subjectName].map((gradeItem) => ({
-      courseId: gradeItem.courseId,
-      grade: gradeItem.grade,
-    })),
+    gradesSelection: groupedSubjectsObj[subjectName]
+      .map((gradeItem) => ({
+        //TODO: Refactor grouping on backend
+        courseId: gradeItem.courseId,
+        grade: gradeItem.grade,
+      }))
+      .sort((a, b) => {
+        return parseInt(a.grade, 10) - parseInt(b.grade, 10);
+      }),
   }));
 };

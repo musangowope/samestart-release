@@ -5,6 +5,7 @@ import { transparentize } from 'polished';
 import LandingIcon from '../svgs/landing-icon.svg';
 import SVG from '../components/SVG';
 import PrimaryButtonLink from '../components/elements/buttons/PrimaryButtonLink';
+import SimpleModal from '../components/SimpleModal';
 
 const FlexContainer = styled.div`
   display: flex;
@@ -75,25 +76,32 @@ const SecondaryTitle = styled.div`
 `;
 
 const HomeView = () => {
+  const [modal, setModal] = React.useState(false);
   return (
-    <FlexContainer>
-      <HomeLayout>
-        <LeftSide>
-          <LeftSideContent>
-            <MainTitle>Same Start</MainTitle>
-            <SecondaryTitle>Leveling Education</SecondaryTitle>
-            <div>
-              <PrimaryButtonLink to="/subjects">
-                Start Learning
-              </PrimaryButtonLink>
-            </div>
-          </LeftSideContent>
-        </LeftSide>
-        <LandingIconContainer>
-          <SVG src={LandingIcon} />
-        </LandingIconContainer>
-      </HomeLayout>
-    </FlexContainer>
+    <React.Fragment>
+      <FlexContainer>
+        <HomeLayout>
+          <LeftSide>
+            <LeftSideContent>
+              <MainTitle>Same Start</MainTitle>
+              <SecondaryTitle>Leveling Education</SecondaryTitle>
+              <div>
+                <PrimaryButtonLink to="/subjects">
+                  Start Learning
+                </PrimaryButtonLink>
+              </div>
+            </LeftSideContent>
+          </LeftSide>
+          <LandingIconContainer>
+            <SVG src={LandingIcon} />
+          </LandingIconContainer>
+        </HomeLayout>
+      </FlexContainer>
+      <button onClick={() => setModal(true)}>dsfdsf</button>
+      <SimpleModal isOpen={modal} closeAction={() => setModal(false)}>
+        sdfdsfdsf
+      </SimpleModal>
+    </React.Fragment>
   );
 };
 

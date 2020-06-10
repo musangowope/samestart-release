@@ -12,6 +12,7 @@ import { navigate } from '@reach/router';
 const SubjectContainer = styled.div`
   border: 2px solid ${(props) => props.theme.colors.tertiary};
   overflow: hidden;
+  margin-bottom: 20px;
 `;
 
 const SVGWrapper = styled.span`

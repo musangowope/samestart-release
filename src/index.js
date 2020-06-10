@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'minireset.css';
-import './css/main.css';
-import './css/bootstrap-grid.css';
+import 'css/styles.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 

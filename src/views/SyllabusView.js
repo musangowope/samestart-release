@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import GenericSection from '../components/GenericSection';
 import queryString from 'query-string';
 import axios from 'axios';
-import formatSyllabusData from '../functions/formatSyllabusData';
-import LessonListLinks from '../components/LessonList';
 import styled from 'styled-components';
 import themed from '../functions/themed';
+import { Link } from '@reach/router';
+import api from 'constants/api';
 
 const SyllabusCard = styled.div`
   border: 2px solid ${(props) => props.theme.colors.primary};
   padding: 10px;
+  height: 100%;
 `;
 
 const SyllabusCardTitle = styled.div`
@@ -21,30 +22,44 @@ const SyllabusCardTitle = styled.div`
   margin-bottom: 10px;
 `;
 
+const LessonLink = styled(Link)`
+  display: block;
+`;
+
 const SyllabusView = (props) => {
   const { courseId } = queryString.parse(props.location.search);
-  console.log(courseId);
+  const [courseTitle, setCourseTitle] = React.useState('');
   const [syllabus, setSyllbus] = React.useState([]);
   React.useEffect(() => {
     axios
-      .get(
-        `https://deft-cherry.myliftersite.com/wp-json/llms/v1/sections?parent=${courseId}`,
-      )
+      .get(api.getSyllabus(courseId))
       .then(({ data }) => {
-        setSyllbus([...formatSyllabusData(data)]);
+        setCourseTitle(data.course_title);
+        setSyllbus([...data.sections]);
       })
       .catch((e) => {
         console.log(e);
       });
   }, [courseId]);
   return (
-    <GenericSection title="Syllabus View">
-      <div className="row">
+    <GenericSection title={courseTitle}>
+      <div className="columns">
         {syllabus.map((syllabusItem) => (
-          <div className="col-6" key={syllabusItem.sectionId}>
+          <div className="column is-half" key={syllabusItem.section_id}>
             <SyllabusCard>
-              <SyllabusCardTitle>{syllabusItem.title}</SyllabusCardTitle>
-              <LessonListLinks sectionId={syllabusItem.sectionId} />
+              <SyllabusCardTitle>
+                {syllabusItem.section_title}
+              </SyllabusCardTitle>
+              <div>
+                {syllabusItem.lessons.map((lesson) => (
+                  <LessonLink
+                    to={`/lesson?lessonId=${lesson.lesson_id}`}
+                    key={lesson.lesson_id}
+                  >
+                    {lesson.lesson_title}
+                  </LessonLink>
+                ))}
+              </div>
             </SyllabusCard>
           </div>
         ))}
