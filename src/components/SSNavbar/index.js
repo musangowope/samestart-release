@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import themed from '../functions/themed';
-import LogIcon from '../svgs/logo.svg';
+import themed from 'functions/themed';
+import LogIcon from 'svgs/logo.svg';
 import { Link } from '@reach/router';
 import InlineSVG from 'react-inlinesvg';
 
@@ -17,6 +17,10 @@ const Navbar = styled.div`
   margin-bottom: 30px;
   align-items: center;
   z-index: 9999;
+  @media screen and (max-width: ${(props) =>
+      props.theme.breakpoints.md}) {
+    display: none;
+  }
 `;
 
 const LogoLink = styled(Link)`
@@ -33,6 +37,7 @@ const NavContents = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  padding: 10px;
 `;
 const MenuItemWrapper = styled.div`
   display: flex;
@@ -56,19 +61,11 @@ const NavItemLink = styled(Link)`
   ${NavItemStyle};
 `;
 
-const NavItemButton = styled.button`
-  ${NavItemStyle};
-  background: none;
-  border: none;
-`;
-
-const DeskMenuItemsWrapper = styled.div`
-  display: flex;
-  @media screen and (max-width: ${(props) =>
-      props.theme.breakpoints.md}) {
-    display: none;
-  }
-`;
+// const NavItemButton = styled.button`
+//   ${NavItemStyle};
+//   background: none;
+//   border: none;
+// `;
 
 const SSNavbar = () => {
   return (
@@ -78,10 +75,8 @@ const SSNavbar = () => {
           <InlineSVG src={LogIcon} />
         </LogoLink>
         <MenuItemWrapper>
-          <DeskMenuItemsWrapper>
-            <NavItemLink to="/about-us">About</NavItemLink>
-            <NavItemLink to="/subjects">Subjects</NavItemLink>
-          </DeskMenuItemsWrapper>
+          <NavItemLink to="/about-us">About</NavItemLink>
+          <NavItemLink to="/subjects">Subjects</NavItemLink>
         </MenuItemWrapper>
       </NavContents>
     </Navbar>

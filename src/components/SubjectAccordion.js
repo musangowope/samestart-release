@@ -13,6 +13,7 @@ const SubjectContainer = styled.div`
   border: 2px solid ${(props) => props.theme.colors.tertiary};
   overflow: hidden;
   margin-bottom: 20px;
+  border-radius: 10px;
 `;
 
 const SVGWrapper = styled.span`
@@ -50,18 +51,15 @@ const GradeSelectionTitle = styled.div`
 
 const GradeSelectionGrades = styled.div`
   text-align: center;
+  .ss-circle-button {
+    margin-bottom: 10px;
+  }
 `;
 
-const SubjectAccordion = ({
-  subjectName,
-  gradesSelection,
-  footerContent: renderFooterContent,
-  gradeSelectionTitle,
-}) => {
+const SubjectAccordion = ({ subjectName, gradesSelection }) => {
   return (
     <SubjectContainer>
       <Accordion
-        isOpenInitially
         pressPointContent={
           <SubjectContainerHeader>
             <SubjectAccordionHeaderText>

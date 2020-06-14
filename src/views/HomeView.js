@@ -76,7 +76,6 @@ const SecondaryTitle = styled.div`
 `;
 
 const HomeView = () => {
-  const [modal, setModal] = React.useState(false);
   return (
     <React.Fragment>
       <FlexContainer>
@@ -86,9 +85,9 @@ const HomeView = () => {
               <MainTitle>Same Start</MainTitle>
               <SecondaryTitle>Leveling Education</SecondaryTitle>
               <div>
-                <PrimaryButtonLink to="/subjects">
-                  Start Learning
-                </PrimaryButtonLink>
+                {/*<PrimaryButtonLink to="/subjects">*/}
+                {/*  Start Learning*/}
+                {/*</PrimaryButtonLink>*/}
               </div>
             </LeftSideContent>
           </LeftSide>
@@ -97,10 +96,6 @@ const HomeView = () => {
           </LandingIconContainer>
         </HomeLayout>
       </FlexContainer>
-      <button onClick={() => setModal(true)}>dsfdsf</button>
-      <SimpleModal isOpen={modal} closeAction={() => setModal(false)}>
-        sdfdsfdsf
-      </SimpleModal>
     </React.Fragment>
   );
 };

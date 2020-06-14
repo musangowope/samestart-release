@@ -2,6 +2,13 @@ import React from 'react';
 import SSDropSelect from '../SSDropSelect';
 import { createMarkup } from '../../functions/createMarkup.func';
 import PropTypes from 'prop-types';
+import themed from '../../functions/themed';
+import styled from 'styled-components';
+
+const AwezaTitle = styled.div`
+  text-transform: uppercase;
+  color: ${(props) => props.theme.colors.primary};
+`;
 
 const AwezaContent = ({
   termTitle,
@@ -37,7 +44,7 @@ const AwezaContent = ({
 
   return (
     <React.Fragment>
-      <div>{termTitleState}</div>
+      <AwezaTitle>{termTitleState}</AwezaTitle>
       <SSDropSelect
         options={langOpts}
         title="Current Language"
@@ -79,4 +86,4 @@ AwezaContent.defaultProps = {
   translations: [],
 };
 
-export default AwezaContent;
+export default themed(AwezaContent);

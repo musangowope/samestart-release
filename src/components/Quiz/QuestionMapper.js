@@ -4,6 +4,14 @@ import { hasValue } from 'functions/hasValue.func';
 import SSRadioButton from 'components/SSRadioButton';
 import { createMarkup } from '../../functions/createMarkup.func';
 import ErrorMessage from '../ErrorMessage';
+import styled from 'styled-components';
+import themed from "../../functions/themed";
+
+const QuestionTitle = styled.div`
+  font-size: ${(props) => props.theme.fontSizes[3]};
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
 
 const QuestionMapper = ({
   questions,
@@ -43,7 +51,7 @@ const QuestionMapper = ({
         <Fragment key={`question=${index}`}>
           {index === activeQIndex && (
             <Fragment>
-              <div>Question {index + 1}</div>
+              <QuestionTitle>Question {index + 1}</QuestionTitle>
               <div
                 dangerouslySetInnerHTML={createMarkup(
                   question.content,
@@ -73,4 +81,4 @@ QuestionMapper.defaultProps = {
   setErrorMessage: () => false,
 };
 
-export default QuestionMapper;
+export default themed(QuestionMapper);

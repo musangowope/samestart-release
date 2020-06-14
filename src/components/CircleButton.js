@@ -32,11 +32,12 @@ const StyledCircleButton = styled(TextButton)`
 const CircleButton = ({ buttonText, actionCallback, isSelected }) => {
   return (
     <StyledCircleButton
+      className="ss-circle-button"
       type="button"
       onClick={actionCallback}
       isSelected={isSelected}
     >
-      {buttonText}
+      <span className="ss-circle-button__text">{buttonText}</span>
     </StyledCircleButton>
   );
 };

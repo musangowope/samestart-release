@@ -14,6 +14,12 @@ const CorrectMessage = styled.div`
   border: 2px solid ${(props) => props.theme.colors.success};
 `;
 
+const QuizTitle = styled.div`
+  font-size: ${(props) => props.theme.fontSizes[3]};
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+
 const Quiz = ({ title, questions }) => {
   const [activeQIndex, setActiveQIndex] = React.useState(0);
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -51,7 +57,7 @@ const Quiz = ({ title, questions }) => {
 
   return (
     <div>
-      <div>{title}</div>
+      <QuizTitle>{title}</QuizTitle>
       <LessonGauge
         numberOfQuestions={questions.length}
         activeQNumber={activeQIndex + 1}

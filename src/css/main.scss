@@ -13,13 +13,10 @@ div[id='root'] {
 
 div[tabindex='-1'] {
     flex-grow: 1;
+    display: flex;
+    flex-flow: column nowrap;
 }
 
 button {
     outline: none;
-}
-
-
-[data-aweza-id] {
-    color: #ff8600;
 }

@@ -30,6 +30,8 @@ const ModalContent = styled.div`
   max-width: ${(props) => props.theme.breakpoints.md};
   width: 100%;
   margin: auto;
+  max-height: 100vh;
+  overflow: auto;
 `;
 
 const SimpleModal = ({ isOpen, closeAction, children }) => {
