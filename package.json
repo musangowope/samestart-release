@@ -23,7 +23,8 @@
     "react-inlinesvg": "^1.2.0",
     "react-mathquill": "^0.2.5",
     "react-scripts": "3.4.1",
-    "react-select": "^3.1.0"
+    "react-select": "^3.1.0",
+    "react-tippy": "^1.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
