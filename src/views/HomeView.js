@@ -5,7 +5,6 @@ import { transparentize } from 'polished';
 import LandingIcon from '../svgs/landing-icon.svg';
 import SVG from '../components/SVG';
 import PrimaryButtonLink from '../components/elements/buttons/PrimaryButtonLink';
-import SimpleModal from '../components/SimpleModal';
 
 const FlexContainer = styled.div`
   display: flex;
@@ -85,9 +84,9 @@ const HomeView = () => {
               <MainTitle>Same Start</MainTitle>
               <SecondaryTitle>Leveling Education</SecondaryTitle>
               <div>
-                {/*<PrimaryButtonLink to="/subjects">*/}
-                {/*  Start Learning*/}
-                {/*</PrimaryButtonLink>*/}
+                <PrimaryButtonLink to="/subjects">
+                  Start Learning
+                </PrimaryButtonLink>
               </div>
             </LeftSideContent>
           </LeftSide>

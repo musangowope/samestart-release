@@ -5,7 +5,7 @@ import api from 'constants/api';
 import styled from 'styled-components';
 import GenericSection from '../../components/GenericSection';
 import AwezaTranslator from '../../components/AwezaTranslator';
-import GutenBlockTranslator from '../../components/GutenBlockTranslator';
+import BlockTypeInterpreter from '../../components/BlockTypeInterpreter';
 import SimpleModal from '../../components/SimpleModal';
 import { hasValue } from '../../functions/hasValue.func';
 import { baseRequestState } from '../../constants/baseRequest';
@@ -13,6 +13,7 @@ import PrimaryButton from '../../components/elements/buttons/PrimaryButton';
 import Quiz from '../../components/Quiz';
 import TertiaryButton from '../../components/elements/buttons/TertiaryButton';
 import themed from '../../functions/themed';
+import BlockLangShifter from '../../components/BlockLangShifter';
 
 const LessonButtonsContainer = styled.div`
   margin-bottom: 20px;
@@ -101,9 +102,10 @@ const LessonView = (props) => {
     axios
       .get(api.getLesson(lessonId))
       .then(({ data }) => {
+        console.log(data);
         updateRequest({ success: true });
         setLessonTitle(data.default_lesson_instance.title);
-        setLessonBlocks(data.parsed_lesson_blocks);
+        setLessonBlocks(data.translated_blocks);
         setQuiz(data.default_lesson_instance.quiz);
       })
       .catch((e) => {
@@ -129,12 +131,7 @@ const LessonView = (props) => {
       {success && (
         <LessonContent>
           {lessonBlocks.map((block, key) => (
-            <GutenBlockTranslator
-              key={key}
-              blockName={block.blockName}
-              innerHTML={block.innerHTML}
-              setAwezaId={(id) => setTermId(id)}
-            />
+            <BlockLangShifter block={block} key={key} blockKey={`block-key-${key}`}  />
           ))}
         </LessonContent>
       )}
