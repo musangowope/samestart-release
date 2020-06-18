@@ -12,7 +12,7 @@ const getEquationElement = (html = '') => {
   return <EquationTranslator passedDownLatex={katex} />;
 };
 
-const GutenBlockTranslator = ({
+const BlockTypeInterpreter = ({
   blockName,
   innerHTML,
   setAwezaId,
@@ -42,18 +42,18 @@ const GutenBlockTranslator = ({
   }
 };
 
-GutenBlockTranslator.propTypes = {
+BlockTypeInterpreter.propTypes = {
   blockName: PropTypes.string,
   innerBlocks: PropTypes.array,
   innerHTML: PropTypes.any,
   innerContent: PropTypes.any,
   setAwezaId: PropTypes.func,
 };
-GutenBlockTranslator.defaultProps = {
+BlockTypeInterpreter.defaultProps = {
   blockName: '',
   innerBlocks: [],
   innerHTML: '',
   setAwezaId: () => false,
 };
 
-export default GutenBlockTranslator;
+export default BlockTypeInterpreter;
