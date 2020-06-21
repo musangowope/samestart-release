@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import themed from '../functions/themed';
-import TextButton from '../components/elements/buttons/TextButton';
+import TextButton from './elements/buttons/TransparentButton';
 import PropTypes from 'prop-types';
 
 const StyledCircleButton = styled(TextButton)`

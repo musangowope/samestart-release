@@ -17,15 +17,15 @@ const Button = styled.button`
   }
 `;
 
-const TextButton = ({ children, ...restProps }) => {
+const TransparentButton = ({ children, ...restProps }) => {
   return <Button {...restProps}>{children}</Button>;
 };
 
-TextButton.propTypes = {
+TransparentButton.propTypes = {
   children: PropTypes.any,
 };
-TextButton.defaultProps = {
+TransparentButton.defaultProps = {
   children: null,
 };
 
-export default themed(TextButton);
+export default themed(TransparentButton);
