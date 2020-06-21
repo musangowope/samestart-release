@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import themed from '../functions/themed';
-import TextButton from './elements/buttons/TextButton';
+import TextButton from './elements/buttons/TransparentButton';
 import Accordion from './Accordion';
 import DownArrowIcon from '../svgs/down-arrow-icon.svg';
 import SVG from '../components/SVG';
