@@ -14,6 +14,7 @@ import Quiz from '../../components/Quiz';
 import TertiaryButton from '../../components/elements/buttons/TertiaryButton';
 import themed from '../../functions/themed';
 import BlockLangShifter from '../../components/BlockLangShifter';
+import TertiaryButtonLink from '../../components/elements/buttons/TertiaryButtonLink';
 
 const LessonButtonsContainer = styled.div`
   margin-bottom: 20px;
@@ -33,42 +34,11 @@ const CloseButtonWrapper = styled.div`
   text-align: right;
 `;
 
-const LessonContent = styled.div`
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p {
-    margin-bottom: 10px;
-  }
-  h1 {
-    font-size: ${(props) => props.theme.fontSizes[6]};
-  }
-
-  h2 {
-    font-size: ${(props) => props.theme.fontSizes[5]};
-  }
-
-  h3 {
-    font-size: ${(props) => props.theme.fontSizes[4]};
-  }
-
-  h4 {
-    font-size: ${(props) => props.theme.fontSizes[3]};
-  }
-
-  h5 {
-    font-size: ${(props) => props.theme.fontSizes[2]};
-  }
-  [data-aweza-id] {
-    color: #ff8600;
-  }
-`;
-
 const LessonView = (props) => {
-  const { lessonId } = queryString.parse(props.location.search);
+  console.log(queryString.parse(props.location.search));
+  const { lessonId, courseId } = queryString.parse(
+    props.location.search,
+  );
   const [termId, setTermId] = React.useState('');
   const [lessonTitle, setLessonTitle] = React.useState('');
   const [lessonBlocks, setLessonBlocks] = React.useState([]);
@@ -120,7 +90,9 @@ const LessonView = (props) => {
   return (
     <GenericSection title={lessonTitle} hasMobileFooter>
       <LessonButtonsContainer>
-        <TertiaryButton>Back</TertiaryButton>
+        <TertiaryButtonLink to={`/syllabus?courseId=${courseId}`}>
+          Back
+        </TertiaryButtonLink>
         <PrimaryButton onClick={() => setQuizModalActivity(true)}>
           Take Quiz
         </PrimaryButton>
@@ -129,11 +101,15 @@ const LessonView = (props) => {
       {failed && <div>Failed</div>}
       {loading && <div>Loading</div>}
       {success && (
-        <LessonContent>
+        <React.Fragment>
           {lessonBlocks.map((block, key) => (
-            <BlockLangShifter block={block} key={key} blockKey={`block-key-${key}`}  />
+            <BlockLangShifter
+              block={block}
+              key={key}
+              blockKey={`block-key-${key}`}
+            />
           ))}
-        </LessonContent>
+        </React.Fragment>
       )}
 
       <ModalContainer>
