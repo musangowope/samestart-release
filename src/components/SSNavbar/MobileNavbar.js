@@ -59,7 +59,6 @@ MobileNavButton.defaultProps = {
 };
 
 const MobileNavbar = (props) => {
-  console.log(props);
   return (
     <Location>
       {({ location: { pathname } }) => {
