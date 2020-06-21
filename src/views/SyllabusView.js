@@ -8,12 +8,17 @@ import themed from '../functions/themed';
 import { Link } from '@reach/router';
 import api from 'constants/api';
 import { baseRequestState } from '../constants/baseRequest';
+import PrimaryButtonLink from '../components/elements/buttons/PrimaryButtonLink';
 
 const SyllabusCard = styled.div`
   border: 2px solid ${(props) => props.theme.colors.primary};
   padding: 10px;
   height: 100%;
   border-radius: 10px;
+`;
+
+const BackToCoursesLink = styled(PrimaryButtonLink)`
+  display: inline-block;
 `;
 
 const SyllabusCardTitle = styled.div`
@@ -63,30 +68,37 @@ const SyllabusView = (props) => {
       {failed && <div>Failed</div>}
       {loading && <div>Loading</div>}
       {success && (
-        <div className="columns">
-          {syllabus.map((syllabusItem) => (
-            <div
-              className="column is-half"
-              key={syllabusItem.section_id}
-            >
-              <SyllabusCard>
-                <SyllabusCardTitle>
-                  {syllabusItem.section_title}
-                </SyllabusCardTitle>
-                <div>
-                  {syllabusItem.lessons.map((lesson) => (
-                    <LessonLink
-                      to={`/lesson?lessonId=${lesson.lesson_id}`}
-                      key={lesson.lesson_id}
-                    >
-                      {lesson.lesson_title}
-                    </LessonLink>
-                  ))}
-                </div>
-              </SyllabusCard>
-            </div>
-          ))}
-        </div>
+        <React.Fragment>
+          <div className="mb-3">
+            <BackToCoursesLink to="/subjects">
+              Back to Courses
+            </BackToCoursesLink>
+          </div>
+          <div className="columns">
+            {syllabus.map((syllabusItem) => (
+              <div
+                className="column is-half"
+                key={syllabusItem.section_id}
+              >
+                <SyllabusCard>
+                  <SyllabusCardTitle>
+                    {syllabusItem.section_title}
+                  </SyllabusCardTitle>
+                  <div>
+                    {syllabusItem.lessons.map((lesson) => (
+                      <LessonLink
+                        to={`/lesson?lessonId=${lesson.lesson_id}&courseId=${courseId}`}
+                        key={lesson.lesson_id}
+                      >
+                        {lesson.lesson_title}
+                      </LessonLink>
+                    ))}
+                  </div>
+                </SyllabusCard>
+              </div>
+            ))}
+          </div>
+        </React.Fragment>
       )}
     </GenericSection>
   );
