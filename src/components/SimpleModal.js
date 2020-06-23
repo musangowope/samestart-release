@@ -4,6 +4,7 @@ import { handleOutsideElementClick } from 'functions/handleOutsideElementClick.f
 import styled from 'styled-components';
 import { transparentize } from 'polished';
 import themed from 'functions/themed';
+import { NavHeight } from './SSNavbar';
 
 const Modal = styled.div`
   top: ${({ isOpen }) => (isOpen ? 0 : '100%')};
@@ -12,7 +13,7 @@ const Modal = styled.div`
   height: 100%;
   position: fixed;
   opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
-  z-index: 99999;
+  z-index: 999;
   transition: top 0.2s ease-in-out, opacity 0.2s ease-in-out;
 `;
 
@@ -28,10 +29,18 @@ const ModalOverlay = styled.div`
 const ModalContent = styled.div`
   background: ${(props) => props.theme.colors.white};
   max-width: ${(props) => props.theme.breakpoints.md};
+  overflow-x: hidden;
   width: 100%;
   margin: auto;
-  max-height: 100vh;
-  overflow: auto;
+  max-height: calc(100vh - ${NavHeight * 2}px);
+  height: calc(100vh - ${NavHeight * 2}px);
+  overflow-y: auto;
+  position: relative;
+  @media screen and (max-width: ${(props) =>
+      props.theme.breakpoints.md}) {
+    height: 100vh;
+    max-height: 100vh;
+  }
 `;
 
 const SimpleModal = ({ isOpen, closeAction, children }) => {
