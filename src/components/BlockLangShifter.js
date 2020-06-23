@@ -28,9 +28,9 @@ const TranslateIconSvgWrapper = styled.span`
 `;
 
 const isBlockTranslatable = (block = {}) => {
-  const fragments = Object.keys(block).map(
-    (langKey) => block[langKey],
-  );
+  const fragments = Object.keys(block)
+    .map((langKey) => block[langKey])
+    .filter((fragment) => fragment);
   if (fragments.length > 1) {
     return fragments[0].innerHTML !== fragments[1].innerHTML;
   }
@@ -91,7 +91,11 @@ const BlockLangShifter = ({ block, blockKey }) => {
             }
           >
             <TranslateIconSvgWrapper>
-              <TransparentButton onClick={() => setIsTippyOpen(prevState => !prevState)}>
+              <TransparentButton
+                onClick={() =>
+                  setIsTippyOpen((prevState) => !prevState)
+                }
+              >
                 <SVG src={TranslationIconSrc} />
               </TransparentButton>
             </TranslateIconSvgWrapper>
