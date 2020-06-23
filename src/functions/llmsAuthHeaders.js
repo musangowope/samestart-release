@@ -1,6 +1,0 @@
-export default {
-  'X-LLMS-CONSUMER-KEY':
-    'ck_4d6449131170291e72c9004ace52b4748c564f16',
-  'X-LLMS-CONSUMER-SECRET':
-    'cs_8a3491d2cf7af393d916d970927e945e0aa73168',
-};
