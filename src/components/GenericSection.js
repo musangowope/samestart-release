@@ -30,30 +30,43 @@ const GenericContainer = styled.div`
   flex-flow: column nowrap;
 `;
 
-const GenericSection = ({ children, title, hasMobileFooter }) => {
+const GenericSection = ({
+  children,
+  title,
+  hasMobileFooter,
+  contentIsLoading,
+}) => {
   return (
     <GenericContent
       className="generic-section"
       hasMobileFooter={hasMobileFooter}
     >
-      <GenericContainer className="generic-section__container">
-        <GenericSectTitle className="generic-section__container__title">
-          {title}
-        </GenericSectTitle>
-        <GenericContent className="generic-section__container__content">
-          {children}
-        </GenericContent>
-      </GenericContainer>
+      {contentIsLoading ? (
+        <GenericContainer className="generic-section__container">
+          LOADING
+        </GenericContainer>
+      ) : (
+        <GenericContainer className="generic-section__container">
+          <GenericSectTitle className="generic-section__container__title">
+            {title}
+          </GenericSectTitle>
+          <GenericContent className="generic-section__container__content">
+            {children}
+          </GenericContent>
+        </GenericContainer>
+      )}
     </GenericContent>
   );
 };
 
 GenericSection.propTypes = {
+  contentIsLoading: PropTypes.bool,
   children: PropTypes.node,
   title: PropTypes.string,
   hasMobileFooter: PropTypes.bool,
 };
 GenericSection.defaultProps = {
+  contentIsLoading: false,
   children: null,
   title: '',
   hasMobileFooter: false,
