@@ -8,7 +8,6 @@ const SectionsMapper = ({ url }) => {
     axios
       .get(url)
       .then(({ data }) => {
-        console.log(data);
         setSections([...data]);
       })
       .catch((e) => console.log(e));
