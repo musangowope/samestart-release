@@ -8,6 +8,7 @@ import SecondaryButton from '../elements/buttons/SecondaryButton';
 import { hasValue } from '../../functions/hasValue.func';
 import styled from 'styled-components';
 import themed from '../../functions/themed';
+import Feedback from './Feedback';
 
 const CorrectMessage = styled.div`
   color: ${(props) => props.theme.colors.secondary};
@@ -16,12 +17,23 @@ const CorrectMessage = styled.div`
 
 const QuizTitle = styled.div`
   font-size: ${(props) => props.theme.fontSizes[3]};
-  margin-top: 10px;
   margin-bottom: 10px;
+`;
+
+const LessonGaugeWrapper = styled.div`
+  margin-bottom: 20px;
+`;
+
+const ActionButtonWrapper = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  margin-bottom: 20px;
 `;
 
 const Quiz = ({ title, questions }) => {
   const [activeQIndex, setActiveQIndex] = React.useState(0);
+  const [isHelpActive, setIsHelpActive] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [answer, setAnswer] = React.useState('');
   const [showCongradsMsg, setShowCongradsMsg] = React.useState(false);
@@ -56,50 +68,64 @@ const Quiz = ({ title, questions }) => {
   };
 
   return (
-    <div>
+    <React.Fragment>
       <QuizTitle>{title}</QuizTitle>
-      <LessonGauge
-        numberOfQuestions={questions.length}
-        activeQNumber={activeQIndex + 1}
-      />
+      <LessonGaugeWrapper>
+        <LessonGauge
+          numberOfQuestions={questions.length}
+          activeQNumber={activeQIndex + 1}
+        />
+      </LessonGaugeWrapper>
 
-      <QuestionMapper
-        activeQIndex={activeQIndex}
-        questions={questions}
-        setAnswer={setAnswer}
-        errorMessage={errorMessage}
-        setErrorMessage={setErrorMessage}
-      />
+      <div className="mb-5">
+        <QuestionMapper
+          isHelpActive={isHelpActive}
+          activeQIndex={activeQIndex}
+          questions={questions}
+          setAnswer={setAnswer}
+          errorMessage={errorMessage}
+          setErrorMessage={setErrorMessage}
+        />
+      </div>
 
-      <div className="columns">
-        <div className="column">
-          <SecondaryButton>Get Help</SecondaryButton>
-          <PrimaryButton onClick={handleSubmit}>
-            Submit Answer
+      {/*<Feedback isCorrect={true} />*/}
+
+      <ActionButtonWrapper>
+        <SecondaryButton
+          type="button"
+          onClick={() => setIsHelpActive((prevState) => !prevState)}
+        >
+          {isHelpActive ? 'Exit Help' : 'Help'}
+        </SecondaryButton>
+        {!isHelpActive && (
+          <PrimaryButton type="button" onClick={handleSubmit}>
+            Submit
           </PrimaryButton>
-        </div>
-        <div className="column">
+        )}
+      </ActionButtonWrapper>
+
+      {!isHelpActive && (
+        <React.Fragment>
           {showCongradsMsg && (
             <CorrectMessage>
               Well done, you answer is correct
             </CorrectMessage>
           )}
-        </div>
-      </div>
-
-      <QuizNavigator
-        activeItemIndex={activeQIndex}
-        lengthOfItems={questions.length}
-        onNext={() => {
-          setShowCongradsMsg(false);
-          setActiveQIndex(activeQIndex + 1);
-        }}
-        onPrev={() => {
-          setShowCongradsMsg(false);
-          setActiveQIndex(activeQIndex - 1);
-        }}
-      />
-    </div>
+          <QuizNavigator
+            activeItemIndex={activeQIndex}
+            lengthOfItems={questions.length}
+            onNext={() => {
+              setShowCongradsMsg(false);
+              setActiveQIndex(activeQIndex + 1);
+            }}
+            onPrev={() => {
+              setShowCongradsMsg(false);
+              setActiveQIndex(activeQIndex - 1);
+            }}
+          />
+        </React.Fragment>
+      )}
+    </React.Fragment>
   );
 };
 
