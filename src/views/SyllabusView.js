@@ -9,6 +9,7 @@ import { Link } from '@reach/router';
 import api from 'constants/api';
 import { baseRequestState } from '../constants/baseRequest';
 import PrimaryButtonLink from '../components/elements/buttons/PrimaryButtonLink';
+import { removeWhiteSpaces } from '../functions/removeWhiteSpaces.func';
 
 const SyllabusCard = styled.div`
   border: 2px solid ${(props) => props.theme.colors.primary};
@@ -31,7 +32,24 @@ const SyllabusCardTitle = styled.div`
 
 const LessonLink = styled(Link)`
   display: block;
+  color: ${(props) => props.theme.colors.tertiary};
+  text-decoration: none;
+  &:hover {
+    color: ${(props) => props.theme.colors.tertiary};
+  }
 `;
+
+//TODO: Use course difficulty on the backend
+const formalizeCourseTitle = (courseTitle) => {
+  const positionOfGrade = courseTitle.indexOf('grade');
+  const level = removeWhiteSpaces(
+    courseTitle.substring(positionOfGrade + 5, courseTitle.length),
+  );
+  const courseName = removeWhiteSpaces(
+    courseTitle.substring(0, positionOfGrade),
+  );
+  return `${courseName} Grade ${level}`;
+};
 
 const SyllabusView = (props) => {
   const { courseId } = queryString.parse(props.location.search);
@@ -64,9 +82,11 @@ const SyllabusView = (props) => {
   const { success, loading, failed } = request;
 
   return (
-    <GenericSection title={courseTitle}>
+    <GenericSection
+      title={formalizeCourseTitle(courseTitle)}
+      contentIsLoading={loading}
+    >
       {failed && <div>Failed</div>}
-      {loading && <div>Loading</div>}
       {success && (
         <React.Fragment>
           <div className="mb-3">
