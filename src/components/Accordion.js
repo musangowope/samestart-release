@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import AnimateHeight from 'react-animate-height';
+import styled from 'styled-components';
+
+const PressableArea = styled.div`
+  outline: none;
+`;
 
 const Accordion = ({
   itemKey,
@@ -23,14 +28,14 @@ const Accordion = ({
 
   return (
     <div className={containerClass}>
-      <div
+      <PressableArea
         onKeyPress={() => null}
         role="button"
         tabIndex={itemKey + 1}
         onClick={toggle}
       >
         <React.Fragment>{pressPointContent}</React.Fragment>
-      </div>
+      </PressableArea>
       <AnimateHeight height={height} duration={duration}>
         {typeof childRenderer === 'function'
           ? childRenderer(close, open, toggle)
