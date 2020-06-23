@@ -5,12 +5,20 @@ import SSRadioButton from 'components/SSRadioButton';
 import { createMarkup } from '../../functions/createMarkup.func';
 import ErrorMessage from '../ErrorMessage';
 import styled from 'styled-components';
-import themed from "../../functions/themed";
+import themed from '../../functions/themed';
+import HelpContent from './HelpContent';
 
 const QuestionTitle = styled.div`
   font-size: ${(props) => props.theme.fontSizes[3]};
-  margin-top: 10px;
   margin-bottom: 10px;
+`;
+
+const QuestionContent = styled.div`
+  margin-bottom: 20px;
+`;
+
+const AnimationDurationContainer = styled.div`
+  animation-duration: 250ms;
 `;
 
 const QuestionMapper = ({
@@ -19,6 +27,7 @@ const QuestionMapper = ({
   errorMessage,
   setAnswer,
   setErrorMessage,
+  isHelpActive,
 }) => {
   const renderSimpleMultipleChoice = (value, id) => (
     <SSRadioButton
@@ -47,22 +56,40 @@ const QuestionMapper = ({
 
   return (
     <Fragment>
-      {questions.map((question, index) => (
-        <Fragment key={`question=${index}`}>
-          {index === activeQIndex && (
-            <Fragment>
-              <QuestionTitle>Question {index + 1}</QuestionTitle>
-              <div
-                dangerouslySetInnerHTML={createMarkup(
-                  question.content,
+      {questions.map((question, index) => {
+        return (
+          <Fragment key={`question=${index}`}>
+            {index === activeQIndex && (
+              <Fragment>
+                {isHelpActive ? (
+                  <AnimationDurationContainer className="animate__animated animate__fadeInLeft">
+                    <HelpContent
+                      title="Help for question"
+                      content={question.clarifications}
+                    />
+                  </AnimationDurationContainer>
+                ) : (
+                  <AnimationDurationContainer className="animate__animated animate__fadeInRight">
+                    <QuestionTitle>
+                      Question {index + 1}
+                    </QuestionTitle>
+                    <QuestionContent
+                      dangerouslySetInnerHTML={createMarkup(
+                        question.content,
+                      )}
+                    />
+                    {renderAnswerInput(
+                      question.question_type,
+                      question,
+                    )}
+                    <ErrorMessage>{errorMessage}</ErrorMessage>
+                  </AnimationDurationContainer>
                 )}
-              />
-              {renderAnswerInput(question.question_type, question)}
-              <ErrorMessage>{errorMessage}</ErrorMessage>
-            </Fragment>
-          )}
-        </Fragment>
-      ))}
+              </Fragment>
+            )}
+          </Fragment>
+        );
+      })}
     </Fragment>
   );
 };
@@ -73,12 +100,14 @@ QuestionMapper.propTypes = {
   errorMessage: PropTypes.string,
   setAnswer: PropTypes.func,
   setErrorMessage: PropTypes.func,
+  isHelpActive: PropTypes.bool,
 };
 QuestionMapper.defaultProps = {
   questions: [],
   errorMessage: '',
   setAnswer: () => false,
   setErrorMessage: () => false,
+  isHelpActive: false,
 };
 
 export default themed(QuestionMapper);
