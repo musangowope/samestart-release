@@ -67,8 +67,7 @@ const SubjectsView = () => {
   const { loading, success, failed } = request;
 
   return (
-    <GenericSection title="Subjects">
-      {loading && 'LOADING'}
+    <GenericSection title="Subjects" contentIsLoading={loading}>
       {success && (
         <React.Fragment>
           <div className="columns">

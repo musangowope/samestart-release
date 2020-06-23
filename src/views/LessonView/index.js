@@ -35,7 +35,6 @@ const CloseButtonWrapper = styled.div`
 `;
 
 const LessonView = (props) => {
-  console.log(queryString.parse(props.location.search));
   const { lessonId, courseId } = queryString.parse(
     props.location.search,
   );
@@ -72,7 +71,6 @@ const LessonView = (props) => {
     axios
       .get(api.getLesson(lessonId))
       .then(({ data }) => {
-        console.log(data);
         updateRequest({ success: true });
         setLessonTitle(data.default_lesson_instance.title);
         setLessonBlocks(data.translated_blocks);
@@ -88,7 +86,11 @@ const LessonView = (props) => {
   const { success, loading, failed } = requestState;
 
   return (
-    <GenericSection title={lessonTitle} hasMobileFooter>
+    <GenericSection
+      title={lessonTitle}
+      hasMobileFooter
+      contentIsLoading={loading}
+    >
       <LessonButtonsContainer>
         <TertiaryButtonLink to={`/syllabus?courseId=${courseId}`}>
           Back
@@ -99,7 +101,6 @@ const LessonView = (props) => {
       </LessonButtonsContainer>
 
       {failed && <div>Failed</div>}
-      {loading && <div>Loading</div>}
       {success && (
         <React.Fragment>
           {lessonBlocks.map((block, key) => (
