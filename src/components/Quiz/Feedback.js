@@ -32,7 +32,7 @@ const SvgContainer = styled.div`
   text-align: center;
   margin-bottom: 20px;
   svg {
-    max-width: 200px;
+    max-width: 150px;
     margin-left: auto;
     margin-right: auto;
     width: 100%;
