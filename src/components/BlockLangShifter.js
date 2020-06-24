@@ -21,6 +21,8 @@ const StyledLangButton = styled.button`
 `;
 
 const TranslateIconSvgWrapper = styled.span`
+  display: inline-block;
+  margin-top: 10px;
   svg {
     width: 30px;
     height: auto;
@@ -32,7 +34,14 @@ const isBlockTranslatable = (block = {}) => {
     .map((langKey) => block[langKey])
     .filter((fragment) => fragment);
   if (fragments.length > 1) {
-    return fragments[0].innerHTML !== fragments[1].innerHTML;
+    ///This should be handled by the backend
+    const fragOne = fragments[0];
+    const fragTwo = fragments[1];
+    return (
+      fragments[0].innerHTML !== fragments[1].innerHTML &&
+      fragOne.blockName !== 'core/image' &&
+      fragTwo.blockName !== 'core/image'
+    );
   }
 
   return false;
