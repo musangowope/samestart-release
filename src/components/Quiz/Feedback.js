@@ -8,6 +8,7 @@ import styled, { keyframes } from 'styled-components';
 import SVG from '../SVG';
 import IncorrectThembiSrc from 'svgs/thembi-incorrect.svg';
 import CorrectThembiSrc from 'svgs/thembi-correct.svg';
+import themed from '../../functions/themed';
 
 const incorrectBob = keyframes`
   0% {
@@ -29,13 +30,13 @@ const incorrectBob = keyframes`
 
 const SvgContainer = styled.div`
   text-align: center;
+  margin-bottom: 20px;
   svg {
     max-width: 200px;
     margin-left: auto;
     margin-right: auto;
     width: 100%;
     height: auto;
-    margin-bottom: 20px;
   }
 
   .thembi-success__head {
@@ -44,36 +45,27 @@ const SvgContainer = styled.div`
   }
 `;
 
+const FeedbackTitle = styled.div`
+  text-transform: uppercase;
+  color: ${(props) => props.theme.colors.primary};
+  text-align: center;
+`;
 
 const SuccessText = styled.div`
-  color: ${props => props.theme.colors.success}
-`
+  color: ${(props) => props.theme.colors.tertiary};
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+`;
 
-const Feedback = ({ isCorrect }) => {
-  const feedbackText = isCorrect
-    ? getPositiveFeedback()
-    : getNegativeFeedback();
-
-  if (isCorrect) {
-    return (
-      <React.Fragment>
-        <SvgContainer>
-          <SVG src={CorrectThembiSrc} />
-        </SvgContainer>
-        <SuccessText>{getPositiveFeedback()}</SuccessText>
-      </React.Fragment>
-    );
-  }
-
-  return (
+const Feedback = () => (
+  <React.Fragment>
     <SvgContainer>
-      <SVG src={IncorrectThembiSrc} />
+      <SVG src={CorrectThembiSrc} />
     </SvgContainer>
-  );
-};
+    <FeedbackTitle>Correct!</FeedbackTitle>
+    <SuccessText>{getPositiveFeedback()}</SuccessText>
+  </React.Fragment>
+);
 
-Feedback.propTypes = {
-  isCorrect: PropTypes.bool.isRequired,
-};
-
-export default Feedback;
+export default themed(Feedback);
