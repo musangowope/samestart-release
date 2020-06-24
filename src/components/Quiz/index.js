@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import themed from '../../functions/themed';
 import Feedback from './Feedback';
 import AnimationContainer from '../AnimationContainer';
+import { NavHeight } from '../SSNavbar';
 
 const QuizTitle = styled.div`
   font-size: ${(props) => props.theme.fontSizes[3]};
@@ -25,6 +26,13 @@ const ActionButtonWrapper = styled.div`
   flex-flow: row nowrap;
   justify-content: space-between;
   margin-bottom: 20px;
+`;
+
+const QuizContainer = styled.div`
+  @media screen and (max-width: ${(props) =>
+      props.theme.breakpoints.md}) {
+    margin-bottom: ${NavHeight}px;
+  }
 `;
 
 const Quiz = ({
@@ -93,7 +101,7 @@ const Quiz = ({
   }, [triggerQuizReset]);
 
   return (
-    <React.Fragment>
+    <QuizContainer>
       <QuizTitle>{title}</QuizTitle>
       <LessonGaugeWrapper>
         <LessonGauge
@@ -163,7 +171,7 @@ const Quiz = ({
           )}
         </React.Fragment>
       )}
-    </React.Fragment>
+    </QuizContainer>
   );
 };
 
