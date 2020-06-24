@@ -20,6 +20,6 @@ export const getPositiveFeedback = () =>
   ];
 
 export const getNegativeFeedback = () =>
-  correctAnsFeedbackMsgs[
+  incorrectAnsFeedbackMsgs[
     getRandomIntBetweenRange(0, incorrectAnsFeedbackMsgs.length - 1)
   ];
