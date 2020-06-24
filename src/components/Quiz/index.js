@@ -9,11 +9,7 @@ import { hasValue } from '../../functions/hasValue.func';
 import styled from 'styled-components';
 import themed from '../../functions/themed';
 import Feedback from './Feedback';
-
-const CorrectMessage = styled.div`
-  color: ${(props) => props.theme.colors.secondary};
-  border: 2px solid ${(props) => props.theme.colors.success};
-`;
+import AnimationContainer from '../AnimationContainer';
 
 const QuizTitle = styled.div`
   font-size: ${(props) => props.theme.fontSizes[3]};
@@ -31,7 +27,12 @@ const ActionButtonWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-const Quiz = ({ title, questions }) => {
+const Quiz = ({
+  title,
+  questions,
+  onQuizFinishCb,
+  triggerQuizReset,
+}) => {
   const [activeQIndex, setActiveQIndex] = React.useState(0);
   const [isHelpActive, setIsHelpActive] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -57,7 +58,7 @@ const Quiz = ({ title, questions }) => {
     if (isAnswerCorrect) {
       return setShowCongradsMsg(true);
     }
-    return setErrorMessage('Incorrect Answers');
+    return setErrorMessage('Incorrect Answer');
   };
 
   const handleSubmit = (e) => {
@@ -66,6 +67,30 @@ const Quiz = ({ title, questions }) => {
       processAnswer();
     }
   };
+
+  const resetQuiz = () => {
+    setActiveQIndex(0);
+    setShowCongradsMsg(false);
+    setErrorMessage('');
+    setIsHelpActive(false);
+    setAnswer('');
+  };
+
+  const handleNextActionAfterCorrect = () => {
+    if (questions.length === activeQIndex + 1) {
+      resetQuiz();
+      return onQuizFinishCb();
+    }
+
+    setShowCongradsMsg(false);
+    return setActiveQIndex((prevState) => prevState + 1);
+  };
+
+  React.useEffect(() => {
+    if (triggerQuizReset) {
+      resetQuiz();
+    }
+  }, [triggerQuizReset]);
 
   return (
     <React.Fragment>
@@ -77,52 +102,65 @@ const Quiz = ({ title, questions }) => {
         />
       </LessonGaugeWrapper>
 
-      <div className="mb-5">
-        <QuestionMapper
-          isHelpActive={isHelpActive}
-          activeQIndex={activeQIndex}
-          questions={questions}
-          setAnswer={setAnswer}
-          errorMessage={errorMessage}
-          setErrorMessage={setErrorMessage}
-        />
-      </div>
-
-      {/*<Feedback isCorrect={true} />*/}
-
-      <ActionButtonWrapper>
-        <SecondaryButton
-          type="button"
-          onClick={() => setIsHelpActive((prevState) => !prevState)}
-        >
-          {isHelpActive ? 'Exit Help' : 'Help'}
-        </SecondaryButton>
-        {!isHelpActive && (
-          <PrimaryButton type="button" onClick={handleSubmit}>
-            Submit
-          </PrimaryButton>
-        )}
-      </ActionButtonWrapper>
-
-      {!isHelpActive && (
+      {showCongradsMsg ? (
+        <AnimationContainer animatedClassName="animate__fadeIn">
+          <Feedback />
+          <div className="has-text-centered">
+            <PrimaryButton onClick={handleNextActionAfterCorrect}>
+              {questions.length === activeQIndex + 1
+                ? 'Back To Lesson'
+                : 'Next Question'}
+            </PrimaryButton>
+          </div>
+        </AnimationContainer>
+      ) : (
         <React.Fragment>
-          {showCongradsMsg && (
-            <CorrectMessage>
-              Well done, you answer is correct
-            </CorrectMessage>
+          <div className="mb-5">
+            <QuestionMapper
+              isHelpActive={isHelpActive}
+              activeQIndex={activeQIndex}
+              questions={questions}
+              setAnswer={setAnswer}
+              errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage}
+            />
+          </div>
+
+          <ActionButtonWrapper>
+            <SecondaryButton
+              type="button"
+              onClick={() => {
+                setAnswer('');
+                setIsHelpActive((prevState) => !prevState);
+              }}
+            >
+              {isHelpActive ? 'Exit Help' : 'Help'}
+            </SecondaryButton>
+            {!isHelpActive && (
+              <PrimaryButton type="button" onClick={handleSubmit}>
+                Submit
+              </PrimaryButton>
+            )}
+          </ActionButtonWrapper>
+
+          {!isHelpActive && (
+            <React.Fragment>
+              <QuizNavigator
+                activeItemIndex={activeQIndex}
+                lengthOfItems={questions.length}
+                onNext={() => {
+                  setShowCongradsMsg(false);
+                  setActiveQIndex(activeQIndex + 1);
+                  setAnswer('');
+                }}
+                onPrev={() => {
+                  setShowCongradsMsg(false);
+                  setActiveQIndex(activeQIndex - 1);
+                  setAnswer('');
+                }}
+              />
+            </React.Fragment>
           )}
-          <QuizNavigator
-            activeItemIndex={activeQIndex}
-            lengthOfItems={questions.length}
-            onNext={() => {
-              setShowCongradsMsg(false);
-              setActiveQIndex(activeQIndex + 1);
-            }}
-            onPrev={() => {
-              setShowCongradsMsg(false);
-              setActiveQIndex(activeQIndex - 1);
-            }}
-          />
         </React.Fragment>
       )}
     </React.Fragment>
@@ -132,10 +170,14 @@ const Quiz = ({ title, questions }) => {
 Quiz.propTypes = {
   title: Proptypes.string,
   questions: Proptypes.array,
+  onQuizFinishCb: Proptypes.func,
+  triggerQuizReset: Proptypes.bool,
 };
 Quiz.defaultProps = {
   title: '',
   questions: [],
+  onQuizFinishCb: () => false,
+  triggerQuizReset: false,
 };
 
 export default themed(Quiz);
