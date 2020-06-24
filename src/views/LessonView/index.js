@@ -5,7 +5,6 @@ import api from 'constants/api';
 import styled from 'styled-components';
 import GenericSection from '../../components/GenericSection';
 import AwezaTranslator from '../../components/AwezaTranslator';
-import BlockTypeInterpreter from '../../components/BlockTypeInterpreter';
 import SimpleModal from '../../components/SimpleModal';
 import { hasValue } from '../../functions/hasValue.func';
 import { baseRequestState } from '../../constants/baseRequest';
@@ -60,7 +59,14 @@ const LessonView = (props) => {
   const getQuizComponent = () => {
     if (quiz) {
       const { title = '', questions = [] } = quiz;
-      return <Quiz title={title} questions={questions} />;
+      return (
+        <Quiz
+          triggerQuizReset={!isQuizModalActive}
+          title={title}
+          questions={questions}
+          onQuizFinishCb={() => setQuizModalActivity(false)}
+        />
+      );
     }
 
     return 'No quiz data available';
