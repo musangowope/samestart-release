@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 import InlineSVG from 'react-inlinesvg';
 
 const QuizNavigator = ({
-  onPrev = () => null,
-  onNext = () => null,
-  activeItemIndex = 0,
-  lengthOfItems = [],
+  onPrev,
+  onNext,
+  activeItemIndex,
+  lengthOfItems,
+  prevText,
+  nextText
 }) => {
   return (
     <div className="navigation">
@@ -20,7 +22,7 @@ const QuizNavigator = ({
         <span className="navigation__button__image">
           <InlineSVG src={Arrow} />
         </span>
-        <span>Prev</span>
+        <span>{prevText}</span>
       </button>
       <button
         type="button"
@@ -28,7 +30,7 @@ const QuizNavigator = ({
         onClick={onNext}
         disabled={activeItemIndex + 1 === lengthOfItems}
       >
-        <span>Skip</span>
+        <span>{nextText}</span>
         <span className="navigation__button__image">
           <InlineSVG src={Arrow} />
         </span>
@@ -42,5 +44,17 @@ QuizNavigator.propTypes = {
   onNext: PropTypes.func,
   activeItemIndex: PropTypes.number,
   lengthOfItems: PropTypes.number,
+  prevText: PropTypes.string,
+  nextText: PropTypes.string,
 };
+
+QuizNavigator.defaultProps = {
+  onPrev: () => null,
+  onNext: () => null,
+  activeItemIndex: 0,
+  lengthOfItems: [],
+  prevText: 'Prev',
+  nextText: 'Skip',
+};
+
 export default QuizNavigator;
