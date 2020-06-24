@@ -16,7 +16,7 @@ const TranslatableIconContainer = styled.div`
 `;
 
 const BlockContentContainer = styled.div`
-  margin-bottom: 15px;
+  //margin-bottom: 15px;
 `;
 
 const BlockContent = styled.div`
