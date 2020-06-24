@@ -7,6 +7,7 @@ import ErrorMessage from '../ErrorMessage';
 import styled from 'styled-components';
 import themed from '../../functions/themed';
 import HelpContent from './HelpContent';
+import AnimationContainer from '../AnimationContainer';
 
 const QuestionTitle = styled.div`
   font-size: ${(props) => props.theme.fontSizes[3]};
@@ -15,10 +16,6 @@ const QuestionTitle = styled.div`
 
 const QuestionContent = styled.div`
   margin-bottom: 20px;
-`;
-
-const AnimationDurationContainer = styled.div`
-  animation-duration: 250ms;
 `;
 
 const QuestionMapper = ({
@@ -62,14 +59,14 @@ const QuestionMapper = ({
             {index === activeQIndex && (
               <Fragment>
                 {isHelpActive ? (
-                  <AnimationDurationContainer className="animate__animated animate__fadeInLeft">
+                  <AnimationContainer animatedClassName="animate__fadeInLeft">
                     <HelpContent
                       title="Help for question"
                       content={question.clarifications}
                     />
-                  </AnimationDurationContainer>
+                  </AnimationContainer>
                 ) : (
-                  <AnimationDurationContainer className="animate__animated animate__fadeInRight">
+                  <AnimationContainer animatedClassName="animate__fadeInRight">
                     <QuestionTitle>
                       Question {index + 1}
                     </QuestionTitle>
@@ -83,7 +80,7 @@ const QuestionMapper = ({
                       question,
                     )}
                     <ErrorMessage>{errorMessage}</ErrorMessage>
-                  </AnimationDurationContainer>
+                  </AnimationContainer>
                 )}
               </Fragment>
             )}
