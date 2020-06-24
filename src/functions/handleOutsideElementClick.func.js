@@ -1,11 +1,15 @@
 export const handleOutsideElementClick = (
   targetRef = null,
   e = null,
-  cb = () => false
+  cb = () => false,
 ) => {
-  if (targetRef && targetRef.current && !targetRef.current.contains(e.target)) {
-    return cb()
+  if (
+    targetRef &&
+    targetRef.current &&
+    !targetRef.current.contains(e.target)
+  ) {
+    return cb();
   }
 
-  return false
-}
+  return false;
+};
