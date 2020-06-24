@@ -48,7 +48,7 @@ const formalizeCourseTitle = (courseTitle) => {
   const courseName = removeWhiteSpaces(
     courseTitle.substring(0, positionOfGrade),
   );
-  return `${courseName} Grade ${level}`;
+  return `${courseName} Gr ${level}`;
 };
 
 const SyllabusView = (props) => {
