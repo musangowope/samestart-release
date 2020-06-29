@@ -1,7 +1,7 @@
 import React from 'react';
 import themed from '../functions/themed';
 
-const YenzaView = () => {
+const ServiceView = () => {
   return (
     <iframe
       title="Career Development"
@@ -12,4 +12,4 @@ const YenzaView = () => {
   );
 };
 
-export default themed(YenzaView);
+export default themed(ServiceView);
