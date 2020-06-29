@@ -1,14 +1,74 @@
 import React from 'react';
 import themed from '../functions/themed';
+import queryString from 'query-string';
+import serviceConstants from '../constants/serviceConstants';
+import IFrameComponent from '../components/IFrameComponent';
+import styled from 'styled-components';
+import LogoSrc from '../svgs/logo.svg';
+import SVG from '../components/SVG';
+import { MobileNavButton } from '../components/SSNavbar/MobileNavbar';
+import { navigate } from '@reach/router';
+import AnimationContainer from '../components/AnimationContainer';
 
-const ServiceView = () => {
+const ServiceContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  position: relative;
+  z-index: 999;
+  background-color: ${(props) => props.theme.colors.white};
+
+  ${MobileNavButton} {
+    position: absolute;
+    bottom: 20px;
+    left: 10px;
+  }
+`;
+
+const ServiceView = (props) => {
+  const { name } = queryString.parse(props.location.search);
+
+  const getIframe = () => {
+    switch (true) {
+      case name === serviceConstants.YENZA_SERVICE:
+        return (
+          <iframe
+            height="100%"
+            width="100%"
+            src="http://yenza.me/"
+            allowFullScreen={true}
+          />
+        );
+      case name === serviceConstants.RL_SERVICE:
+        return (
+          <iframe
+            height="100%"
+            width="100%"
+            src="https://reflectivelearning.co.za/"
+            allowFullScreen={true}
+          />
+        );
+      case name === serviceConstants.SNAPPLIFY_SERVICE:
+        return (
+          <iframe
+            height="100%"
+            width="100%"
+            src="https://www.snapplify.com/"
+            allowFullScreen={true}
+          />
+        );
+      default:
+        return 'no service chosen';
+    }
+  };
   return (
-    <iframe
-      title="Career Development"
-      src="http://demo.yenza.me/#"
-      width="100%"
-      height="100%"
-    />
+    <ServiceContainer>
+      {getIframe()}
+      <AnimationContainer animatedClassName="animate__fadeInLeft">
+        <MobileNavButton onClick={() => navigate('/subjects')}>
+          <SVG src={LogoSrc} />
+        </MobileNavButton>
+      </AnimationContainer>
+    </ServiceContainer>
   );
 };
 
