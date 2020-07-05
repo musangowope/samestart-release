@@ -9,6 +9,7 @@ import { toTitleCase } from '../functions/stringFormatting.func';
 import TranslationIconSrc from 'svgs/translation.svg';
 import SVG from './SVG';
 import TransparentButton from './elements/buttons/TransparentButton';
+import ISO6391 from 'iso-639-1';
 
 const StyledLangButton = styled.button`
   background-color: ${(props) => props.theme.colors.secondary};
@@ -28,33 +29,17 @@ const TranslateIconSvgWrapper = styled.span`
     height: auto;
   }
 `;
-
-const isBlockTranslatable = (block = {}) => {
-  const fragments = Object.keys(block)
-    .map((langKey) => block[langKey])
-    .filter((fragment) => fragment);
-  if (fragments.length > 1) {
-    ///This should be handled by the backend
-    const fragOne = fragments[0];
-    const fragTwo = fragments[1];
-    return (
-      fragments[0].innerHTML !== fragments[1].innerHTML &&
-      fragOne.blockName !== 'core/image' &&
-      fragTwo.blockName !== 'core/image'
-    );
-  }
-
-  return false;
-};
-
 const LangButton = themed((props) => <StyledLangButton {...props} />);
 
 const BlockLangShifter = ({ block, blockKey }) => {
+  console.log(block);
   const [isTippyOpen, setIsTippyOpen] = React.useState(false);
   const [isBlockActive, setIsBlockActive] = React.useState(false);
-  const [currentLang, setCurrentLanguage] = React.useState('english');
-  const selectableLangs = Object.keys(block);
-  const blockFragment = block[currentLang];
+  const [currentLang, setCurrentLanguage] = React.useState('en');
+  const selectableLangs = Object.keys(block.translations);
+  const blockFragment = block.translations[currentLang];
+
+  const translatable = block.translatable;
 
   const getBlock = () => (
     <BlockTypeInterpreter
@@ -67,7 +52,6 @@ const BlockLangShifter = ({ block, blockKey }) => {
     />
   );
 
-  const translatable = isBlockTranslatable(block);
   if (translatable) {
     return (
       <Accordion
@@ -93,7 +77,7 @@ const BlockLangShifter = ({ block, blockKey }) => {
                       close();
                     }}
                   >
-                    {toTitleCase(lang)}
+                    {ISO6391.getName(lang)}
                   </LangButton>
                 ))}
               </div>
