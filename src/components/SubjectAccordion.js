@@ -77,11 +77,11 @@ const SubjectAccordion = ({ subjectName, gradesSelection }) => {
             <GradeSelectionGrades>
               {gradesSelection.map((gradeItem) => (
                 <CircleButton
-                  key={gradeItem.courseId}
-                  buttonText={gradeItem.grade}
+                  key={gradeItem.course_id}
+                  buttonText={gradeItem.grade_label}
                   actionCallback={() =>
                     navigate(
-                      `/syllabus?courseId=${gradeItem.courseId}`,
+                      `/syllabus?courseId=${gradeItem.course_id}`,
                     )
                   }
                 />

@@ -2,7 +2,6 @@ import React from 'react';
 import GenericSection from '../components/GenericSection';
 import SubjectAccordion from '../components/SubjectAccordion';
 import axios from 'axios';
-import formatSubjectData from '../functions/formatSubjectData';
 import api from 'constants/api';
 import { baseRequestState } from '../constants/baseRequest';
 import styled from 'styled-components';
@@ -57,7 +56,7 @@ const SubjectsView = () => {
       .get(api.getSubjects())
       .then((res) => {
         updateRequest({ success: true });
-        setSubjects([...formatSubjectData(res.data)]);
+        setSubjects([...res.data]);
       })
       .catch((e) => {
         updateRequest({ failed: true });
@@ -74,8 +73,8 @@ const SubjectsView = () => {
             {subjects.map((subject, key) => (
               <div className="column is-half" key={key}>
                 <SubjectAccordion
-                  subjectName={subject.subjectName}
-                  gradesSelection={subject.gradesSelection}
+                  subjectName={subject.subject_name}
+                  gradesSelection={subject.grades}
                 />
               </div>
             ))}

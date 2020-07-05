@@ -82,10 +82,7 @@ const SyllabusView = (props) => {
   const { success, loading, failed } = request;
 
   return (
-    <GenericSection
-      title={formalizeCourseTitle(courseTitle)}
-      contentIsLoading={loading}
-    >
+    <GenericSection title={courseTitle} contentIsLoading={loading}>
       {failed && <div>Failed</div>}
       {success && (
         <React.Fragment>
