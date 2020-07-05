@@ -1,6 +1,6 @@
 export default {
   getSubjects: () =>
-    `${process.env.REACT_APP_WP_ENDPOINT}/wp-json/samestart-lms/v1/courses`,
+    `${process.env.REACT_APP_WP_ENDPOINT}/wp-json/samestart-lms/v1/subjects`,
   getSyllabus: (courseId = '') =>
     `${process.env.REACT_APP_WP_ENDPOINT}/wp-json/samestart-lms/v1/syllabus/${courseId}`,
   getLesson: (lessonId = '') =>
