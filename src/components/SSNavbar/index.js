@@ -14,7 +14,6 @@ const Navbar = styled.div`
   top: 0;
   height: ${NavHeight}px;
   display: flex;
-  margin-bottom: 30px;
   align-items: center;
   z-index: 9999;
   @media screen and (max-width: ${(props) =>
