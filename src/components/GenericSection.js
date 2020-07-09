@@ -16,8 +16,7 @@ const GenericSectTitle = styled.div`
 `;
 
 const GenericContent = styled.div`
-  margin-bottom: ${(props) =>
-    props.hasMobileFooter ? `${NavHeight}px` : 0};
+  margin-bottom: ${NavHeight}px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -38,17 +37,9 @@ const LoaderContainer = styled.div`
   margin-bottom: auto;
 `;
 
-const GenericSection = ({
-  children,
-  title,
-  hasMobileFooter,
-  contentIsLoading,
-}) => {
+const GenericSection = ({ children, title, contentIsLoading }) => {
   return (
-    <GenericContent
-      className="generic-section"
-      hasMobileFooter={hasMobileFooter}
-    >
+    <GenericContent className="generic-section">
       {contentIsLoading ? (
         <GenericContainer className="generic-section__container">
           <LoaderContainer>
@@ -75,13 +66,11 @@ GenericSection.propTypes = {
   contentIsLoading: PropTypes.bool,
   children: PropTypes.node,
   title: PropTypes.string,
-  hasMobileFooter: PropTypes.bool,
 };
 GenericSection.defaultProps = {
   contentIsLoading: false,
   children: null,
   title: '',
-  hasMobileFooter: false,
 };
 
 export default GenericSection;

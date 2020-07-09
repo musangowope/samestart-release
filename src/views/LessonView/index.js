@@ -92,11 +92,7 @@ const LessonView = (props) => {
   const { success, loading, failed } = requestState;
 
   return (
-    <GenericSection
-      title={lessonTitle}
-      hasMobileFooter
-      contentIsLoading={loading}
-    >
+    <GenericSection title={lessonTitle} contentIsLoading={loading}>
       <LessonButtonsContainer>
         <TertiaryButtonLink to={`/syllabus?courseId=${courseId}`}>
           Back
