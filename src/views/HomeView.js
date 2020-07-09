@@ -17,6 +17,7 @@ const FlexContainer = styled.div`
 `;
 
 const LandingIconContainer = styled.div`
+  flex-basis: 50%;
   width: 100%;
   display: flex;
   align-items: center;
@@ -27,8 +28,7 @@ const LandingIconContainer = styled.div`
 `;
 
 const HomeLayout = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
   width: 100%;
   max-width: ${(props) => props.theme.breakpoints.lg};
   margin-left: auto;
@@ -42,6 +42,7 @@ const HomeLayout = styled.div`
 const LeftSide = styled.div`
   display: flex;
   align-items: center;
+  flex-basis: 50%;
   @media screen and (max-width: ${(props) =>
       props.theme.breakpoints.md}) {
     background-color: ${(props) =>
