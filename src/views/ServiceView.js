@@ -24,6 +24,24 @@ const ServiceContainer = styled.div`
   }
 `;
 
+const IframeContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  padding-top: 100%; /* 1:1 Aspect Ratio */
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }
+`;
+
 const ServiceView = (props) => {
   const { name } = queryString.parse(props.location.search);
 
@@ -34,7 +52,7 @@ const ServiceView = (props) => {
           <iframe
             height="100%"
             width="100%"
-            src="https://yenza.me/"
+            src="https://app.yenza.me/"
             allowFullScreen={true}
           />
         );
@@ -62,7 +80,7 @@ const ServiceView = (props) => {
   };
   return (
     <ServiceContainer>
-      {getIframe()}
+      <IframeContainer>{getIframe()}</IframeContainer>
       <AnimationContainer animatedClassName="animate__fadeInLeft">
         <MobileNavButton onClick={() => navigate('/subjects')}>
           <SVG src={LogoSrc} />
