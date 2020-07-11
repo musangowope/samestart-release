@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import themed from '../functions/themed';
 import queryString from 'query-string';
 import serviceConstants from '../constants/serviceConstants';
@@ -9,6 +9,10 @@ import SVG from '../components/SVG';
 import { MobileNavButton } from '../components/SSNavbar/MobileNavbar';
 import { navigate } from '@reach/router';
 import AnimationContainer from '../components/AnimationContainer';
+// import { handleOutsideElementClick } from '../functions/handleOutsideElementClick.func';
+import debounced from '../functions/debounced.func';
+
+const debounceBuilder = debounced(200);
 
 const ServiceContainer = styled.div`
   height: 100%;
@@ -27,9 +31,9 @@ const ServiceContainer = styled.div`
 const IframeContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 100%;
+  height: ${(props) => `${props.vpHeight}px`};
   overflow: hidden;
-  padding-top: 100%; /* 1:1 Aspect Ratio */
+  //padding-top: 100%; /* 1:1 Aspect Ratio */
 
   iframe {
     position: absolute;
@@ -42,8 +46,24 @@ const IframeContainer = styled.div`
   }
 `;
 
+IframeContainer.defaultProps = {
+  vpHeight: window.innerHeight,
+};
+
 const ServiceView = (props) => {
   const { name } = queryString.parse(props.location.search);
+  const [vpHeight, setVpHeight] = React.useState(window.innerHeight);
+
+  const handleWindowResize = (e = {}) => {
+    const height = e.target.outerHeight;
+    debounceBuilder(() => setVpHeight(height));
+  };
+
+  React.useEffect(() => {
+    window.addEventListener('resize', handleWindowResize);
+    return () =>
+      window.removeEventListener('resize', handleWindowResize);
+  }, []);
 
   const getIframe = () => {
     switch (true) {
@@ -80,7 +100,9 @@ const ServiceView = (props) => {
   };
   return (
     <ServiceContainer>
-      <IframeContainer>{getIframe()}</IframeContainer>
+      <IframeContainer vpHeight={vpHeight}>
+        {getIframe()}
+      </IframeContainer>
       <AnimationContainer animatedClassName="animate__fadeInLeft">
         <MobileNavButton onClick={() => navigate('/subjects')}>
           <SVG src={LogoSrc} />
