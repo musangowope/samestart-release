@@ -10,10 +10,10 @@ import CircleButton from '../components/CircleButton';
 import { navigate } from '@reach/router';
 
 const SubjectContainer = styled.div`
-  border: 2px solid ${(props) => props.theme.colors.tertiary};
   overflow: hidden;
-  margin-bottom: 20px;
+  //margin-bottom: 5px;
   border-radius: 10px;
+  background-color: ${(props) => props.theme.colors.primary};
 `;
 
 const SVGWrapper = styled.span`
@@ -28,7 +28,7 @@ const SubjectContainerHeader = styled(TextButton)`
 `;
 
 const SubjectAccordionHeaderText = styled.span`
-  color: ${(props) => props.theme.colors.primary};
+  color: ${(props) => props.theme.colors.white};
   padding: 10px;
   text-overflow: ellipsis;
   overflow: hidden;
