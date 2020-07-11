@@ -27,7 +27,7 @@ const ServiceContainer = styled.div`
 const IframeContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
   padding-top: 100%; /* 1:1 Aspect Ratio */
 
