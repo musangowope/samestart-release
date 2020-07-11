@@ -9,11 +9,6 @@ import themed from '../../functions/themed';
 import HelpContent from './HelpContent';
 import AnimationContainer from '../AnimationContainer';
 
-const QuestionTitle = styled.div`
-  font-size: ${(props) => props.theme.fontSizes[3]};
-  margin-bottom: 10px;
-`;
-
 const QuestionContent = styled.div`
   margin-bottom: 20px;
 `;
@@ -67,9 +62,6 @@ const QuestionMapper = ({
                   </AnimationContainer>
                 ) : (
                   <AnimationContainer animatedClassName="animate__fadeInRight">
-                    <QuestionTitle>
-                      Question {index + 1}
-                    </QuestionTitle>
                     <QuestionContent
                       dangerouslySetInnerHTML={createMarkup(
                         question.content,
