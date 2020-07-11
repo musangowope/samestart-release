@@ -12,11 +12,6 @@ import Feedback from './Feedback';
 import AnimationContainer from '../AnimationContainer';
 import { NavHeight } from '../SSNavbar';
 
-const QuizTitle = styled.div`
-  font-size: ${(props) => props.theme.fontSizes[3]};
-  margin-bottom: 10px;
-`;
-
 const LessonGaugeWrapper = styled.div`
   margin-bottom: 20px;
 `;
@@ -35,12 +30,7 @@ const QuizContainer = styled.div`
   }
 `;
 
-const Quiz = ({
-  title,
-  questions,
-  onQuizFinishCb,
-  triggerQuizReset,
-}) => {
+const Quiz = ({ questions, onQuizFinishCb, triggerQuizReset }) => {
   const [activeQIndex, setActiveQIndex] = React.useState(0);
   const [isHelpActive, setIsHelpActive] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -102,7 +92,6 @@ const Quiz = ({
 
   return (
     <QuizContainer>
-      <QuizTitle>{title}</QuizTitle>
       <LessonGaugeWrapper>
         <LessonGauge
           numberOfQuestions={questions.length}
