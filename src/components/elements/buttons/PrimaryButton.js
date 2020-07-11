@@ -20,7 +20,7 @@ export const primaryButtonStyles = css`
   color: ${({ isFilled, theme }) =>
     isFilled ? theme.colors.white : theme.colors.tertiary};
   background-color: ${({ isFilled, theme }) =>
-    isFilled ? theme.colors.primary : 'transparent'};
+    isFilled ? theme.colors.primary : theme.colors.white};
   &:hover {
     background-color: ${({ isFilled, theme, disabled }) =>
       isFilled && !disabled
