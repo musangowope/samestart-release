@@ -16,10 +16,15 @@ const GenericSectTitle = styled.div`
 `;
 
 const GenericContent = styled.div`
-  margin-bottom: ${NavHeight}px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  padding-bottom: ${NavHeight / 2}px;
+
+  .animate__animated {
+    height: 100%;
+  }
 `;
 
 const GenericContainer = styled.div`
@@ -30,6 +35,7 @@ const GenericContainer = styled.div`
   height: 100%;
   display: flex;
   flex-flow: column nowrap;
+  flex-grow: 1;
 `;
 
 const LoaderContainer = styled.div`
