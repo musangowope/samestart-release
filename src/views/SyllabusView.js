@@ -17,6 +17,7 @@ const SyllabusCard = styled.div`
   padding: 10px;
   height: 100%;
   border-radius: 10px;
+  background-color: ${(props) => props.theme.colors.white};
 `;
 
 const BackToCoursesLink = styled(PrimaryButtonLink)`
