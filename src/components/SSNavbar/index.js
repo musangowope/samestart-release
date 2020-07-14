@@ -4,6 +4,7 @@ import themed from 'functions/themed';
 import LogIcon from 'svgs/logo.svg';
 import { Link } from '@reach/router';
 import InlineSVG from 'react-inlinesvg';
+import MobileNavbar from './MobileNavbar';
 
 export const NavHeight = 74;
 
@@ -60,25 +61,22 @@ const NavItemLink = styled(Link)`
   ${NavItemStyle};
 `;
 
-// const NavItemButton = styled.button`
-//   ${NavItemStyle};
-//   background: none;
-//   border: none;
-// `;
-
 const SSNavbar = () => {
   return (
-    <Navbar>
-      <NavContents>
-        <LogoLink to="/">
-          <InlineSVG src={LogIcon} />
-        </LogoLink>
-        <MenuItemWrapper>
-          <NavItemLink to="/about-us">About</NavItemLink>
-          <NavItemLink to="/subjects">Subjects</NavItemLink>
-        </MenuItemWrapper>
-      </NavContents>
-    </Navbar>
+    <React.Fragment>
+      <Navbar>
+        <NavContents>
+          <LogoLink to="/">
+            <InlineSVG src={LogIcon} />
+          </LogoLink>
+          <MenuItemWrapper>
+            <NavItemLink to="/about-us">About</NavItemLink>
+            <NavItemLink to="/subjects">Subjects</NavItemLink>
+          </MenuItemWrapper>
+        </NavContents>
+      </Navbar>
+      <MobileNavbar />
+    </React.Fragment>
   );
 };
 
