@@ -9,10 +9,6 @@ import themed from '../../functions/themed';
 import HelpContent from './HelpContent';
 import AnimationContainer from '../AnimationContainer';
 
-const QuestionContent = styled.div`
-  margin-bottom: 20px;
-`;
-
 const QuestionMapper = ({
   questions,
   activeQIndex,
@@ -38,8 +34,12 @@ const QuestionMapper = ({
   const renderAnswerInput = (answerType, question) => {
     // Will be a switch statement later when there are more answer types
     if (answerType === 'choice') {
-      return question.choices.map((choiceItem, index) =>
-        renderSimpleMultipleChoice(choiceItem.choice, index),
+      return (
+        <MultipleChoiceWrapper>
+          {question.choices.map((choiceItem, index) =>
+            renderSimpleMultipleChoice(choiceItem.choice, index),
+          )}
+        </MultipleChoiceWrapper>
       );
     } else {
       return null;
@@ -100,3 +100,15 @@ QuestionMapper.defaultProps = {
 };
 
 export default themed(QuestionMapper);
+
+const QuestionContent = styled.div`
+  padding: 20px;
+  max-height: 200px;
+  overflow: auto;
+`;
+
+const MultipleChoiceWrapper = styled.div`
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+`;
