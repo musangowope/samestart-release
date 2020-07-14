@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import themed from '../../functions/themed';
-import { NavHeight } from './index';
 import SVG from '../SVG';
 import LogoSrc from 'svgs/logo.svg';
 import Tm2Src from 'svgs/tm2.svg';
@@ -11,71 +10,7 @@ import SnapplifySrc from 'images/snapplify.png';
 import { navigate, Location } from '@reach/router';
 import { darken } from 'polished';
 import serviceConstants from '../../constants/serviceConstants';
-
-const MobileNavContainer = styled.div`
-  background-color: ${(props) => props.theme.colors.secondary};
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  padding: 10px;
-  //display: grid;
-  @media screen and (min-width: ${(props) =>
-      props.theme.breakpoints.md}) {
-    display: none;
-  }
-`;
-
-const MobileNavItem = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const MobileNavButton = styled.button`
-  background-color: ${(props) => props.theme.colors.tertiary};
-  height: 50px;
-  width: 50px;
-  transition: border-color 500ms;
-  border-radius: 50%;
-  border: 3px solid
-    ${(props) =>
-      props.isSelected
-        ? props.theme.colors.primary
-        : darken(0.08, props.theme.colors.secondary)};
-  box-shadow: none;
-  padding: 0;
-
-  svg {
-    width: 30px;
-    height: 30px;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-  }
-`;
-
-const YenzaNavButton = styled(MobileNavButton)`
-  svg {
-    width: 45px;
-    height: 45px;
-  }
-`;
-
-const SnapplifyNavButton = styled(MobileNavButton)`
-  img {
-    width: 30px;
-  }
-`;
-
-const RLNavButton = styled(MobileNavButton)`
-  background: ${(props) => props.theme.colors.white};
-`;
-
-MobileNavButton.defaultProps = {
-  isSelected: false,
-  disabled: false,
-};
+import { GlobalContext } from '../../App';
 
 const isSameNavButtonActive = (pathname = '') => {
   switch (true) {
@@ -89,11 +24,17 @@ const isSameNavButtonActive = (pathname = '') => {
 };
 
 const MobileNavbar = (props) => {
+  const {
+    contextState: { mobileNavbarActive },
+  } = React.useContext(GlobalContext);
   return (
     <Location>
       {({ location: { pathname, search } }) => {
         return (
-          <MobileNavContainer className="mobile-nav-container">
+          <MobileNavContainer
+            className="mobile-nav-container"
+            mobileNavbarActive={mobileNavbarActive}
+          >
             <div className="columns is-mobile">
               <div className="column is-one-quarter">
                 <MobileNavItem>
@@ -170,7 +111,75 @@ const MobileNavbar = (props) => {
   );
 };
 
-MobileNavbar.propTypes = {};
-MobileNavbar.defaultProps = {};
-
 export default themed(MobileNavbar);
+
+const MobileNavContainer = styled.div`
+  background-color: ${(props) => props.theme.colors.secondary};
+  position: fixed;
+  z-index: 9;
+  width: 100%;
+  bottom: 0;
+  padding: 10px;
+  display: ${(props) =>
+    props.mobileNavbarActive ? 'block' : 'none'};
+  @media screen and (min-width: ${(props) =>
+      props.theme.breakpoints.md}) {
+    display: none;
+  }
+`;
+
+MobileNavContainer.defaultProps = {
+  mobileNavbarActive: true,
+};
+
+const MobileNavItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const MobileNavButton = styled.button`
+  background-color: ${(props) => props.theme.colors.tertiary};
+  height: 50px;
+  width: 50px;
+  transition: border-color 500ms;
+  border-radius: 50%;
+  border: 3px solid
+    ${(props) =>
+      props.isSelected
+        ? props.theme.colors.primary
+        : darken(0.08, props.theme.colors.secondary)};
+  box-shadow: none;
+  padding: 0;
+
+  svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+`;
+
+const YenzaNavButton = styled(MobileNavButton)`
+  svg {
+    width: 45px;
+    height: 45px;
+  }
+`;
+
+const SnapplifyNavButton = styled(MobileNavButton)`
+  img {
+    width: 30px;
+  }
+`;
+
+const RLNavButton = styled(MobileNavButton)`
+  background: ${(props) => props.theme.colors.white};
+`;
+
+MobileNavButton.defaultProps = {
+  isSelected: false,
+  disabled: false,
+};
