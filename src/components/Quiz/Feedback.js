@@ -9,6 +9,7 @@ import SVG from '../SVG';
 import IncorrectThembiSrc from 'svgs/thembi-incorrect.svg';
 import CorrectThembiSrc from 'svgs/thembi-correct.svg';
 import themed from '../../functions/themed';
+import InlineSVG from 'react-inlinesvg';
 
 const incorrectBob = keyframes`
   0% {
