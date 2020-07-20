@@ -79,8 +79,8 @@ const Quiz = ({ questions, onQuizFinishCb, triggerQuizReset }) => {
   }, [triggerQuizReset]);
 
   return (
-    <QuizContainer>
-      <QuestionHeader>
+    <QuizContainer className="quiz-container">
+      <QuestionHeader className="quiz-container__header">
         <div>
           Question {activeQIndex + 1} of {questions.length}
         </div>
@@ -142,14 +142,16 @@ const Quiz = ({ questions, onQuizFinishCb, triggerQuizReset }) => {
         </AnimationContainer>
       ) : (
         <React.Fragment>
-          <QuestionMapper
-            isHelpActive={isHelpActive}
-            activeQIndex={activeQIndex}
-            questions={questions}
-            setAnswer={setAnswer}
-            errorMessage={errorMessage}
-            setErrorMessage={setErrorMessage}
-          />
+          <QuestionMapperContainer className="question-mapper-container">
+            <QuestionMapper
+              isHelpActive={isHelpActive}
+              activeQIndex={activeQIndex}
+              questions={questions}
+              setAnswer={setAnswer}
+              errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage}
+            />
+          </QuestionMapperContainer>
 
           <ActionButtonWrapper>
             <SecondaryButton
@@ -238,4 +240,9 @@ const ActionButtonWrapper = styled.div`
 const QuizContainer = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100%;
+`;
+
+const QuestionMapperContainer = styled.div`
+  flex-grow: 1;
 `;
