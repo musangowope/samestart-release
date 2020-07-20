@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import themed from '../../functions/themed';
 import HelpContent from './HelpContent';
 import AnimationContainer from '../AnimationContainer';
+import TransparentButton from '../elements/buttons/TransparentButton';
 
 const QuestionMapper = ({
   questions,
@@ -17,6 +18,15 @@ const QuestionMapper = ({
   setErrorMessage,
   isHelpActive,
 }) => {
+  const [
+    expandToContentHeight,
+    setExpandToContentHeight,
+  ] = React.useState(false);
+
+  const [showExpandButton, setShowExpandButton] = React.useState(
+    false,
+  );
+
   const renderSimpleMultipleChoice = (value, id) => (
     <SSRadioButton
       key={`quiz-option-${id}`}
@@ -35,52 +45,66 @@ const QuestionMapper = ({
     // Will be a switch statement later when there are more answer types
     if (answerType === 'choice') {
       return (
-        <MultipleChoiceWrapper>
+        <StyledMultipleChoiceWrapper>
           {question.choices.map((choiceItem, index) =>
             renderSimpleMultipleChoice(choiceItem.choice, index),
           )}
-        </MultipleChoiceWrapper>
+        </StyledMultipleChoiceWrapper>
       );
     } else {
       return null;
     }
   };
 
-  return (
-    <Fragment>
-      {questions.map((question, index) => {
-        return (
-          <Fragment key={`question=${index}`}>
-            {index === activeQIndex && (
-              <Fragment>
-                {isHelpActive ? (
-                  <AnimationContainer animatedClassName="animate__fadeInLeft">
-                    <HelpContent
-                      title="Help for question"
-                      content={question.clarifications}
-                    />
-                  </AnimationContainer>
-                ) : (
-                  <AnimationContainer animatedClassName="animate__fadeInRight">
-                    <QuestionContent
-                      dangerouslySetInnerHTML={createMarkup(
-                        question.content,
-                      )}
-                    />
-                    {renderAnswerInput(
-                      question.question_type,
-                      question,
-                    )}
-                    <ErrorMessage>{errorMessage}</ErrorMessage>
-                  </AnimationContainer>
+  const questionContentRef = React.useRef();
+  React.useEffect(() => {
+    //TODO: Do resize content
+    setShowExpandButton(
+      questionContentRef.current.scrollHeight > 300,
+    );
+  }, []);
+
+  return questions.map((question, index) => (
+    <Fragment key={`question=${index}`}>
+      {index === activeQIndex && (
+        <Fragment>
+          {isHelpActive ? (
+            <AnimationContainer animatedClassName="animate__fadeInLeft">
+              <HelpContent
+                title="Help for question"
+                content={question.clarifications}
+              />
+            </AnimationContainer>
+          ) : (
+            <AnimationContainer animatedClassName="animate__fadeInRight">
+              <StyledQuestionContent
+                ref={questionContentRef}
+                dangerouslySetInnerHTML={createMarkup(
+                  question.content,
                 )}
-              </Fragment>
-            )}
-          </Fragment>
-        );
-      })}
+                expandToContentHeight={expandToContentHeight}
+              />
+
+              {showExpandButton && (
+                <StyledExpandButton
+                  onClick={() =>
+                    setExpandToContentHeight(
+                      (prevState) => !prevState,
+                    )
+                  }
+                  type="button"
+                >
+                  {expandToContentHeight ? 'MINIMIZE -' : 'EXPAND +'}
+                </StyledExpandButton>
+              )}
+              {renderAnswerInput(question.question_type, question)}
+              <ErrorMessage>{errorMessage}</ErrorMessage>
+            </AnimationContainer>
+          )}
+        </Fragment>
+      )}
     </Fragment>
-  );
+  ));
 };
 
 QuestionMapper.propTypes = {
@@ -101,14 +125,30 @@ QuestionMapper.defaultProps = {
 
 export default themed(QuestionMapper);
 
-const QuestionContent = styled.div`
+const StyledQuestionContent = styled.div`
   padding: 20px;
-  max-height: 200px;
+  transition: height 300ms ease-in-out;
+  max-height: ${(props) =>
+    props.expandToContentHeight ? 'auto' : '200px'};
   overflow: auto;
 `;
 
-const MultipleChoiceWrapper = styled.div`
+StyledQuestionContent.defaultProps = {
+  expandToContentHeight: false,
+};
+
+const StyledMultipleChoiceWrapper = styled.div`
   padding-top: 10px;
   padding-left: 10px;
   padding-right: 10px;
+`;
+
+const StyledExpandButton = styled.button`
+  color: ${(props) => props.theme.colors.white};
+  background: ${(props) => props.theme.colors.tertiary};
+  padding: 5px;
+  outline: none;
+  border: none;
+  display: block;
+  width: 100%;
 `;
