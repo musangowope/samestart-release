@@ -21,10 +21,6 @@ const GenericContent = styled.div`
   flex-direction: column;
   height: 100%;
   padding-bottom: ${NavHeight / 2}px;
-
-  .animate__animated {
-    height: 100%;
-  }
 `;
 
 const GenericContainer = styled.div`
