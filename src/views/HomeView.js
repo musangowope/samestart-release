@@ -5,6 +5,7 @@ import { transparentize } from 'polished';
 import LandingIcon from '../svgs/landing-icon.svg';
 import SVG from '../components/SVG';
 import PrimaryButtonLink from '../components/elements/buttons/PrimaryButtonLink';
+import BlockLoader from '../components/ImageLoader';
 
 const FlexContainer = styled.div`
   display: flex;
@@ -75,6 +76,8 @@ const SecondaryTitle = styled.div`
   margin-bottom: 20px;
 `;
 
+const LandingIconLoader = () => <BlockLoader height="300px" />;
+
 const HomeView = () => {
   return (
     <React.Fragment>
@@ -92,7 +95,10 @@ const HomeView = () => {
             </LeftSideContent>
           </LeftSide>
           <LandingIconContainer>
-            <SVG src={LandingIcon} />
+            <SVG
+              src={LandingIcon}
+              loaderComponent={LandingIconLoader}
+            />
           </LandingIconContainer>
         </HomeLayout>
       </FlexContainer>
