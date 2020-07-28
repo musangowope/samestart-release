@@ -5,7 +5,6 @@ import { transparentize } from 'polished';
 import LandingIcon from '../svgs/landing-icon.svg';
 import SVG from '../components/SVG';
 import PrimaryButtonLink from '../components/elements/buttons/PrimaryButtonLink';
-import { getAyoba } from '../functions/getAyoba.func';
 
 const FlexContainer = styled.div`
   display: flex;
@@ -77,7 +76,6 @@ const SecondaryTitle = styled.div`
 `;
 
 const HomeView = () => {
-  let ayoba = getAyoba();
   return (
     <React.Fragment>
       <FlexContainer>
@@ -88,7 +86,7 @@ const HomeView = () => {
               <SecondaryTitle>Leveling Education</SecondaryTitle>
               <div>
                 <PrimaryButtonLink to="/subjects">
-                  {ayoba ? ayoba.getMsisdn() : 'Start Learning'}
+                  Start Learning
                 </PrimaryButtonLink>
               </div>
             </LeftSideContent>
