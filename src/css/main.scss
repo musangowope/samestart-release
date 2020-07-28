@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:500,500i,700,700i&display=swap');
+* {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+html,
+body,
+div[id='root'] {
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+div[tabindex='-1'] {
+    flex-grow: 1;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+button {
+    outline: none;
+}
+
+
+.tippy-tooltip {
+    padding: 0;
+}
+
+*:focus {
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+}
