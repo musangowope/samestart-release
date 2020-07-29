@@ -9,7 +9,25 @@ import SVG from '../SVG';
 import IncorrectThembiSrc from 'svgs/thembi-incorrect.svg';
 import CorrectThembiSrc from 'svgs/thembi-correct.svg';
 import themed from '../../functions/themed';
-import InlineSVG from 'react-inlinesvg';
+import BlockLoader from '../BlockLoader';
+
+const FeedbackLoader = () => (
+  <StyledLoaderWrapper>
+    <BlockLoader height="230px" width="150px" />
+  </StyledLoaderWrapper>
+);
+
+const Feedback = () => (
+  <StyledFeedbackContainer class="feedback">
+    <SvgContainer>
+      <SVG loaderComponent={FeedbackLoader} src={CorrectThembiSrc} />
+    </SvgContainer>
+    <FeedbackTitle>Correct!</FeedbackTitle>
+    <SuccessText>{getPositiveFeedback()}</SuccessText>
+  </StyledFeedbackContainer>
+);
+
+export default themed(Feedback);
 
 const incorrectBob = keyframes`
   0% {
@@ -27,6 +45,11 @@ const incorrectBob = keyframes`
   100% {
     transform: rotate(0);
   }
+`;
+
+const StyledFeedbackContainer = styled.div`
+  margin-top: 20px;
+  margin-bottom: 20px;
 `;
 
 const SvgContainer = styled.div`
@@ -59,14 +82,10 @@ const SuccessText = styled.div`
   margin-bottom: 20px;
 `;
 
-const Feedback = () => (
-  <React.Fragment>
-    <SvgContainer>
-      <SVG src={CorrectThembiSrc} />
-    </SvgContainer>
-    <FeedbackTitle>Correct!</FeedbackTitle>
-    <SuccessText>{getPositiveFeedback()}</SuccessText>
-  </React.Fragment>
-);
-
-export default themed(Feedback);
+const StyledLoaderWrapper = styled.div`
+  .block-loader {
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+`;
