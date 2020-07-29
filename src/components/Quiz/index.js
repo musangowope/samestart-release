@@ -82,18 +82,9 @@ const Quiz = ({ questions, onQuizFinishCb, triggerQuizReset }) => {
     <QuizContainer className="quiz-container">
       <QuestionHeader className="quiz-container__header">
         <div>
-          Question {activeQIndex + 1} of {questions.length}
+          Q {activeQIndex + 1} of {questions.length}
         </div>
         <NavigationButtonWrapper>
-          <CircleButton
-            disabled={activeQIndex === 0}
-            buttonText={<InlineSVG src={ArrowLeftSrc} />}
-            actionCallback={() => {
-              setShowCongradsMsg(false);
-              setActiveQIndex(activeQIndex - 1);
-              setAnswer('');
-            }}
-          />
           <CloseButtonWrapper>
             <CircleButton
               buttonText={<InlineSVG src={CloseSrc} />}
@@ -108,6 +99,15 @@ const Quiz = ({ questions, onQuizFinishCb, triggerQuizReset }) => {
               }}
             />
           </CloseButtonWrapper>
+          <CircleButton
+            disabled={activeQIndex === 0}
+            buttonText={<InlineSVG src={ArrowLeftSrc} />}
+            actionCallback={() => {
+              setShowCongradsMsg(false);
+              setActiveQIndex(activeQIndex - 1);
+              setAnswer('');
+            }}
+          />
           <CircleButton
             onClick={() => {
               setShowCongradsMsg(false);
@@ -214,8 +214,8 @@ const NavigationButtonWrapper = styled.div`
 
 const CloseButtonWrapper = styled.div`
   .ss-circle-button {
-    background-color: ${(props) => props.theme.colors.baseColor};
-    border-color: ${(props) => props.theme.colors.baseColor};
+    background-color: ${(props) => props.theme.colors.error};
+    border-color: ${(props) => props.theme.colors.error};
   }
 
   svg {
@@ -244,5 +244,5 @@ const QuizContainer = styled.div`
 `;
 
 const QuestionMapperContainer = styled.div`
-  flex-grow: 1;
+  //flex-grow: 1;
 `;
