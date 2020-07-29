@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import themed from '../../functions/themed';
-import { NavHeight } from './index';
 import SVG from '../SVG';
 import LogoSrc from 'svgs/logo.svg';
 import Tm2Src from 'svgs/tm2.svg';
@@ -11,27 +10,145 @@ import SnapplifySrc from 'images/snapplify.png';
 import { navigate, Location } from '@reach/router';
 import { darken } from 'polished';
 import serviceConstants from '../../constants/serviceConstants';
+import { GlobalContext } from '../../App';
+import BlockLoader from '../BlockLoader';
 
-const MobileNavContainer = styled.div`
+const isSameNavButtonActive = (pathname = '') => {
+  switch (true) {
+    case pathname.includes('/subjects'):
+    case pathname.includes('/syllabus'):
+    case pathname.includes('/lesson'):
+      return true;
+    default:
+      return false;
+  }
+};
+
+const MobileNavbar = (props) => {
+  const {
+    contextState: { mobileNavbarActive },
+  } = React.useContext(GlobalContext);
+  return (
+    <Location>
+      {({ location: { pathname, search } }) => {
+        return (
+          <StyledMobileNavContainer
+            className="mobile-nav-container"
+            mobileNavbarActive={mobileNavbarActive}
+          >
+            <div className="columns is-mobile">
+              <div className="column is-one-quarter">
+                <MobileNavItem>
+                  <StyledMobileNavButton
+                    isSelected={isSameNavButtonActive(pathname)}
+                    onClick={() => navigate('/subjects')}
+                  >
+                    <SVG
+                      loaderComponent={BlockLoader}
+                      src={LogoSrc}
+                    />
+                  </StyledMobileNavButton>
+                </MobileNavItem>
+              </div>
+              <div className="column is-one-quarter">
+                <MobileNavItem>
+                  <StyledYenzaNavButton
+                    isSelected={
+                      pathname.includes('/service') &&
+                      search.includes(
+                        `name=${serviceConstants.YENZA_SERVICE}`,
+                      )
+                    }
+                    onClick={() =>
+                      navigate(
+                        `/service?name=${serviceConstants.YENZA_SERVICE}`,
+                      )
+                    }
+                  >
+                    <SVG
+                      loaderComponent={BlockLoader}
+                      src={YenzaSrc}
+                    />
+                  </StyledYenzaNavButton>
+                </MobileNavItem>
+              </div>
+              <div className="column is-one-quarter">
+                <MobileNavItem>
+                  <StyledSnapplifyNavButton
+                    isSelected={
+                      pathname.includes('/service') &&
+                      search.includes(
+                        `name=${serviceConstants.SNAPPLIFY_SERVICE}`,
+                      )
+                    }
+                    onClick={() =>
+                      navigate(
+                        `/service?name=${serviceConstants.SNAPPLIFY_SERVICE}`,
+                      )
+                    }
+                  >
+                    <img src={SnapplifySrc} alt="snapplify" />
+                  </StyledSnapplifyNavButton>
+                </MobileNavItem>
+              </div>
+              <div className="column is-one-quarter">
+                <MobileNavItem>
+                  <StyledRLNavButton
+                    onClick={() =>
+                      navigate(
+                        `/service?name=${serviceConstants.RL_SERVICE}`,
+                      )
+                    }
+                    isSelected={
+                      pathname.includes('/service') &&
+                      search.includes(
+                        `name=${serviceConstants.RL_SERVICE}`,
+                      )
+                    }
+                  >
+                    <SVG loaderComponent={BlockLoader} src={RLSrc} />
+                  </StyledRLNavButton>
+                </MobileNavItem>
+              </div>
+            </div>
+          </StyledMobileNavContainer>
+        );
+      }}
+    </Location>
+  );
+};
+
+export default themed(MobileNavbar);
+
+const StyledMobileNavContainer = styled.div`
   background-color: ${(props) => props.theme.colors.secondary};
   position: fixed;
+  z-index: 9;
   width: 100%;
   bottom: 0;
   padding: 10px;
-  //display: grid;
+  display: ${(props) =>
+    props.mobileNavbarActive ? 'block' : 'none'};
   @media screen and (min-width: ${(props) =>
       props.theme.breakpoints.md}) {
     display: none;
   }
 `;
 
+StyledMobileNavContainer.defaultProps = {
+  mobileNavbarActive: true,
+};
+
 const MobileNavItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  .block-loader {
+    border-radius: 50%;
+  }
 `;
 
-export const MobileNavButton = styled.button`
+export const StyledMobileNavButton = styled.button`
   background-color: ${(props) => props.theme.colors.tertiary};
   height: 50px;
   width: 50px;
@@ -55,122 +172,26 @@ export const MobileNavButton = styled.button`
   }
 `;
 
-const YenzaNavButton = styled(MobileNavButton)`
+const StyledYenzaNavButton = styled(StyledMobileNavButton)`
   svg {
     width: 45px;
     height: 45px;
   }
 `;
 
-const SnapplifyNavButton = styled(MobileNavButton)`
+const StyledSnapplifyNavButton = styled(StyledMobileNavButton)`
   img {
     width: 30px;
   }
 `;
 
-const RLNavButton = styled(MobileNavButton)`
+const StyledRLNavButton = styled(StyledMobileNavButton)`
   background: ${(props) => props.theme.colors.white};
 `;
 
-MobileNavButton.defaultProps = {
+StyledMobileNavButton.defaultProps = {
   isSelected: false,
   disabled: false,
 };
 
-const isSameNavButtonActive = (pathname = '') => {
-  switch (true) {
-    case pathname.includes('/subjects'):
-    case pathname.includes('/syllabus'):
-    case pathname.includes('/lesson'):
-      return true;
-    default:
-      return false;
-  }
-};
-
-const MobileNavbar = (props) => {
-  return (
-    <Location>
-      {({ location: { pathname, search } }) => {
-        return (
-          <MobileNavContainer className="mobile-nav-container">
-            <div className="columns is-mobile">
-              <div className="column is-one-quarter">
-                <MobileNavItem>
-                  <MobileNavButton
-                    isSelected={isSameNavButtonActive(pathname)}
-                    onClick={() => navigate('/subjects')}
-                  >
-                    <SVG src={LogoSrc} />
-                  </MobileNavButton>
-                </MobileNavItem>
-              </div>
-              <div className="column is-one-quarter">
-                <MobileNavItem>
-                  <YenzaNavButton
-                    isSelected={
-                      pathname.includes('/service') &&
-                      search.includes(
-                        `name=${serviceConstants.YENZA_SERVICE}`,
-                      )
-                    }
-                    onClick={() =>
-                      navigate(
-                        `/service?name=${serviceConstants.YENZA_SERVICE}`,
-                      )
-                    }
-                  >
-                    <SVG src={YenzaSrc} />
-                  </YenzaNavButton>
-                </MobileNavItem>
-              </div>
-              <div className="column is-one-quarter">
-                <MobileNavItem>
-                  <SnapplifyNavButton
-                    isSelected={
-                      pathname.includes('/service') &&
-                      search.includes(
-                        `name=${serviceConstants.SNAPPLIFY_SERVICE}`,
-                      )
-                    }
-                    onClick={() =>
-                      navigate(
-                        `/service?name=${serviceConstants.SNAPPLIFY_SERVICE}`,
-                      )
-                    }
-                  >
-                    <img src={SnapplifySrc} alt="snapplify" />
-                  </SnapplifyNavButton>
-                </MobileNavItem>
-              </div>
-              <div className="column is-one-quarter">
-                <MobileNavItem>
-                  <RLNavButton
-                    onClick={() =>
-                      navigate(
-                        `/service?name=${serviceConstants.RL_SERVICE}`,
-                      )
-                    }
-                    isSelected={
-                      pathname.includes('/service') &&
-                      search.includes(
-                        `name=${serviceConstants.RL_SERVICE}`,
-                      )
-                    }
-                  >
-                    <SVG src={RLSrc} />
-                  </RLNavButton>
-                </MobileNavItem>
-              </div>
-            </div>
-          </MobileNavContainer>
-        );
-      }}
-    </Location>
-  );
-};
-
-MobileNavbar.propTypes = {};
-MobileNavbar.defaultProps = {};
-
-export default themed(MobileNavbar);
+// const StyledSvgLoaderWrapper =

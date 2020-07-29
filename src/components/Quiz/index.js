@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Proptypes from 'prop-types';
 import QuestionMapper from './QuestionMapper';
-import LessonGauge from '../LessonGuage';
-import QuizNavigator from './QuizNavigator';
+import Gauge from '../Gauge';
 import PrimaryButton from '../elements/buttons/PrimaryButton';
 import SecondaryButton from '../elements/buttons/SecondaryButton';
 import { hasValue } from '../../functions/hasValue.func';
@@ -10,27 +9,16 @@ import styled from 'styled-components';
 import themed from '../../functions/themed';
 import Feedback from './Feedback';
 import AnimationContainer from '../AnimationContainer';
-import { NavHeight } from '../SSNavbar';
-
-const LessonGaugeWrapper = styled.div`
-  margin-bottom: 20px;
-`;
-
-const ActionButtonWrapper = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  margin-bottom: 20px;
-`;
-
-const QuizContainer = styled.div`
-  @media screen and (max-width: ${(props) =>
-      props.theme.breakpoints.md}) {
-    margin-bottom: ${NavHeight}px;
-  }
-`;
+import { GlobalContext } from '../../App';
+import InlineSVG from 'react-inlinesvg';
+import ArrowLeftSrc from 'svgs/arrow-left.svg';
+import ArrowRightSrc from 'svgs/arrow-right.svg';
+import CloseSrc from 'svgs/close.svg';
+import CircleButton from '../CircleButton';
 
 const Quiz = ({ questions, onQuizFinishCb, triggerQuizReset }) => {
+  const { setContext } = useContext(GlobalContext);
+
   const [activeQIndex, setActiveQIndex] = React.useState(0);
   const [isHelpActive, setIsHelpActive] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -91,13 +79,55 @@ const Quiz = ({ questions, onQuizFinishCb, triggerQuizReset }) => {
   }, [triggerQuizReset]);
 
   return (
-    <QuizContainer>
-      <LessonGaugeWrapper>
-        <LessonGauge
-          numberOfQuestions={questions.length}
-          activeQNumber={activeQIndex + 1}
+    <QuizContainer className="quiz-container">
+      <QuestionHeader className="quiz-container__header">
+        <div>
+          Q {activeQIndex + 1} of {questions.length}
+        </div>
+        <NavigationButtonWrapper>
+          <CloseButtonWrapper>
+            <CircleButton
+              buttonText={<InlineSVG src={CloseSrc} />}
+              actionCallback={() => {
+                onQuizFinishCb();
+                setContext((prevState) => ({
+                  ...prevState,
+                  contextState: {
+                    mobileNavbarActive: true,
+                  },
+                }));
+              }}
+            />
+          </CloseButtonWrapper>
+          <CircleButton
+            disabled={activeQIndex === 0}
+            buttonText={<InlineSVG src={ArrowLeftSrc} />}
+            actionCallback={() => {
+              setShowCongradsMsg(false);
+              setActiveQIndex(activeQIndex - 1);
+              setAnswer('');
+            }}
+          />
+          <CircleButton
+            onClick={() => {
+              setShowCongradsMsg(false);
+              setActiveQIndex(activeQIndex + 1);
+              setAnswer('');
+            }}
+            buttonText={<InlineSVG src={ArrowRightSrc} />}
+            type="button"
+            disabled={activeQIndex + 1 === questions.length}
+          >
+            <InlineSVG src={ArrowRightSrc} />
+          </CircleButton>
+        </NavigationButtonWrapper>
+      </QuestionHeader>
+      <GaugeWrapper>
+        <Gauge
+          denominator={questions.length}
+          numerator={activeQIndex + 1}
         />
-      </LessonGaugeWrapper>
+      </GaugeWrapper>
 
       {showCongradsMsg ? (
         <AnimationContainer animatedClassName="animate__fadeIn">
@@ -112,7 +142,7 @@ const Quiz = ({ questions, onQuizFinishCb, triggerQuizReset }) => {
         </AnimationContainer>
       ) : (
         <React.Fragment>
-          <div className="mb-5">
+          <QuestionMapperContainer className="question-mapper-container">
             <QuestionMapper
               isHelpActive={isHelpActive}
               activeQIndex={activeQIndex}
@@ -121,7 +151,7 @@ const Quiz = ({ questions, onQuizFinishCb, triggerQuizReset }) => {
               errorMessage={errorMessage}
               setErrorMessage={setErrorMessage}
             />
-          </div>
+          </QuestionMapperContainer>
 
           <ActionButtonWrapper>
             <SecondaryButton
@@ -139,25 +169,6 @@ const Quiz = ({ questions, onQuizFinishCb, triggerQuizReset }) => {
               </PrimaryButton>
             )}
           </ActionButtonWrapper>
-
-          {!isHelpActive && (
-            <React.Fragment>
-              <QuizNavigator
-                activeItemIndex={activeQIndex}
-                lengthOfItems={questions.length}
-                onNext={() => {
-                  setShowCongradsMsg(false);
-                  setActiveQIndex(activeQIndex + 1);
-                  setAnswer('');
-                }}
-                onPrev={() => {
-                  setShowCongradsMsg(false);
-                  setActiveQIndex(activeQIndex - 1);
-                  setAnswer('');
-                }}
-              />
-            </React.Fragment>
-          )}
         </React.Fragment>
       )}
     </QuizContainer>
@@ -178,3 +189,60 @@ Quiz.defaultProps = {
 };
 
 export default themed(Quiz);
+
+const QuestionHeader = styled.div`
+  background-color: ${(props) => props.theme.colors.secondary};
+  padding: 10px;
+  color: ${(props) => props.theme.colors.white};
+  text-transform: uppercase;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const NavigationButtonWrapper = styled.div`
+  display: flex;
+  flex-flow: nowrap row;
+  .ss-circle-button {
+    height: 30px;
+    width: 30px;
+    border-color: ${(props) => props.theme.colors.tertiary};
+    background-color: ${(props) => props.theme.colors.tertiary};
+  }
+`;
+
+const CloseButtonWrapper = styled.div`
+  .ss-circle-button {
+    background-color: ${(props) => props.theme.colors.error};
+    border-color: ${(props) => props.theme.colors.error};
+  }
+
+  svg {
+    width: 10px;
+    height: auto;
+  }
+`;
+
+const GaugeWrapper = styled.div`
+  //margin-bottom: 20px;
+`;
+
+const ActionButtonWrapper = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+`;
+
+const QuizContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
+
+const QuestionMapperContainer = styled.div`
+  //flex-grow: 1;
+`;

@@ -5,23 +5,36 @@ import SubjectsView from './views/SubjectsView';
 import LessonView from './views/LessonView';
 import SSNavbar from './components/SSNavbar';
 import SyllabusView from './views/SyllabusView';
-import MobileNavbar from './components/SSNavbar/MobileNavbar';
-import YenzaView from './views/ServiceView';
 import ServiceView from './views/ServiceView';
 
-const App = () => (
-  <React.Fragment>
-    <SSNavbar />
-    <Router>
-      <HomeView path="/" />
-      <SyllabusView path="syllabus" />
-      <SubjectsView path="subjects" />
-      <LessonView path="lesson" />
-      <ServiceView path="service" />
-    </Router>
-    <MobileNavbar />
-  </React.Fragment>
-);
+const baseContextState = {
+  contextState: {
+    mobileNavbarActive: true,
+  },
+  setContext: () => null,
+};
+
+export const GlobalContext = React.createContext(baseContextState);
+
+const App = () => {
+  const [context, setContext] = React.useState(baseContextState);
+  const contextObj = {
+    contextState: context.contextState,
+    setContext,
+  };
+  return (
+    <GlobalContext.Provider value={contextObj}>
+      <SSNavbar />
+      <Router>
+        <HomeView path="/" />
+        <SyllabusView path="syllabus" />
+        <SubjectsView path="subjects" />
+        <LessonView path="lesson" />
+        <ServiceView path="service" />
+      </Router>
+    </GlobalContext.Provider>
+  );
+};
 App.propTypes = {};
 App.defaultProps = {};
 

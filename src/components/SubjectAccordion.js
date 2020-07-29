@@ -8,53 +8,13 @@ import DownArrowIcon from '../svgs/down-arrow-icon.svg';
 import SVG from '../components/SVG';
 import CircleButton from '../components/CircleButton';
 import { navigate } from '@reach/router';
+import BlockLoader from './BlockLoader';
 
-const SubjectContainer = styled.div`
-  overflow: hidden;
-  //margin-bottom: 5px;
-  border-radius: 10px;
-  background-color: ${(props) => props.theme.colors.primary};
-`;
-
-const SVGWrapper = styled.span`
-  margin-right: 10px;
-`;
-
-const SubjectContainerHeader = styled(TextButton)`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-`;
-
-const SubjectAccordionHeaderText = styled.span`
-  color: ${(props) => props.theme.colors.white};
-  padding: 10px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-`;
-
-const GradeSelection = styled.div`
-  padding: 10px;
-  background-color: ${(props) => props.theme.colors.secondary};
-`;
-
-const GradeSelectionTitle = styled.div`
-  color: ${(props) => props.theme.colors.white};
-  text-transform: uppercase;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 10px;
-`;
-
-const GradeSelectionGrades = styled.div`
-  text-align: center;
-  .ss-circle-button {
-    margin-bottom: 10px;
-  }
-`;
+const AccordionLoader = () => (
+  <StyledBlockLoaderWrapper>
+    <BlockLoader width="20px" height="20px" />
+  </StyledBlockLoaderWrapper>
+);
 
 const SubjectAccordion = ({ subjectName, gradesSelection }) => {
   return (
@@ -66,15 +26,20 @@ const SubjectAccordion = ({ subjectName, gradesSelection }) => {
               {subjectName}
             </SubjectAccordionHeaderText>
             <SVGWrapper>
-              <SVG src={DownArrowIcon} />
+              <SVG
+                src={DownArrowIcon}
+                loaderComponent={AccordionLoader}
+              />
             </SVGWrapper>
           </SubjectContainerHeader>
         }
       >
-        <GradeSelection>
-          <GradeSelectionTitle>Select a grade</GradeSelectionTitle>
+        <GradeSelection className="grade-selection">
+          <GradeSelectionTitle className="grade-selection__title">
+            Select a grade
+          </GradeSelectionTitle>
           {gradesSelection.length && (
-            <GradeSelectionGrades>
+            <GradeSelectionGrades className="grade-selection__grades">
               {gradesSelection.map((gradeItem) => (
                 <CircleButton
                   key={gradeItem.course_id}
@@ -108,3 +73,58 @@ SubjectAccordion.defaultProps = {
 };
 
 export default themed(SubjectAccordion);
+
+const SubjectContainer = styled.div`
+  overflow: hidden;
+  //margin-bottom: 5px;
+  border-radius: 10px;
+  background-color: ${(props) => props.theme.colors.primary};
+`;
+
+const SVGWrapper = styled.span`
+  margin-right: 10px;
+`;
+
+const StyledBlockLoaderWrapper = styled.div`
+  .block-loader {
+    border-radius: 50%;
+  }
+`;
+
+const SubjectContainerHeader = styled(TextButton)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
+
+const SubjectAccordionHeaderText = styled.span`
+  color: ${(props) => props.theme.colors.white};
+  padding: 10px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+`;
+
+const GradeSelection = styled.div`
+  padding: 10px;
+  background-color: ${(props) => props.theme.colors.secondary};
+`;
+
+const GradeSelectionTitle = styled.div`
+  color: ${(props) => props.theme.colors.white};
+  text-transform: uppercase;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+`;
+
+const GradeSelectionGrades = styled.div`
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  .ss-circle-button {
+    margin-bottom: 10px;
+  }
+`;

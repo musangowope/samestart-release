@@ -32,7 +32,6 @@ const TranslateIconSvgWrapper = styled.span`
 const LangButton = themed((props) => <StyledLangButton {...props} />);
 
 const BlockLangShifter = ({ block, blockKey }) => {
-  console.log(block);
   const [isTippyOpen, setIsTippyOpen] = React.useState(false);
   const [isBlockActive, setIsBlockActive] = React.useState(false);
   const [currentLang, setCurrentLanguage] = React.useState('en');

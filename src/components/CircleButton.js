@@ -13,6 +13,9 @@ const StyledCircleButton = styled(TextButton)`
   border: 2px solid ${(props) => props.theme.colors.primary};
   margin-left: 10px;
   margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: ${({ isSelected, theme }) =>
     isSelected
       ? theme.colors.primary
@@ -27,15 +30,27 @@ const StyledCircleButton = styled(TextButton)`
     background-color: ${(props) => props.theme.colors.primary};
     color: ${(props) => props.theme.colors.white};
   }
+
+  .ss-circle-button__text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
-const CircleButton = ({ buttonText, actionCallback, isSelected }) => {
+const CircleButton = ({
+  buttonText,
+  actionCallback,
+  isSelected,
+  ...restProps
+}) => {
   return (
     <StyledCircleButton
       className="ss-circle-button"
       type="button"
       onClick={actionCallback}
       isSelected={isSelected}
+      {...restProps}
     >
       <span className="ss-circle-button__text">{buttonText}</span>
     </StyledCircleButton>

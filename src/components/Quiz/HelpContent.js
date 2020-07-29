@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import themed from '../../functions/themed';
 import { createMarkup } from '../../functions/createMarkup.func';
 
-const HelpContainer = styled.div`
+const StyledHelpContainer = styled.div`
   background-color: ${(props) => props.theme.colors.secondary};
   padding: 20px;
+  margin-bottom: 20px;
 `;
 
-const HelpTitle = styled.div`
+const StyledHelpTitle = styled.div`
   font-size: ${(props) => props.theme.fontSizes[3]};
   //font-weight: bold;
   color: ${(props) => props.theme.colors.white};
@@ -17,16 +18,18 @@ const HelpTitle = styled.div`
   margin-bottom: 15px;
 `;
 
-const HelpBody = styled.div`
+const StyledHelpBody = styled.div`
   color: white;
 `;
 
 const HelpContent = ({ content, title }) => {
   return (
-    <HelpContainer>
-      <HelpTitle>{title}</HelpTitle>
-      <HelpBody dangerouslySetInnerHTML={createMarkup(content)} />
-    </HelpContainer>
+    <StyledHelpContainer>
+      <StyledHelpTitle>{title}</StyledHelpTitle>
+      <StyledHelpBody
+        dangerouslySetInnerHTML={createMarkup(content)}
+      />
+    </StyledHelpContainer>
   );
 };
 

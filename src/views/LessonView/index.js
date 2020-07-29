@@ -14,6 +14,8 @@ import TertiaryButton from '../../components/elements/buttons/TertiaryButton';
 import themed from '../../functions/themed';
 import BlockLangShifter from '../../components/BlockLangShifter';
 import TertiaryButtonLink from '../../components/elements/buttons/TertiaryButtonLink';
+import CircleButton from '../../components/CircleButton';
+import { GlobalContext } from '../../App';
 
 const LessonButtonsContainer = styled.div`
   margin-bottom: 20px;
@@ -24,7 +26,7 @@ const LessonButtonsContainer = styled.div`
 
 const ModalContainer = styled.div`
   .simple-modal__content {
-    padding: 20px;
+    //padding: 20px;
   }
 `;
 
@@ -89,6 +91,7 @@ const LessonView = (props) => {
       });
   }, [lessonId]);
 
+  const { setContext } = React.useContext(GlobalContext);
   const { success, loading, failed } = requestState;
 
   return (
@@ -97,7 +100,17 @@ const LessonView = (props) => {
         <TertiaryButtonLink to={`/syllabus?courseId=${courseId}`}>
           Back
         </TertiaryButtonLink>
-        <PrimaryButton onClick={() => setQuizModalActivity(true)}>
+        <PrimaryButton
+          onClick={() => {
+            setQuizModalActivity(true);
+            setContext((prevState) => ({
+              ...prevState,
+              contextState: {
+                mobileNavbarActive: false,
+              },
+            }));
+          }}
+        >
           Take Quiz
         </PrimaryButton>
       </LessonButtonsContainer>
@@ -136,13 +149,6 @@ const LessonView = (props) => {
             setQuizModalActivity(false);
           }}
         >
-          <CloseButtonWrapper>
-            <TertiaryButton
-              onClick={() => setQuizModalActivity(false)}
-            >
-              Close
-            </TertiaryButton>
-          </CloseButtonWrapper>
           {getQuizComponent()}
         </SimpleModal>
       </ModalContainer>
