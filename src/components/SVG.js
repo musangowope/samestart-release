@@ -55,7 +55,7 @@ SVG.defaultProps = {
   src: '',
   onLoaded: () => false,
   onError: () => false,
-  loaderComponent: () => 'LOADING',
+  loaderComponent: () => React.Fragment,
 };
 
 export default SVG;
