@@ -9,6 +9,7 @@ import themed from '../../functions/themed';
 import HelpContent from './HelpContent';
 import AnimationContainer from '../AnimationContainer';
 import TransparentButton from '../elements/buttons/TransparentButton';
+import { useGetVPHeight } from '../../custom-hooks/useVp';
 
 const QuestionMapper = ({
   questions,
@@ -18,14 +19,8 @@ const QuestionMapper = ({
   setErrorMessage,
   isHelpActive,
 }) => {
-  const [
-    expandToContentHeight,
-    setExpandToContentHeight,
-  ] = React.useState(false);
-
-  const [showExpandButton, setShowExpandButton] = React.useState(
-    false,
-  );
+  const [maxHeight, setMaxHeight] = React.useState('auto');
+  const [scrollable, setScrollable] = React.useState(false);
 
   const renderSimpleMultipleChoice = (value, id) => (
     <SSRadioButton
@@ -57,12 +52,15 @@ const QuestionMapper = ({
   };
 
   const questionContentRef = React.useRef();
+  const vpHeight = useGetVPHeight();
   React.useEffect(() => {
-    //TODO: Do resize content
-    setShowExpandButton(
-      questionContentRef.current.scrollHeight > 300,
-    );
-  }, []);
+    const questionContentHeight =
+      questionContentRef.current.scrollHeight;
+    const comparableHeight = vpHeight * (1.2 / 3);
+    const scrollable = questionContentHeight > comparableHeight;
+    setMaxHeight(scrollable ? `${comparableHeight}px` : 'auto');
+    setScrollable(scrollable);
+  }, [vpHeight]);
 
   return questions.map((question, index) => (
     <Fragment key={`question=${index}`}>
@@ -82,23 +80,19 @@ const QuestionMapper = ({
                 dangerouslySetInnerHTML={createMarkup(
                   question.content,
                 )}
-                expandToContentHeight={expandToContentHeight}
+                maxHeight={maxHeight}
               />
 
-              {showExpandButton && (
-                <StyledExpandButton
-                  onClick={() =>
-                    setExpandToContentHeight(
-                      (prevState) => !prevState,
-                    )
-                  }
-                  type="button"
-                >
-                  {expandToContentHeight ? 'MINIMIZE -' : 'EXPAND +'}
-                </StyledExpandButton>
+              {scrollable && (
+                <StyledScrollPrompt>
+                  Scroll up and down
+                </StyledScrollPrompt>
               )}
+
               {renderAnswerInput(question.question_type, question)}
-              <ErrorMessage>{errorMessage}</ErrorMessage>
+              <StyledQuestionErrorMsg>
+                {errorMessage}
+              </StyledQuestionErrorMsg>
             </AnimationContainer>
           )}
         </Fragment>
@@ -128,13 +122,12 @@ export default themed(QuestionMapper);
 const StyledQuestionContent = styled.div`
   padding: 20px;
   transition: height 300ms ease-in-out;
-  max-height: ${(props) =>
-    props.expandToContentHeight ? 'auto' : '200px'};
+  max-height: ${(props) => props.maxHeight};
   overflow: auto;
 `;
 
 StyledQuestionContent.defaultProps = {
-  expandToContentHeight: false,
+  maxHeight: 'auto',
 };
 
 const StyledMultipleChoiceWrapper = styled.div`
@@ -143,7 +136,12 @@ const StyledMultipleChoiceWrapper = styled.div`
   padding-right: 10px;
 `;
 
-const StyledExpandButton = styled.button`
+const StyledQuestionErrorMsg = styled(ErrorMessage)`
+  margin-left: 10px;
+  margin-right: 10px;
+`;
+
+const StyledScrollPrompt = styled.div`
   color: ${(props) => props.theme.colors.white};
   background: ${(props) => props.theme.colors.tertiary};
   padding: 5px;
@@ -151,4 +149,6 @@ const StyledExpandButton = styled.button`
   border: none;
   display: block;
   width: 100%;
+  text-align: center;
+  text-transform: uppercase;
 `;
