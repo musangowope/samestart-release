@@ -11,6 +11,7 @@ import { navigate, Location } from '@reach/router';
 import { darken } from 'polished';
 import serviceConstants from '../../constants/serviceConstants';
 import { GlobalContext } from '../../App';
+import BlockLoader from '../BlockLoader';
 
 const isSameNavButtonActive = (pathname = '') => {
   switch (true) {
@@ -31,24 +32,27 @@ const MobileNavbar = (props) => {
     <Location>
       {({ location: { pathname, search } }) => {
         return (
-          <MobileNavContainer
+          <StyledMobileNavContainer
             className="mobile-nav-container"
             mobileNavbarActive={mobileNavbarActive}
           >
             <div className="columns is-mobile">
               <div className="column is-one-quarter">
                 <MobileNavItem>
-                  <MobileNavButton
+                  <StyledMobileNavButton
                     isSelected={isSameNavButtonActive(pathname)}
                     onClick={() => navigate('/subjects')}
                   >
-                    <SVG src={LogoSrc} />
-                  </MobileNavButton>
+                    <SVG
+                      loaderComponent={BlockLoader}
+                      src={LogoSrc}
+                    />
+                  </StyledMobileNavButton>
                 </MobileNavItem>
               </div>
               <div className="column is-one-quarter">
                 <MobileNavItem>
-                  <YenzaNavButton
+                  <StyledYenzaNavButton
                     isSelected={
                       pathname.includes('/service') &&
                       search.includes(
@@ -61,13 +65,16 @@ const MobileNavbar = (props) => {
                       )
                     }
                   >
-                    <SVG src={YenzaSrc} />
-                  </YenzaNavButton>
+                    <SVG
+                      loaderComponent={BlockLoader}
+                      src={YenzaSrc}
+                    />
+                  </StyledYenzaNavButton>
                 </MobileNavItem>
               </div>
               <div className="column is-one-quarter">
                 <MobileNavItem>
-                  <SnapplifyNavButton
+                  <StyledSnapplifyNavButton
                     isSelected={
                       pathname.includes('/service') &&
                       search.includes(
@@ -81,12 +88,12 @@ const MobileNavbar = (props) => {
                     }
                   >
                     <img src={SnapplifySrc} alt="snapplify" />
-                  </SnapplifyNavButton>
+                  </StyledSnapplifyNavButton>
                 </MobileNavItem>
               </div>
               <div className="column is-one-quarter">
                 <MobileNavItem>
-                  <RLNavButton
+                  <StyledRLNavButton
                     onClick={() =>
                       navigate(
                         `/service?name=${serviceConstants.RL_SERVICE}`,
@@ -99,12 +106,12 @@ const MobileNavbar = (props) => {
                       )
                     }
                   >
-                    <SVG src={RLSrc} />
-                  </RLNavButton>
+                    <SVG loaderComponent={BlockLoader} src={RLSrc} />
+                  </StyledRLNavButton>
                 </MobileNavItem>
               </div>
             </div>
-          </MobileNavContainer>
+          </StyledMobileNavContainer>
         );
       }}
     </Location>
@@ -113,7 +120,7 @@ const MobileNavbar = (props) => {
 
 export default themed(MobileNavbar);
 
-const MobileNavContainer = styled.div`
+const StyledMobileNavContainer = styled.div`
   background-color: ${(props) => props.theme.colors.secondary};
   position: fixed;
   z-index: 9;
@@ -128,7 +135,7 @@ const MobileNavContainer = styled.div`
   }
 `;
 
-MobileNavContainer.defaultProps = {
+StyledMobileNavContainer.defaultProps = {
   mobileNavbarActive: true,
 };
 
@@ -136,9 +143,12 @@ const MobileNavItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  .block-loader {
+    border-radius: 50%;
+  }
 `;
 
-export const MobileNavButton = styled.button`
+export const StyledMobileNavButton = styled.button`
   background-color: ${(props) => props.theme.colors.tertiary};
   height: 50px;
   width: 50px;
@@ -162,24 +172,26 @@ export const MobileNavButton = styled.button`
   }
 `;
 
-const YenzaNavButton = styled(MobileNavButton)`
+const StyledYenzaNavButton = styled(StyledMobileNavButton)`
   svg {
     width: 45px;
     height: 45px;
   }
 `;
 
-const SnapplifyNavButton = styled(MobileNavButton)`
+const StyledSnapplifyNavButton = styled(StyledMobileNavButton)`
   img {
     width: 30px;
   }
 `;
 
-const RLNavButton = styled(MobileNavButton)`
+const StyledRLNavButton = styled(StyledMobileNavButton)`
   background: ${(props) => props.theme.colors.white};
 `;
 
-MobileNavButton.defaultProps = {
+StyledMobileNavButton.defaultProps = {
   isSelected: false,
   disabled: false,
 };
+
+// const StyledSvgLoaderWrapper =
