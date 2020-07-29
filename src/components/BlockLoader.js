@@ -3,9 +3,23 @@ import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 import themed from '../functions/themed';
 import { transparentize } from 'polished';
+import theme from '../constants/theme';
 
-const BlockLoader = ({ width, height }) => {
-  return <StyledLoaderAnimation width={width} height={height} />;
+const BlockLoader = ({
+  width,
+  height,
+  primaryLoadingClr,
+  secondaryLoadingClr,
+}) => {
+  return (
+    <StyledLoaderAnimation
+      className="block-loader"
+      width={width}
+      height={height}
+      primaryLoadingClr={primaryLoadingClr}
+      secondaryLoadingClr={secondaryLoadingClr}
+    />
+  );
 };
 
 const LoaderAnimation = keyframes`
@@ -18,8 +32,7 @@ const LoaderAnimation = keyframes`
 `;
 
 const StyledLoaderAnimation = styled.div`
-  background-color: ${(props) =>
-    transparentize(0.95, props.theme.colors.baseColor)};
+  background-color: ${(props) => props.primaryLoadingClr};
   position: relative;
   overflow: hidden;
   width: ${(props) => props.width};
@@ -27,8 +40,7 @@ const StyledLoaderAnimation = styled.div`
   &::after {
     content: '';
     display: block;
-    background-color: ${(props) =>
-      transparentize(0.95, props.theme.colors.grey)};
+    background-color: ${(props) => props.secondaryLoadingClr};
     position: absolute;
     top: 0;
     bottom: 0;
@@ -44,9 +56,13 @@ export default themed(BlockLoader);
 BlockLoader.propTypes = {
   width: PropTypes.string,
   height: PropTypes.string,
+  primaryLoadingClr: PropTypes.string,
+  secondaryLoadingClr: PropTypes.string,
 };
 
 BlockLoader.defaultProps = {
   width: '100%',
   height: '100%',
+  primaryLoadingClr: transparentize(0.7, theme.colors.baseColor),
+  secondaryLoadingClr: transparentize(0.7, theme.colors.grey),
 };
