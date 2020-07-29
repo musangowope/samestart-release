@@ -8,8 +8,10 @@ import styled from 'styled-components';
 import themed from '../../functions/themed';
 import HelpContent from './HelpContent';
 import AnimationContainer from '../AnimationContainer';
-import TransparentButton from '../elements/buttons/TransparentButton';
 import { useGetVPHeight } from '../../custom-hooks/useVp';
+import debounced from '../../functions/debounced.func';
+
+const debounceBuilder = debounced(200);
 
 const QuestionMapper = ({
   questions,
@@ -53,14 +55,25 @@ const QuestionMapper = ({
 
   const questionContentRef = React.useRef();
   const vpHeight = useGetVPHeight();
-  React.useEffect(() => {
-    const questionContentHeight =
-      questionContentRef.current.scrollHeight;
-    const comparableHeight = vpHeight * (1.2 / 3);
-    const scrollable = questionContentHeight > comparableHeight;
-    setMaxHeight(scrollable ? `${comparableHeight}px` : 'auto');
-    setScrollable(scrollable);
+
+  const handleQuizContentHeight = React.useCallback(() => {
+    debounceBuilder(() => {
+      const questionContentHeight =
+        questionContentRef.current.scrollHeight;
+      const comparableHeight = vpHeight * (1.2 / 3);
+      const scrollable = questionContentHeight > comparableHeight;
+      setMaxHeight(scrollable ? `${comparableHeight}px` : 'auto');
+      setScrollable(scrollable);
+    });
   }, [vpHeight]);
+
+  React.useEffect(() => {
+    handleQuizContentHeight();
+    window.addEventListener('resize', handleQuizContentHeight);
+    return () => {
+      window.removeEventListener('resize', handleQuizContentHeight);
+    };
+  }, [handleQuizContentHeight]);
 
   return questions.map((question, index) => (
     <Fragment key={`question=${index}`}>

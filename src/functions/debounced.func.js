@@ -4,16 +4,16 @@
  * @returns {Function} function to perform debouncing
  */
 export default function debounced(delay) {
-  if (typeof window !== "undefined") {
-    let timer = null
-    return function(fn, ...args) {
-      const context = this
+  if (typeof window !== 'undefined') {
+    let timer = null;
+    return function (fn, ...args) {
+      const context = this;
       if (timer) {
-        window.clearTimeout(timer)
+        window.clearTimeout(timer);
       }
       timer = window.setTimeout(() => {
-        fn.apply(context, args)
-      }, delay)
-    }
+        fn.apply(context, args);
+      }, delay);
+    };
   }
 }
