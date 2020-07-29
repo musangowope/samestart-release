@@ -57,21 +57,23 @@ const QuestionMapper = ({
   const vpHeight = useGetVPHeight();
 
   const handleQuizContentHeight = React.useCallback(() => {
-    debounceBuilder(() => {
-      const questionContentHeight =
-        questionContentRef.current.scrollHeight;
-      const comparableHeight = vpHeight * (1.2 / 3);
-      const scrollable = questionContentHeight > comparableHeight;
-      setMaxHeight(scrollable ? `${comparableHeight}px` : 'auto');
-      setScrollable(scrollable);
-    });
+    const questionContentHeight =
+      questionContentRef.current.scrollHeight;
+    const comparableHeight = vpHeight * (1.2 / 3);
+    const scrollable = questionContentHeight > comparableHeight;
+    setMaxHeight(scrollable ? `${comparableHeight}px` : 'auto');
+    setScrollable(scrollable);
   }, [vpHeight]);
 
   React.useEffect(() => {
     handleQuizContentHeight();
-    window.addEventListener('resize', handleQuizContentHeight);
+    window.addEventListener('resize', () => {
+      debounceBuilder(() => handleQuizContentHeight());
+    });
     return () => {
-      window.removeEventListener('resize', handleQuizContentHeight);
+      window.removeEventListener('resize', () => {
+        debounceBuilder(() => handleQuizContentHeight());
+      });
     };
   }, [handleQuizContentHeight]);
 
