@@ -6,7 +6,7 @@ import IFrameComponent from '../components/IFrameComponent';
 import styled from 'styled-components';
 import LogoSrc from '../svgs/logo.svg';
 import SVG from '../components/SVG';
-import { MobileNavButton } from '../components/SSNavbar/MobileNavbar';
+import { StyledMobileNavButton } from '../components/SSNavbar/MobileNavbar';
 import { navigate } from '@reach/router';
 import AnimationContainer from '../components/AnimationContainer';
 // import { handleOutsideElementClick } from '../functions/handleOutsideElementClick.func';
@@ -21,7 +21,7 @@ const ServiceContainer = styled.div`
   z-index: 999;
   background-color: ${(props) => props.theme.colors.white};
 
-  ${MobileNavButton} {
+  ${StyledMobileNavButton} {
     position: absolute;
     bottom: 20px;
     left: 10px;
@@ -104,9 +104,9 @@ const ServiceView = (props) => {
         {getIframe()}
       </IframeContainer>
       <AnimationContainer animatedClassName="animate__fadeInLeft">
-        <MobileNavButton onClick={() => navigate('/subjects')}>
+        <StyledMobileNavButton onClick={() => navigate('/subjects')}>
           <SVG src={LogoSrc} />
-        </MobileNavButton>
+        </StyledMobileNavButton>
       </AnimationContainer>
     </ServiceContainer>
   );
