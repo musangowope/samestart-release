@@ -68,6 +68,7 @@ const MainTitle = styled.div`
   color: ${(props) => props.theme.colors.tertiary};
   font-size: ${(props) => props.theme.fontSizes[6]};
   text-transform: uppercase;
+  margin-bottom: 10px;
 `;
 
 const SecondaryTitle = styled.div`
@@ -75,6 +76,10 @@ const SecondaryTitle = styled.div`
   font-size: ${(props) => props.theme.fontSizes[5]};
   text-transform: uppercase;
   margin-bottom: 20px;
+`;
+
+const StyledStartLearningLink = styled(PrimaryButtonLink)`
+  display: inline-block;
 `;
 
 const LandingIconLoader = () => (
@@ -95,9 +100,9 @@ const HomeView = (props) => {
               <MainTitle>Same Start</MainTitle>
               <SecondaryTitle>Leveling Education</SecondaryTitle>
               <div>
-                <PrimaryButtonLink to="/subjects">
+                <StyledStartLearningLink to="/subjects">
                   Start Learning
-                </PrimaryButtonLink>
+                </StyledStartLearningLink>
               </div>
             </LeftSideContent>
           </LeftSide>
