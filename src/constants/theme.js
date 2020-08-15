@@ -1,15 +1,15 @@
 export default {
   breakpointValues: {
-    xs: 576,
-    sm: 768,
-    md: 992,
-    lg: 1200,
+    xs: 320,
+    sm: 425,
+    md: 768,
+    lg: 1024,
   },
   breakpoints: {
-    xs: '576px',
-    sm: '768px',
-    md: '992px',
-    lg: '1200px',
+    xs: '320px',
+    sm: '425px',
+    md: '768px',
+    lg: '1024px',
   },
   space: [
     '0px',
@@ -53,7 +53,7 @@ export default {
   colors: {
     primary: '#ff8600',
     secondary: '#00ACD4',
-    tertiary: '#1e425c',
+    tertiary: '#2B4570',
     error: '#e44a3c',
     success: '#9FD8CB',
     white: '#fff',
