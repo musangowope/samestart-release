@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { NavHeight } from './SSNavbar';
 import Loader from './Loader';
 import AnimationContainer from './AnimationContainer';
 
@@ -20,7 +19,6 @@ const GenericContent = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding-bottom: ${NavHeight / 2}px;
 `;
 
 const GenericContainer = styled.div`
