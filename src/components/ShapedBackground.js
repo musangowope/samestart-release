@@ -4,6 +4,7 @@ import TopShapeSrc from 'svgs/top_shape.svg';
 import BottomShapeSrc from 'svgs/bottom_shape.svg';
 import InlineSVG from 'react-inlinesvg';
 import PropTypes from 'prop-types';
+import themed from '../functions/themed';
 
 const TopShapeIcon = () => (
   <InlineSVG className="top-shape-icon" src={TopShapeSrc} />
@@ -46,4 +47,4 @@ ShapedBackground.defaultProps = {
   children: null,
 };
 
-export default ShapedBackground;
+export default themed(ShapedBackground);
