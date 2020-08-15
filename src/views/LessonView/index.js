@@ -16,6 +16,7 @@ import BlockLangShifter from '../../components/BlockLangShifter';
 import TertiaryButtonLink from '../../components/elements/buttons/TertiaryButtonLink';
 import CircleButton from '../../components/CircleButton';
 import { GlobalContext } from '../../App';
+import SSNavbar from '../../components/SSNavbar';
 
 const LessonButtonsContainer = styled.div`
   margin-bottom: 20px;
@@ -95,64 +96,67 @@ const LessonView = (props) => {
   const { success, loading, failed } = requestState;
 
   return (
-    <GenericSection title={lessonTitle} contentIsLoading={loading}>
-      <LessonButtonsContainer>
-        <TertiaryButtonLink to={`/syllabus?courseId=${courseId}`}>
-          Back
-        </TertiaryButtonLink>
-        <PrimaryButton
-          onClick={() => {
-            setQuizModalActivity(true);
-            setContext((prevState) => ({
-              ...prevState,
-              contextState: {
-                mobileNavbarActive: false,
-              },
-            }));
-          }}
-        >
-          Take Quiz
-        </PrimaryButton>
-      </LessonButtonsContainer>
+    <React.Fragment>
+      <SSNavbar />
+      <GenericSection title={lessonTitle} contentIsLoading={loading}>
+        <LessonButtonsContainer>
+          <TertiaryButtonLink to={`/syllabus?courseId=${courseId}`}>
+            Back
+          </TertiaryButtonLink>
+          <PrimaryButton
+            onClick={() => {
+              setQuizModalActivity(true);
+              setContext((prevState) => ({
+                ...prevState,
+                contextState: {
+                  mobileNavbarActive: false,
+                },
+              }));
+            }}
+          >
+            Take Quiz
+          </PrimaryButton>
+        </LessonButtonsContainer>
 
-      {failed && <div>Failed</div>}
-      {success && (
-        <React.Fragment>
-          {lessonBlocks.map((block, key) => (
-            <BlockLangShifter
-              block={block}
-              key={key}
-              blockKey={`block-key-${key}`}
-            />
-          ))}
-        </React.Fragment>
-      )}
+        {failed && <div>Failed</div>}
+        {success && (
+          <React.Fragment>
+            {lessonBlocks.map((block, key) => (
+              <BlockLangShifter
+                block={block}
+                key={key}
+                blockKey={`block-key-${key}`}
+              />
+            ))}
+          </React.Fragment>
+        )}
 
-      <ModalContainer>
-        <SimpleModal
-          isOpen={hasValue(termId)}
-          closeAction={() => setTermId('')}
-        >
-          <CloseButtonWrapper>
-            <TertiaryButton onClick={() => setTermId('')}>
-              Close
-            </TertiaryButton>
-          </CloseButtonWrapper>
-          {termId && <AwezaTranslator termId={termId} />}
-        </SimpleModal>
-      </ModalContainer>
+        <ModalContainer>
+          <SimpleModal
+            isOpen={hasValue(termId)}
+            closeAction={() => setTermId('')}
+          >
+            <CloseButtonWrapper>
+              <TertiaryButton onClick={() => setTermId('')}>
+                Close
+              </TertiaryButton>
+            </CloseButtonWrapper>
+            {termId && <AwezaTranslator termId={termId} />}
+          </SimpleModal>
+        </ModalContainer>
 
-      <ModalContainer>
-        <SimpleModal
-          isOpen={isQuizModalActive}
-          closeAction={() => {
-            setQuizModalActivity(false);
-          }}
-        >
-          {getQuizComponent()}
-        </SimpleModal>
-      </ModalContainer>
-    </GenericSection>
+        <ModalContainer>
+          <SimpleModal
+            isOpen={isQuizModalActive}
+            closeAction={() => {
+              setQuizModalActivity(false);
+            }}
+          >
+            {getQuizComponent()}
+          </SimpleModal>
+        </ModalContainer>
+      </GenericSection>
+    </React.Fragment>
   );
 };
 
