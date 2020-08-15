@@ -35,6 +35,7 @@ const StyledLoaderAnimation = styled.div`
   background-color: ${(props) => props.primaryLoadingClr};
   position: relative;
   overflow: hidden;
+  border-radius: 30px;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   &::after {
