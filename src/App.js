@@ -8,6 +8,7 @@ import SyllabusView from './views/SyllabusView';
 import ServiceView from './views/ServiceView';
 import { getAyoba } from './functions/getAyoba.func';
 import MaintenanceView from './views/MaintenanceView';
+import EntranceView from './views/EntranceView';
 
 const baseContextState = {
   contextState: {
@@ -24,14 +25,13 @@ const App = () => {
     contextState: context.contextState,
     setContext,
   };
-  let inAyoba = getAyoba();
+  let inAyoba = process.env.REACT_APP_IN_AYOBA;
   return (
     <GlobalContext.Provider value={contextObj}>
-      {inAyoba && <SSNavbar />}
       <Router>
         {inAyoba ? (
           <React.Fragment>
-            <HomeView path="/" />
+            <EntranceView path="/" />
             <SyllabusView path="syllabus" />
             <SubjectsView path="subjects" />
             <LessonView path="lesson" />
