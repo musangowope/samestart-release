@@ -1,14 +1,14 @@
 import React from 'react';
 import LoaderSrc from 'svgs/logo.svg';
-import SVG from './SVG';
 import styled, { keyframes } from 'styled-components';
 import themed from '../functions/themed';
+import InlineSVG from 'react-inlinesvg';
 
 const RotationAnimation = keyframes`
-  100% {
-    transform: rotate(360deg);
-  }
-`;
+    100% {
+      transform: rotate(360deg);
+    }
+  `;
 
 const SvgWrapper = styled.div`
   text-align: center;
@@ -33,7 +33,7 @@ const Loader = () => {
   return (
     <React.Fragment>
       <SvgWrapper>
-        <SVG src={LoaderSrc} />
+        <InlineSVG src={LoaderSrc} />
       </SvgWrapper>
       <LoaderText>LOADING</LoaderText>
     </React.Fragment>
