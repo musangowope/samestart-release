@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Proptypes from 'prop-types';
 import QuestionMapper from './QuestionMapper';
 import Gauge from '../Gauge';
@@ -9,7 +9,6 @@ import styled from 'styled-components';
 import themed from '../../functions/themed';
 import Feedback from './Feedback';
 import AnimationContainer from '../AnimationContainer';
-import { GlobalContext } from '../../App';
 import InlineSVG from 'react-inlinesvg';
 import ArrowLeftSrc from 'svgs/arrow-left.svg';
 import ArrowRightSrc from 'svgs/arrow-right.svg';
@@ -17,8 +16,6 @@ import CloseSrc from 'svgs/close.svg';
 import CircleButton from '../CircleButton';
 
 const Quiz = ({ questions, onQuizFinishCb, triggerQuizReset }) => {
-  const { setContext } = useContext(GlobalContext);
-
   const [activeQIndex, setActiveQIndex] = React.useState(0);
   const [isHelpActive, setIsHelpActive] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -88,15 +85,7 @@ const Quiz = ({ questions, onQuizFinishCb, triggerQuizReset }) => {
           <CloseButtonWrapper>
             <CircleButton
               buttonText={<InlineSVG src={CloseSrc} />}
-              actionCallback={() => {
-                onQuizFinishCb();
-                setContext((prevState) => ({
-                  ...prevState,
-                  contextState: {
-                    mobileNavbarActive: true,
-                  },
-                }));
-              }}
+              actionCallback={onQuizFinishCb}
             />
           </CloseButtonWrapper>
           <CircleButton
