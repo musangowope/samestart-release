@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import InlineSVG from 'react-inlinesvg';
+import styled from 'styled-components';
 import { baseRequestState } from '../constants/baseRequest';
 
 const baseState = {
   loading: true,
   failed: false,
-  success: true,
+  success: false,
 };
 
 const postLoadingBaseState = baseRequestState;
@@ -25,22 +26,32 @@ const SVG = ({
       ...obj,
     });
 
-  const { loading, failed } = svgState;
+  const { loading, failed, success } = svgState;
   return (
     <React.Fragment>
       {loading && <LoaderComponent />}
       {failed && <div>Could not load SVG</div>}
-      <InlineSVG
-        onLoad={(e) => {
-          onLoaded(e);
-          updateRequest({ success: true });
-        }}
-        src={src}
-        onError={(e) => {
-          onError(e);
-          updateRequest({ failed: true });
-        }}
-      />
+
+      <StyledSvgWrapper ready={success}>
+        <InlineSVG
+          onLoad={(e) => {
+            onLoaded(e);
+            if (LoaderComponent) {
+              return setTimeout(
+                () => updateRequest({ success: true }),
+                500,
+              );
+            }
+
+            return updateRequest({ success: true });
+          }}
+          src={src}
+          onError={(e) => {
+            onError(e);
+            updateRequest({ failed: true });
+          }}
+        />
+      </StyledSvgWrapper>
     </React.Fragment>
   );
 };
@@ -55,7 +66,15 @@ SVG.defaultProps = {
   src: '',
   onLoaded: () => false,
   onError: () => false,
-  loaderComponent: () => React.Fragment,
+  loaderComponent: () => null,
 };
 
 export default SVG;
+
+const StyledSvgWrapper = styled.div`
+  display: ${(props) => (props.ready ? 'block' : 'none')};
+`;
+
+StyledSvgWrapper.defaultProps = {
+  ready: false,
+};
