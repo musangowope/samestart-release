@@ -4,7 +4,6 @@ import { handleOutsideElementClick } from 'functions/handleOutsideElementClick.f
 import styled from 'styled-components';
 import { transparentize } from 'polished';
 import themed from 'functions/themed';
-import { NavHeight } from './SSNavbar';
 
 const Modal = styled.div`
   top: ${({ isOpen }) => (isOpen ? 0 : '100%')};
@@ -32,8 +31,8 @@ const ModalContent = styled.div`
   overflow-x: hidden;
   width: 100%;
   margin: auto;
-  max-height: calc(100vh - ${NavHeight * 2}px);
-  height: calc(100vh - ${NavHeight * 2}px);
+  max-height: 100vh;
+  height: 100vh;
   overflow-y: auto;
   position: relative;
   @media screen and (max-width: ${(props) =>
