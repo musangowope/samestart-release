@@ -4,11 +4,9 @@ import PropTypes from 'prop-types';
 import SVG from '../components/SVG';
 import styled from 'styled-components';
 import themed from '../functions/themed';
-import FacebookSrc from 'svgs/facebook.svg';
 import InstagramSrc from 'svgs/instagram.svg';
 import LinkedInSrc from 'svgs/linkedin.svg';
 import MailSrc from 'svgs/mail.svg';
-import { transparentize } from 'polished';
 
 const StyledMaintenanceContainer = styled.div`
   position: relative;
@@ -75,8 +73,7 @@ const StyledMaintenanceTextContainer = styled.div`
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: ${(props) =>
-      transparentize(0.125, props.theme.colors.white)};
+    background-color: ${(props) => props.theme.colors.white};
     margin: auto;
     bottom: 0;
     display: flex;
@@ -89,7 +86,7 @@ const StyledMaintenanceTextContainer = styled.div`
 
 const StyledMaintenancePrimaryHeading = styled.div`
   font-size: ${(props) => props.theme.fontSizes[7]};
-  text-transform: uppercase;
+  //text-transform: uppercase;
   font-weight: bold;
   color: ${(props) => props.theme.colors.primary};
   margin-bottom: 10px;
@@ -98,7 +95,7 @@ const StyledMaintenancePrimaryHeading = styled.div`
 const StyledMaintenanceSecondaryHeading = styled.div`
   font-size: ${(props) => props.theme.fontSizes[5]};
   color: ${(props) => props.theme.colors.secondary};
-  text-transform: uppercase;
+  //text-transform: uppercase;
   font-weight: bold;
   margin-bottom: 10px;
 `;
@@ -141,7 +138,7 @@ const StyledSocialIconItemLink = styled.a`
   }
 `;
 
-const MaintenanceView = (props) => {
+const MaintenanceView = () => {
   return (
     <StyledMaintenanceContainer>
       <StyledBackgroundCircle />
@@ -169,13 +166,13 @@ const MaintenanceView = (props) => {
             >
               <SVG src={LinkedInSrc} />
             </StyledSocialIconItemLink>
-            <StyledSocialIconItemLink href="mailto:name@email.com">
+            <StyledSocialIconItemLink href="mailto:admin@samestart.com">
               <SVG src={MailSrc} />
             </StyledSocialIconItemLink>
           </StyledSocialIconsContainer>
         </StyledMaintenanceTextContainer>
         <StyledMaintenanceImgWrapper>
-          <img src={ThembiSrc} alt="coming-soon"/>
+          <img src={ThembiSrc} alt="coming-soon" />
         </StyledMaintenanceImgWrapper>
       </StyledMaintenceContent>
     </StyledMaintenanceContainer>
