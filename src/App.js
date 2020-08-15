@@ -25,7 +25,7 @@ const App = () => {
     contextState: context.contextState,
     setContext,
   };
-  let inAyoba = process.env.REACT_APP_IN_AYOBA;
+  let inAyoba = process.env.REACT_APP_IN_AYOBA === 'true';
   return (
     <GlobalContext.Provider value={contextObj}>
       <Router>
