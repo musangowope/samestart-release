@@ -11,6 +11,7 @@ import { baseRequestState } from '../constants/baseRequest';
 import PrimaryButtonLink from '../components/elements/buttons/PrimaryButtonLink';
 import { removeWhiteSpaces } from '../functions/removeWhiteSpaces.func';
 import ShapedBackground from '../components/ShapedBackground';
+import SSNavbar from '../components/SSNavbar';
 
 const SyllabusCard = styled.div`
   border: 2px solid ${(props) => props.theme.colors.primary};
@@ -84,44 +85,50 @@ const SyllabusView = (props) => {
   const { success, loading, failed } = request;
 
   return (
-    <ShapedBackground>
-      <GenericSection title={courseTitle} contentIsLoading={loading}>
-        {failed && <div>Failed</div>}
-        {success && (
-          <React.Fragment>
-            <div className="mb-3">
-              <BackToCoursesLink to="/subjects">
-                Back to Courses
-              </BackToCoursesLink>
-            </div>
-            <div className="columns">
-              {syllabus.map((syllabusItem) => (
-                <div
-                  className="column is-half"
-                  key={syllabusItem.section_id}
-                >
-                  <SyllabusCard>
-                    <SyllabusCardTitle>
-                      {syllabusItem.section_title}
-                    </SyllabusCardTitle>
-                    <div>
-                      {syllabusItem.lessons.map((lesson) => (
-                        <LessonLink
-                          to={`/lesson?lessonId=${lesson.lesson_id}&courseId=${courseId}`}
-                          key={lesson.lesson_id}
-                        >
-                          {lesson.lesson_title}
-                        </LessonLink>
-                      ))}
-                    </div>
-                  </SyllabusCard>
-                </div>
-              ))}
-            </div>
-          </React.Fragment>
-        )}
-      </GenericSection>
-    </ShapedBackground>
+    <React.Fragment>
+      <SSNavbar />
+      <ShapedBackground>
+        <GenericSection
+          title={courseTitle}
+          contentIsLoading={loading}
+        >
+          {failed && <div>Failed</div>}
+          {success && (
+            <React.Fragment>
+              <div className="mb-3">
+                <BackToCoursesLink to="/subjects">
+                  Back to Courses
+                </BackToCoursesLink>
+              </div>
+              <div className="columns">
+                {syllabus.map((syllabusItem) => (
+                  <div
+                    className="column is-half"
+                    key={syllabusItem.section_id}
+                  >
+                    <SyllabusCard>
+                      <SyllabusCardTitle>
+                        {syllabusItem.section_title}
+                      </SyllabusCardTitle>
+                      <div>
+                        {syllabusItem.lessons.map((lesson) => (
+                          <LessonLink
+                            to={`/lesson?lessonId=${lesson.lesson_id}&courseId=${courseId}`}
+                            key={lesson.lesson_id}
+                          >
+                            {lesson.lesson_title}
+                          </LessonLink>
+                        ))}
+                      </div>
+                    </SyllabusCard>
+                  </div>
+                ))}
+              </div>
+            </React.Fragment>
+          )}
+        </GenericSection>
+      </ShapedBackground>
+    </React.Fragment>
   );
 };
 

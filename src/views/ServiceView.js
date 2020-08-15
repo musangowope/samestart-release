@@ -1,16 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import themed from '../functions/themed';
 import queryString from 'query-string';
 import serviceConstants from '../constants/serviceConstants';
-import IFrameComponent from '../components/IFrameComponent';
 import styled from 'styled-components';
 import LogoSrc from '../svgs/logo.svg';
 import SVG from '../components/SVG';
-import { StyledMobileNavButton } from '../components/SSNavbar/MobileNavbar';
+import { StyledMobileNavButton } from '../components/SSNavbar';
 import { navigate } from '@reach/router';
 import AnimationContainer from '../components/AnimationContainer';
-// import { handleOutsideElementClick } from '../functions/handleOutsideElementClick.func';
 import debounced from '../functions/debounced.func';
+import SSNavbar from '../components/SSNavbar';
 
 const debounceBuilder = debounced(200);
 
@@ -99,16 +98,19 @@ const ServiceView = (props) => {
     }
   };
   return (
-    <ServiceContainer>
-      <IframeContainer vpHeight={vpHeight}>
-        {getIframe()}
-      </IframeContainer>
-      <AnimationContainer animatedClassName="animate__fadeInLeft">
-        <StyledMobileNavButton onClick={() => navigate('/subjects')}>
-          <SVG src={LogoSrc} />
-        </StyledMobileNavButton>
-      </AnimationContainer>
-    </ServiceContainer>
+    <React.Fragment>
+      <SSNavbar />
+      <ServiceContainer>
+        <IframeContainer vpHeight={vpHeight}>
+          {getIframe()}
+        </IframeContainer>
+        <AnimationContainer animatedClassName="animate__fadeInLeft">
+          <StyledMobileNavButton onClick={() => navigate('/')}>
+            <SVG src={LogoSrc} />
+          </StyledMobileNavButton>
+        </AnimationContainer>
+      </ServiceContainer>
+    </React.Fragment>
   );
 };
 
