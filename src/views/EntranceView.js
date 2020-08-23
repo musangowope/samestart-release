@@ -14,7 +14,7 @@ const EntranceView = () => {
         <div className="mb-5">
           <ActionCardLink
             to={`/service?name=${serviceConstants.YENZA_SERVICE}`}
-            cardTitle="Career Guidance"
+            cardTitle="Career"
             cardBody="Smart Career Technology will put you on a path towards
               career success."
             svgSrc={CareerGuidanceSrc}
@@ -22,7 +22,7 @@ const EntranceView = () => {
         </div>
         <ActionCardLink
           to={`/subjects`}
-          cardTitle="Multilingual Education"
+          cardTitle="Multilingual Learning"
           cardBody="Coming Soon"
           svgSrc={MultilingualEduSrc}
           disabled={true}

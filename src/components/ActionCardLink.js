@@ -26,7 +26,6 @@ const StyledHelpButton = styled.button`
 const StyledLink = styled(Link)`
   border: 3px solid ${(props) => props.theme.colors.tertiary};
   padding: 20px;
-  border-radius: 20px;
   display: flex;
   flex-flow: row nowrap;
   background-color: ${(props) => props.theme.colors.white};
@@ -34,11 +33,7 @@ const StyledLink = styled(Link)`
   color: ${(props) => props.theme.colors.tertiary};
   @media screen and (max-width: ${(props) =>
       props.theme.breakpoints.sm}) {
-    //padding: 0;
     flex-direction: column-reverse;
-    //border: none;
-    //background-color: transparent;
-    //padding: 10px;
   }
 `;
 
@@ -52,15 +47,12 @@ const StyledCardTitle = styled.span`
   font-size: ${(props) => props.theme.fontSizes[4]};
   display: flex;
   margin-bottom: 20px;
+  color: ${(props) => props.theme.colors.tertiary};
   @media screen and (max-width: ${(props) =>
-    props.theme.breakpoints.sm}) {
-    // font-size: ${(props) => props.theme.fontSizes[3]};
+      props.theme.breakpoints.sm}) {
     text-align: center;
     align-self: center;
     margin-bottom: 0;
-    // border: 3px solid ${(props) => props.theme.colors.tertiary};
-    // padding: 15px;
-    border-radius: 25px;
     background-color: ${(props) => props.theme.colors.white};
   }
 `;
@@ -71,7 +63,7 @@ const StyledBodyText = styled.span`
   display: block;
   @media screen and (max-width: ${(props) =>
       props.theme.breakpoints.sm}) {
-    display: none;
+    text-align: center;
   }
 `;
 
@@ -81,24 +73,32 @@ const StyledSvgWrapper = styled.span`
       props.theme.breakpoints.sm}) {
     border: 3px solid ${(props) => props.theme.colors.tertiary};
     overflow: hidden;
-    max-width: 200px;
+    width: 150px;
+    height: 150px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 20px;
     background-color: ${(props) => props.theme.colors.white};
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   svg {
-    width: 100%;
-    max-width: 200px;
+    width: 200px;
     height: auto;
+    @media screen and (max-width: ${(props) =>
+        props.theme.breakpoints.sm}) {
+      width: 150px;
+      margin: auto;
+    }
   }
 `;
 
 const StyledLinkContainer = styled.div`
   position: relative;
   overflow: hidden;
-  opacity: ${(props) => (props.disabled ? 0.3 : 1)};
+  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
   .action-link-container__button {
     display: none;
     @media screen and (max-width: ${(props) =>
