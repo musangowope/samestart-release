@@ -10,6 +10,7 @@ import { navigate, Location } from '@reach/router';
 import { darken } from 'polished';
 import serviceConstants from '../../constants/serviceConstants';
 import BlockLoader from '../BlockLoader';
+import InlineSVG from 'react-inlinesvg';
 
 const isSameNavButtonActive = (pathname = '') => {
   switch (true) {
@@ -36,7 +37,7 @@ const SSNavbar = () => {
                     isSelected={isSameNavButtonActive(pathname)}
                     onClick={() => navigate('/subjects')}
                   >
-                    <SVG
+                    <InlineSVG
                       loaderComponent={BlockLoader}
                       src={LogoSrc}
                     />
@@ -58,10 +59,7 @@ const SSNavbar = () => {
                       )
                     }
                   >
-                    <SVG
-                      loaderComponent={BlockLoader}
-                      src={YenzaSrc}
-                    />
+                    <InlineSVG src={YenzaSrc} />
                   </StyledYenzaNavButton>
                 </MobileNavItem>
               </div>
@@ -101,7 +99,7 @@ const SSNavbar = () => {
                       )
                     }
                   >
-                    <SVG loaderComponent={BlockLoader} src={RLSrc} />
+                    <InlineSVG src={RLSrc} />
                   </StyledRLNavButton>
                 </MobileNavItem>
               </div>

@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import themed from '../functions/themed';
 import EllipsisIconSrc from 'svgs/ellipsis.svg';
 import SVG from './SVG';
+import InlineSVG from 'react-inlinesvg';
 
 const TranslatableIconContainer = styled.div`
   svg {
@@ -127,7 +128,7 @@ const BlockTypeInterpreter = ({
       {getBlockContent()}
       {translatable && (
         <TranslatableIconContainer>
-          <SVG src={EllipsisIconSrc} />
+          <InlineSVG src={EllipsisIconSrc} />
         </TranslatableIconContainer>
       )}
     </BlockContentContainer>
