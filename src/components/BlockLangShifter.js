@@ -5,11 +5,10 @@ import BlockTypeInterpreter from './BlockTypeInterpreter';
 import styled from 'styled-components';
 import { Tooltip } from 'react-tippy';
 import themed from '../functions/themed';
-import { toTitleCase } from '../functions/stringFormatting.func';
 import TranslationIconSrc from 'svgs/translation.svg';
-import SVG from './SVG';
 import TransparentButton from './elements/buttons/TransparentButton';
 import ISO6391 from 'iso-639-1';
+import InlineSVG from 'react-inlinesvg';
 
 const StyledLangButton = styled.button`
   background-color: ${(props) => props.theme.colors.secondary};
@@ -88,7 +87,7 @@ const BlockLangShifter = ({ block, blockKey }) => {
                   setIsTippyOpen((prevState) => !prevState)
                 }
               >
-                <SVG src={TranslationIconSrc} />
+                <InlineSVG src={TranslationIconSrc} />
               </TransparentButton>
             </TranslateIconSvgWrapper>
           </Tooltip>
