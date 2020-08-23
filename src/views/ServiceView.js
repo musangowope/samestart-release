@@ -10,6 +10,7 @@ import { navigate } from '@reach/router';
 import AnimationContainer from '../components/AnimationContainer';
 import debounced from '../functions/debounced.func';
 import SSNavbar from '../components/SSNavbar';
+import InlineSVG from 'react-inlinesvg';
 
 const debounceBuilder = debounced(200);
 
@@ -106,7 +107,7 @@ const ServiceView = (props) => {
         </IframeContainer>
         <AnimationContainer animatedClassName="animate__fadeInLeft">
           <StyledMobileNavButton onClick={() => navigate('/')}>
-            <SVG src={LogoSrc} />
+            <InlineSVG src={LogoSrc} />
           </StyledMobileNavButton>
         </AnimationContainer>
       </ServiceContainer>

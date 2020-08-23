@@ -1,12 +1,12 @@
 import React from 'react';
 import ThembiSrc from 'images/thembi-cell.png';
 import PropTypes from 'prop-types';
-import SVG from '../components/SVG';
 import styled from 'styled-components';
 import themed from '../functions/themed';
 import InstagramSrc from 'svgs/instagram.svg';
 import LinkedInSrc from 'svgs/linkedin.svg';
 import MailSrc from 'svgs/mail.svg';
+import InlineSVG from 'react-inlinesvg';
 
 const StyledMaintenanceContainer = styled.div`
   position: relative;
@@ -157,17 +157,17 @@ const MaintenanceView = () => {
               target="_blank"
               rel="noreferrer"
             >
-              <SVG src={InstagramSrc} />
+              <InlineSVG src={InstagramSrc} />
             </StyledSocialIconItemLink>
             <StyledSocialIconItemLink
               href="https://www.linkedin.com/company/same-start/?viewAsMember=true"
               target="_blank"
               rel="noreferrer"
             >
-              <SVG src={LinkedInSrc} />
+              <InlineSVG src={LinkedInSrc} />
             </StyledSocialIconItemLink>
             <StyledSocialIconItemLink href="mailto:admin@samestart.com">
-              <SVG src={MailSrc} />
+              <InlineSVG src={MailSrc} />
             </StyledSocialIconItemLink>
           </StyledSocialIconsContainer>
         </StyledMaintenanceTextContainer>

@@ -9,6 +9,7 @@ import SVG from '../components/SVG';
 import CircleButton from '../components/CircleButton';
 import { navigate } from '@reach/router';
 import BlockLoader from './BlockLoader';
+import InlineSVG from 'react-inlinesvg';
 
 const AccordionLoader = () => (
   <StyledBlockLoaderWrapper>
@@ -26,10 +27,7 @@ const SubjectAccordion = ({ subjectName, gradesSelection }) => {
               {subjectName}
             </SubjectAccordionHeaderText>
             <SVGWrapper>
-              <SVG
-                src={DownArrowIcon}
-                loaderComponent={AccordionLoader}
-              />
+              <InlineSVG src={DownArrowIcon} />
             </SVGWrapper>
           </SubjectContainerHeader>
         }

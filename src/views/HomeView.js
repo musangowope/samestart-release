@@ -3,10 +3,8 @@ import styled from 'styled-components';
 import themed from '../functions/themed';
 import { transparentize } from 'polished';
 import LandingIcon from '../svgs/landing-icon.svg';
-import SVG from '../components/SVG';
 import PrimaryButtonLink from '../components/elements/buttons/PrimaryButtonLink';
-import BlockLoader from '../components/BlockLoader';
-import theme from '../constants/theme';
+import InlineSVG from 'react-inlinesvg';
 
 const FlexContainer = styled.div`
   display: flex;
@@ -82,15 +80,7 @@ const StyledStartLearningLink = styled(PrimaryButtonLink)`
   display: inline-block;
 `;
 
-const LandingIconLoader = () => (
-  <BlockLoader
-    primaryLoadingClr={transparentize(0.8, theme.colors.baseColor)}
-    secondaryLoadingClr={transparentize(0.8, theme.colors.grey)}
-    height="300px"
-  />
-);
-
-const HomeView = (props) => {
+const HomeView = () => {
   return (
     <React.Fragment>
       <FlexContainer>
@@ -107,10 +97,7 @@ const HomeView = (props) => {
             </LeftSideContent>
           </LeftSide>
           <LandingIconContainer>
-            <SVG
-              src={LandingIcon}
-              loaderComponent={LandingIconLoader}
-            />
+            <InlineSVG src={LandingIcon} />
           </LandingIconContainer>
         </HomeLayout>
       </FlexContainer>
