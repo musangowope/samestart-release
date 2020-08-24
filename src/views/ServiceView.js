@@ -90,7 +90,7 @@ const ServiceView = (props) => {
           <iframe
             height="100%"
             width="100%"
-            src="https://www.snapplify.com/"
+            src="https://www.snapplify.com/za/freeaccess"
             allowFullScreen={true}
           />
         );
