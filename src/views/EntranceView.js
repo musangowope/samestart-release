@@ -10,7 +10,7 @@ import serviceConstants from '../constants/serviceConstants';
 const EntranceView = () => {
   return (
     <ShapedBackground>
-      <GenericSection title="Start your learning journey">
+      <GenericSection title="Begin your journey">
         <div className="mb-5">
           <ActionCardLink
             to={`/service?name=${serviceConstants.YENZA_SERVICE}`}
@@ -22,7 +22,7 @@ const EntranceView = () => {
         </div>
         <ActionCardLink
           to={`/subjects`}
-          cardTitle="Multilingual Learning"
+          cardTitle="Education"
           cardBody="Coming Soon"
           svgSrc={MultilingualEduSrc}
           disabled={true}

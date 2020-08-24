@@ -25,22 +25,26 @@ const StyledHelpButton = styled.button`
 
 const StyledLink = styled(Link)`
   border: 3px solid ${(props) => props.theme.colors.tertiary};
+  border-radius: 15px;
   padding: 20px;
   display: flex;
   flex-flow: row nowrap;
   background-color: ${(props) => props.theme.colors.white};
-  justify-content: space-between;
   color: ${(props) => props.theme.colors.tertiary};
   @media screen and (max-width: ${(props) =>
       props.theme.breakpoints.sm}) {
-    flex-direction: column-reverse;
+    flex-direction: row-reverse;
+    padding: 10px;
+    //justify-content: flex-start;
   }
 `;
 
 const StyledBody = styled.span`
   display: flex;
+  align-items: flex-start;
   justify-content: center;
   flex-direction: column;
+  flex-grow: 1;
 `;
 
 const StyledCardTitle = styled.span`
@@ -50,9 +54,14 @@ const StyledCardTitle = styled.span`
   color: ${(props) => props.theme.colors.tertiary};
   @media screen and (max-width: ${(props) =>
       props.theme.breakpoints.sm}) {
-    text-align: center;
+    font-size: ${(props) => props.theme.fontSizes[4]};
+    text-align: left;
     align-self: center;
     margin-bottom: 0;
+  }
+  @media screen and (max-width: ${(props) =>
+      props.theme.breakpoints.xs}) {
+    font-size: ${(props) => props.theme.fontSizes[3]};
     background-color: ${(props) => props.theme.colors.white};
   }
 `;
@@ -64,6 +73,7 @@ const StyledBodyText = styled.span`
   @media screen and (max-width: ${(props) =>
       props.theme.breakpoints.sm}) {
     text-align: center;
+    display: none;
   }
 `;
 
@@ -73,11 +83,11 @@ const StyledSvgWrapper = styled.span`
       props.theme.breakpoints.sm}) {
     border: 3px solid ${(props) => props.theme.colors.tertiary};
     overflow: hidden;
-    width: 150px;
-    height: 150px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20px;
+    min-width: 100px;
+    min-height: 100px;
+    width: 100px;
+    height: 100px;
+
     background-color: ${(props) => props.theme.colors.white};
     display: flex;
     align-items: center;
@@ -89,7 +99,7 @@ const StyledSvgWrapper = styled.span`
     height: auto;
     @media screen and (max-width: ${(props) =>
         props.theme.breakpoints.sm}) {
-      width: 150px;
+      min-width: 100px;
       margin: auto;
     }
   }
