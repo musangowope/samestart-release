@@ -49,9 +49,11 @@ const GenericSection = ({ children, title, contentIsLoading }) => {
       ) : (
         <AnimationContainer animatedClassName="animate__fadeIn">
           <GenericContainer className="generic-section__container">
-            <GenericSectTitle className="generic-section__container__title">
-              {title}
-            </GenericSectTitle>
+            {title && (
+              <GenericSectTitle className="generic-section__container__title">
+                {title}
+              </GenericSectTitle>
+            )}
             <GenericContent className="generic-section__container__content">
               {children}
             </GenericContent>
