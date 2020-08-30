@@ -1,22 +1,20 @@
 import React from 'react';
 import queryString from 'query-string';
-import axios from 'axios';
 import api from 'constants/api';
 import styled from 'styled-components';
 import GenericSection from '../../components/GenericSection';
 import AwezaTranslator from '../../components/AwezaTranslator';
 import SimpleModal from '../../components/SimpleModal';
 import { hasValue } from '../../functions/hasValue.func';
-import { baseRequestState } from '../../constants/baseRequest';
 import PrimaryButton from '../../components/elements/buttons/PrimaryButton';
 import Quiz from '../../components/Quiz';
 import TertiaryButton from '../../components/elements/buttons/TertiaryButton';
 import themed from '../../functions/themed';
 import BlockLangShifter from '../../components/BlockLangShifter';
 import TertiaryButtonLink from '../../components/elements/buttons/TertiaryButtonLink';
-import CircleButton from '../../components/CircleButton';
-import { GlobalContext } from '../../App';
 import SSNavbar from '../../components/SSNavbar';
+import useAxios from '../../custom-hooks/useAxios';
+import Loader from '../../components/Loader';
 
 const LessonButtonsContainer = styled.div`
   margin-bottom: 20px;
@@ -41,64 +39,36 @@ const LessonView = (props) => {
     props.location.search,
   );
   const [termId, setTermId] = React.useState('');
-  const [lessonTitle, setLessonTitle] = React.useState('');
-  const [lessonBlocks, setLessonBlocks] = React.useState([]);
-  const [requestState, setRequestState] = React.useState(
-    baseRequestState,
-  );
-
-  const [quiz, setQuiz] = React.useState(null);
-
   const [isQuizModalActive, setQuizModalActivity] = React.useState(
     false,
   );
-  const updateRequest = (obj = {}) => {
-    setRequestState({
-      ...baseRequestState,
-      ...obj,
-    });
-  };
 
-  const getQuizComponent = () => {
-    if (quiz) {
-      const { title = '', questions = [] } = quiz;
-      return (
-        <Quiz
-          triggerQuizReset={!isQuizModalActive}
-          title={title}
-          questions={questions}
-          onQuizFinishCb={() => setQuizModalActivity(false)}
-        />
-      );
-    }
 
-    return 'No quiz data available';
-  };
+  const lessonRequest = useAxios(api.getLesson(lessonId));
+  const quizRequest = useAxios(
+    isQuizModalActive ? api.getQuizByLessonId(lessonId) : '',
+  );
+  const {
+    loading: lessonReqLoading,
+    success: lessonReqSuccess,
+    failed: lessonReqFailed,
+    response: {
+      translated_blocks = [],
+      lesson_title: lessonTitle = '',
+    },
+  } = lessonRequest;
 
-  React.useEffect(() => {
-    updateRequest({ loading: true });
-    axios
-      .get(api.getLesson(lessonId))
-      .then(({ data }) => {
-        updateRequest({ success: true });
-        setLessonTitle(data.default_lesson_instance.title);
-        setLessonBlocks(data.translated_blocks);
-        setQuiz(data.default_lesson_instance.quiz);
-      })
-      .catch((e) => {
-        updateRequest({
-          failed: true,
-        });
-      });
-  }, [lessonId]);
-
-  const { setContext } = React.useContext(GlobalContext);
-  const { success, loading, failed } = requestState;
+  const {
+    response: { title: quizTitle = '', questions = [] } = {},
+  } = quizRequest;
 
   return (
     <React.Fragment>
       <SSNavbar />
-      <GenericSection title={lessonTitle} contentIsLoading={loading}>
+      <GenericSection
+        title={lessonTitle}
+        contentIsLoading={lessonReqLoading}
+      >
         <LessonButtonsContainer>
           <TertiaryButtonLink to={`/syllabus?courseId=${courseId}`}>
             Back
@@ -106,22 +76,16 @@ const LessonView = (props) => {
           <PrimaryButton
             onClick={() => {
               setQuizModalActivity(true);
-              setContext((prevState) => ({
-                ...prevState,
-                contextState: {
-                  mobileNavbarActive: false,
-                },
-              }));
             }}
           >
             Take Quiz
           </PrimaryButton>
         </LessonButtonsContainer>
 
-        {failed && <div>Failed</div>}
-        {success && (
+        {lessonReqFailed && <div>Failed</div>}
+        {lessonReqSuccess && (
           <React.Fragment>
-            {lessonBlocks.map((block, key) => (
+            {translated_blocks.map((block, key) => (
               <BlockLangShifter
                 block={block}
                 key={key}
@@ -148,11 +112,30 @@ const LessonView = (props) => {
         <ModalContainer>
           <SimpleModal
             isOpen={isQuizModalActive}
-            closeAction={() => {
-              setQuizModalActivity(false);
-            }}
+            closeAction={() => setQuizModalActivity(false)}
           >
-            {getQuizComponent()}
+            {quizRequest.failed && (
+              <div className="p2">
+                <div className="has-text-right mb-1">
+                  <TertiaryButton onClick={() => setQuizModalActivity(false)}>
+                    Close
+                  </TertiaryButton>
+                </div>
+                <div>Could not load data</div>
+              </div>
+            )}
+            {quizRequest.loading && <Loader />}
+            {quizRequest.success && (
+              <React.Fragment>
+                <Quiz
+                  title={quizTitle}
+                  questions={questions}
+                  triggerQuizReset={!isQuizModalActive}
+                  onQuizFinishCb={() => setQuizModalActivity(false)}
+                />
+              </React.Fragment>
+            )}
+            />
           </SimpleModal>
         </ModalContainer>
       </GenericSection>
