@@ -135,7 +135,6 @@ const LessonView = (props) => {
                 />
               </React.Fragment>
             )}
-            />
           </SimpleModal>
         </ModalContainer>
       </GenericSection>
