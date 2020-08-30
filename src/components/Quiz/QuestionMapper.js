@@ -57,12 +57,14 @@ const QuestionMapper = ({
   const vpHeight = useGetVPHeight();
 
   const handleQuizContentHeight = React.useCallback(() => {
-    const questionContentHeight =
-      questionContentRef.current.scrollHeight;
-    const comparableHeight = vpHeight * (1.2 / 3);
-    const scrollable = questionContentHeight > comparableHeight;
-    setMaxHeight(scrollable ? `${comparableHeight}px` : 'auto');
-    setScrollable(scrollable);
+    if (questionContentRef && questionContentRef.current) {
+      const questionContentHeight =
+        questionContentRef.current.scrollHeight;
+      const comparableHeight = vpHeight * (1.2 / 3);
+      const scrollable = questionContentHeight > comparableHeight;
+      setMaxHeight(scrollable ? `${comparableHeight}px` : 'auto');
+      setScrollable(scrollable);
+    }
   }, [vpHeight]);
 
   React.useEffect(() => {
