@@ -75,12 +75,16 @@ const Quiz = ({ questions, onQuizFinishCb, triggerQuizReset }) => {
     }
   }, [triggerQuizReset]);
 
+  const getHeaderTitle = () => {
+    return questions.length
+      ? `Q ${activeQIndex + 1} of ${questions.length}`
+      : '';
+  };
+
   return (
     <QuizContainer className="quiz-container">
       <QuestionHeader className="quiz-container__header">
-        <div>
-          Q {activeQIndex + 1} of {questions.length}
-        </div>
+        <div>{getHeaderTitle()}</div>
         <NavigationButtonWrapper>
           <CloseButtonWrapper>
             <CircleButton
@@ -111,54 +115,60 @@ const Quiz = ({ questions, onQuizFinishCb, triggerQuizReset }) => {
           </CircleButton>
         </NavigationButtonWrapper>
       </QuestionHeader>
-      <GaugeWrapper>
-        <Gauge
-          denominator={questions.length}
-          numerator={activeQIndex + 1}
-        />
-      </GaugeWrapper>
 
-      {showCongradsMsg ? (
-        <AnimationContainer animatedClassName="animate__fadeIn">
-          <Feedback />
-          <div className="has-text-centered">
-            <PrimaryButton onClick={handleNextActionAfterCorrect}>
-              {questions.length === activeQIndex + 1
-                ? 'Back To Lesson'
-                : 'Next Question'}
-            </PrimaryButton>
-          </div>
-        </AnimationContainer>
-      ) : (
+      {questions.length ? (
         <React.Fragment>
-          <QuestionMapperContainer className="question-mapper-container">
-            <QuestionMapper
-              isHelpActive={isHelpActive}
-              activeQIndex={activeQIndex}
-              questions={questions}
-              setAnswer={setAnswer}
-              errorMessage={errorMessage}
-              setErrorMessage={setErrorMessage}
+          <GaugeWrapper>
+            <Gauge
+              denominator={questions.length}
+              numerator={activeQIndex + 1}
             />
-          </QuestionMapperContainer>
+          </GaugeWrapper>
+          {showCongradsMsg ? (
+            <AnimationContainer animatedClassName="animate__fadeIn">
+              <Feedback />
+              <div className="has-text-centered">
+                <PrimaryButton onClick={handleNextActionAfterCorrect}>
+                  {questions.length === activeQIndex + 1
+                    ? 'Back To Lesson'
+                    : 'Next Question'}
+                </PrimaryButton>
+              </div>
+            </AnimationContainer>
+          ) : (
+            <React.Fragment>
+              <QuestionMapperContainer className="question-mapper-container">
+                <QuestionMapper
+                  isHelpActive={isHelpActive}
+                  activeQIndex={activeQIndex}
+                  questions={questions}
+                  setAnswer={setAnswer}
+                  errorMessage={errorMessage}
+                  setErrorMessage={setErrorMessage}
+                />
+              </QuestionMapperContainer>
 
-          <ActionButtonWrapper>
-            <SecondaryButton
-              type="button"
-              onClick={() => {
-                setAnswer('');
-                setIsHelpActive((prevState) => !prevState);
-              }}
-            >
-              {isHelpActive ? 'Exit Help' : 'Help'}
-            </SecondaryButton>
-            {!isHelpActive && (
-              <PrimaryButton type="button" onClick={handleSubmit}>
-                Submit
-              </PrimaryButton>
-            )}
-          </ActionButtonWrapper>
+              <ActionButtonWrapper>
+                <SecondaryButton
+                  type="button"
+                  onClick={() => {
+                    setAnswer('');
+                    setIsHelpActive((prevState) => !prevState);
+                  }}
+                >
+                  {isHelpActive ? 'Exit Help' : 'Help'}
+                </SecondaryButton>
+                {!isHelpActive && (
+                  <PrimaryButton type="button" onClick={handleSubmit}>
+                    Submit
+                  </PrimaryButton>
+                )}
+              </ActionButtonWrapper>
+            </React.Fragment>
+          )}
         </React.Fragment>
+      ) : (
+        <NoDataContainer>No quiz available</NoDataContainer>
       )}
     </QuizContainer>
   );
@@ -234,4 +244,9 @@ const QuizContainer = styled.div`
 
 const QuestionMapperContainer = styled.div`
   //flex-grow: 1;
+`;
+
+//TODO: create padding containers
+const NoDataContainer = styled.div`
+  padding: 10px;
 `;
