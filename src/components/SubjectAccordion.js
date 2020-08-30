@@ -5,17 +5,10 @@ import themed from '../functions/themed';
 import TextButton from './elements/buttons/TransparentButton';
 import Accordion from './Accordion';
 import DownArrowIcon from '../svgs/down-arrow-icon.svg';
-import SVG from '../components/SVG';
 import CircleButton from '../components/CircleButton';
 import { navigate } from '@reach/router';
 import BlockLoader from './BlockLoader';
 import InlineSVG from 'react-inlinesvg';
-
-const AccordionLoader = () => (
-  <StyledBlockLoaderWrapper>
-    <BlockLoader width="20px" height="20px" />
-  </StyledBlockLoaderWrapper>
-);
 
 const SubjectAccordion = ({ subjectName, gradesSelection }) => {
   return (
