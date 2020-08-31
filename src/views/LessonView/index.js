@@ -23,11 +23,14 @@ const LessonButtonsContainer = styled.div`
   justify-content: space-between;
 `;
 
-const ModalContainer = styled.div`
-  .simple-modal__content {
-    //padding: 20px;
-  }
+//TODO: See the best use case for this
+export const QuizLoaderWrapper = styled.div`
+  position: relative;
+  transform: translateY(-50%);
+  top: 50%;
 `;
+
+const ModalContainer = styled.div``;
 
 const CloseButtonWrapper = styled.div`
   margin-bottom: 20px;
@@ -43,10 +46,12 @@ const LessonView = (props) => {
     false,
   );
 
-
   const lessonRequest = useAxios(api.getLesson(lessonId));
   const quizRequest = useAxios(
     isQuizModalActive ? api.getQuizByLessonId(lessonId) : '',
+    'get',
+    null,
+    500,
   );
   const {
     loading: lessonReqLoading,
@@ -94,50 +99,54 @@ const LessonView = (props) => {
             ))}
           </React.Fragment>
         )}
-
-        <ModalContainer>
-          <SimpleModal
-            isOpen={hasValue(termId)}
-            closeAction={() => setTermId('')}
-          >
-            <CloseButtonWrapper>
-              <TertiaryButton onClick={() => setTermId('')}>
-                Close
-              </TertiaryButton>
-            </CloseButtonWrapper>
-            {termId && <AwezaTranslator termId={termId} />}
-          </SimpleModal>
-        </ModalContainer>
-
-        <ModalContainer>
-          <SimpleModal
-            isOpen={isQuizModalActive}
-            closeAction={() => setQuizModalActivity(false)}
-          >
-            {quizRequest.failed && (
-              <div className="p2">
-                <div className="has-text-right mb-1">
-                  <TertiaryButton onClick={() => setQuizModalActivity(false)}>
-                    Close
-                  </TertiaryButton>
-                </div>
-                <div>Could not load data</div>
-              </div>
-            )}
-            {quizRequest.loading && <Loader />}
-            {quizRequest.success && (
-              <React.Fragment>
-                <Quiz
-                  title={quizTitle}
-                  questions={questions}
-                  triggerQuizReset={!isQuizModalActive}
-                  onQuizFinishCb={() => setQuizModalActivity(false)}
-                />
-              </React.Fragment>
-            )}
-          </SimpleModal>
-        </ModalContainer>
       </GenericSection>
+      <ModalContainer>
+        <SimpleModal
+          isOpen={hasValue(termId)}
+          closeAction={() => setTermId('')}
+        >
+          <CloseButtonWrapper>
+            <TertiaryButton onClick={() => setTermId('')}>
+              Close
+            </TertiaryButton>
+          </CloseButtonWrapper>
+          {termId && <AwezaTranslator termId={termId} />}
+        </SimpleModal>
+      </ModalContainer>
+      <ModalContainer>
+        <SimpleModal
+          isOpen={isQuizModalActive}
+          closeAction={() => setQuizModalActivity(false)}
+        >
+          {quizRequest.failed && (
+            <div className="p2">
+              <div className="has-text-right mb-1">
+                <TertiaryButton
+                  onClick={() => setQuizModalActivity(false)}
+                >
+                  Close
+                </TertiaryButton>
+              </div>
+              <div>Could not load data</div>
+            </div>
+          )}
+          {quizRequest.loading && (
+            <QuizLoaderWrapper>
+              <Loader />
+            </QuizLoaderWrapper>
+          )}
+          {quizRequest.success && (
+            <React.Fragment>
+              <Quiz
+                title={quizTitle}
+                questions={questions}
+                triggerQuizReset={!isQuizModalActive}
+                onQuizFinishCb={() => setQuizModalActivity(false)}
+              />
+            </React.Fragment>
+          )}
+        </SimpleModal>
+      </ModalContainer>
     </React.Fragment>
   );
 };

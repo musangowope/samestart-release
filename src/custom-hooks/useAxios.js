@@ -14,6 +14,7 @@ export default function useFetch(
   url = '',
   method = 'get',
   config = null,
+  loadingToSuccessDuration = 0,
 ) {
   const [request, setRequestState] = React.useState(baseRequestState);
   const updateRequest = (obj = {}) =>
@@ -30,11 +31,12 @@ export default function useFetch(
         });
         try {
           axios[method](url, config).then((res) => {
-            console.log(res.data);
-            updateRequest({
-              success: true,
-              response: res.data,
-            });
+            window.setTimeout(() => {
+              updateRequest({
+                success: true,
+                response: res.data,
+              });
+            }, loadingToSuccessDuration);
           });
         } catch (err) {
           updateRequest({
@@ -46,7 +48,7 @@ export default function useFetch(
 
       fetchData();
     }
-  }, [config, method, url]);
+  }, [config, loadingToSuccessDuration, method, url]);
 
   return request;
 }
