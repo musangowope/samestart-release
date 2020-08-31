@@ -13,7 +13,8 @@ const Modal = styled.div`
   position: fixed;
   opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
   z-index: 999;
-  transition: top 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  transition: top ${(props) => props.transitionDuration}ms ease-in-out,
+    opacity ${(props) => props.transitionDuration}ms ease-in-out;
 `;
 
 const ModalOverlay = styled.div`
@@ -42,8 +43,21 @@ const ModalContent = styled.div`
   }
 `;
 
-const SimpleModal = ({ isOpen, closeAction, children }) => {
+const SimpleModal = ({
+  isOpen,
+  closeAction,
+  children,
+  transitionDuration,
+  onTransitionEnd,
+}) => {
   const modalRef = useRef();
+
+  useEffect(() => {
+    window.setTimeout(() => {
+      onTransitionEnd();
+    }, transitionDuration);
+  }, [onTransitionEnd, transitionDuration]);
+
   useEffect(() => {
     const handleOutsideClick = (e) =>
       handleOutsideElementClick(modalRef, e, closeAction);
@@ -54,7 +68,11 @@ const SimpleModal = ({ isOpen, closeAction, children }) => {
   }, [modalRef, closeAction]);
 
   return (
-    <Modal className="simple-modal" isOpen={isOpen}>
+    <Modal
+      className="simple-modal"
+      isOpen={isOpen}
+      transitionDuration={transitionDuration}
+    >
       <ModalOverlay className="simple-modal__overlay">
         <ModalContent
           className="simple-modal__content"
@@ -71,10 +89,14 @@ SimpleModal.propTypes = {
   isOpen: PropTypes.bool,
   closeAction: PropTypes.func.isRequired,
   children: PropTypes.any,
+  transitionDuration: PropTypes.number,
+  onTransitionEnd: PropTypes.func,
 };
 SimpleModal.defaultProps = {
   isOpen: false,
   children: null,
+  transitionDuration: 250,
+  onTransitionEnd: () => false,
 };
 
 export default themed(SimpleModal);

@@ -22,7 +22,7 @@ const EntranceView = () => {
         </div>
         <ActionCardLink
           to={`/subjects`}
-          cardTitle="Education"
+          cardTitle="Learn"
           cardBody="Coming Soon"
           svgSrc={MultilingualEduSrc}
           disabled={true}

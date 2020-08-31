@@ -15,6 +15,7 @@ import { hasValue } from '../functions/hasValue.func';
 import useAxios from '../custom-hooks/useAxios';
 import Loader from '../components/Loader';
 import Quiz from '../components/Quiz';
+import { QuizLoaderWrapper } from './LessonView';
 
 const SyllabusView = (props) => {
   const { courseId, lessonIdForExam = '' } = queryString.parse(
@@ -50,6 +51,9 @@ const SyllabusView = (props) => {
 
   const quizRequest = useAxios(
     api.getQuizByLessonId(lessonIdForExam),
+    'get',
+    null,
+    500,
   );
 
   const {
@@ -104,36 +108,40 @@ const SyllabusView = (props) => {
                     : non_exam_sections,
                 )}
               </div>
-              <SimpleModal
-                isOpen={hasValue(lessonIdForExam)}
-                closeAction={handleCloseExamModal}
-              >
-                {quizRequest.failed && (
-                  <div className="p2">
-                    <div className="has-text-right mb-1">
-                      <TertiaryButton onClick={handleCloseExamModal}>
-                        Close
-                      </TertiaryButton>
-                    </div>
-                    <div>No quiz data available</div>
-                  </div>
-                )}
-                {quizRequest.loading && <Loader />}
-                {quizRequest.success && (
-                  <React.Fragment>
-                    <Quiz
-                      title={quizTitle}
-                      questions={questions}
-                      triggerQuizReset={!hasValue(lessonIdForExam)}
-                      onQuizFinishCb={handleCloseExamModal}
-                    />
-                  </React.Fragment>
-                )}
-              </SimpleModal>
             </React.Fragment>
           )}
         </GenericSection>
       </ShapedBackground>
+      <SimpleModal
+        isOpen={hasValue(lessonIdForExam)}
+        closeAction={handleCloseExamModal}
+      >
+        {quizRequest.failed && (
+          <div className="p2">
+            <div className="has-text-right mb-1">
+              <TertiaryButton onClick={handleCloseExamModal}>
+                Close
+              </TertiaryButton>
+            </div>
+            <div>No quiz data available</div>
+          </div>
+        )}
+        {quizRequest.loading && (
+          <QuizLoaderWrapper>
+            <Loader />
+          </QuizLoaderWrapper>
+        )}
+        {quizRequest.success && (
+          <React.Fragment>
+            <Quiz
+              title={quizTitle}
+              questions={questions}
+              triggerQuizReset={!hasValue(lessonIdForExam)}
+              onQuizFinishCb={handleCloseExamModal}
+            />
+          </React.Fragment>
+        )}
+      </SimpleModal>
     </React.Fragment>
   );
 };
@@ -156,10 +164,6 @@ const StyledActionButtonWrapper = styled.div`
   @media screen and (max-width: ${(props) =>
       props.theme.breakpoints.sm}) {
     justify-content: space-between;
-  }
-
-  @media screen and (max-width: ${(props) =>
-      props.theme.breakpoints.xs}) {
     display: block;
     margin-bottom: 10px;
 
