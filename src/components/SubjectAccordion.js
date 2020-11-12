@@ -29,7 +29,7 @@ const SubjectAccordion = ({ subjectName, gradesSelection }) => {
           <GradeSelectionTitle className="grade-selection__title">
             Select a grade
           </GradeSelectionTitle>
-          {gradesSelection.length && (
+          {gradesSelection.length ? (
             <GradeSelectionGrades className="grade-selection__grades">
               {gradesSelection.map((gradeItem) => (
                 <CircleButton
@@ -43,7 +43,7 @@ const SubjectAccordion = ({ subjectName, gradesSelection }) => {
                 />
               ))}
             </GradeSelectionGrades>
-          )}
+          ) : null}
         </GradeSelection>
       </Accordion>
     </SubjectContainer>
