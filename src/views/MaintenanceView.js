@@ -140,14 +140,6 @@ const StyledSocialIconItemLink = styled.a`
 `;
 
 const MaintenanceView = () => {
-  const currentUrl = window.location.href;
-  const urlParamsObj = getUrlParams(currentUrl);
-  const urlParamsArray = Object.keys(urlParamsObj).map(
-    (propName) => ({
-      key: propName,
-      value: urlParamsObj[propName],
-    }),
-  );
   return (
     <StyledMaintenanceContainer>
       <StyledBackgroundCircle />
@@ -160,13 +152,6 @@ const MaintenanceView = () => {
           <StyledMaintenanceSecondaryHeading>
             Coming Soon..
           </StyledMaintenanceSecondaryHeading>
-          <div>
-            {urlParamsArray.map(({ key, value }) => (
-              <div>
-                <strong>{key}</strong> <span>{value}</span>
-              </div>
-            ))}
-          </div>
           <StyledSocialIconsContainer>
             <StyledSocialIconItemLink
               href="https://www.instagram.com/same_start/"
