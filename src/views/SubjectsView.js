@@ -38,23 +38,23 @@ const SubjectsView = () => {
       <SSNavbar />
       <ShapedBackground>
         <GenericSection title="Subjects" contentIsLoading={loading}>
-          {success && (
-            <React.Fragment>
-              <div className="columns">
-                {subjects.map((subject, key) => (
-                  <React.Fragment key={key}>
-                    <div className="column is-half">
-                      <SubjectAccordion
-                        subjectName={subject.subject_name}
-                        gradesSelection={subject.grades}
-                      />
-                    </div>
-                  </React.Fragment>
-                ))}
-              </div>
-            </React.Fragment>
-          )}
-          {failed && <div>Something went wrong</div>}
+          {success ? (
+            <div className="columns is-multiline">
+              {subjects.length ? (
+                subjects.map((subject, key) => (
+                  <div className="column is-half" key={key}>
+                    <SubjectAccordion
+                      subjectName={subject.subject_name}
+                      gradesSelection={subject.grades}
+                    />
+                  </div>
+                ))
+              ) : (
+                <div className="column">No Subjects</div>
+              )}
+            </div>
+          ) : null}
+          {failed ? <div>Something went wrong</div> : null}
         </GenericSection>
       </ShapedBackground>
     </React.Fragment>
