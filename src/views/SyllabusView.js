@@ -61,25 +61,29 @@ const SyllabusView = (props) => {
   } = quizRequest;
 
   const renderSections = (sections = []) => {
-    return sections.map((syllabusItem) => (
-      <div className="column is-half" key={syllabusItem.section_id}>
-        <SyllabusCard>
-          <SyllabusCardTitle>
-            {syllabusItem.section_title}
-          </SyllabusCardTitle>
-          <div>
-            {syllabusItem.lessons.map((lesson) => (
-              <LessonLink
-                to={getLink(lesson.lesson_id)}
-                key={lesson.lesson_id}
-              >
-                {lesson.lesson_title}
-              </LessonLink>
-            ))}
-          </div>
-        </SyllabusCard>
-      </div>
-    ));
+    return sections.length ? (
+      sections.map((syllabusItem) => (
+        <div className="column is-half" key={syllabusItem.section_id}>
+          <SyllabusCard>
+            <SyllabusCardTitle>
+              {syllabusItem.section_title}
+            </SyllabusCardTitle>
+            <div>
+              {syllabusItem.lessons.map((lesson) => (
+                <LessonLink
+                  to={getLink(lesson.lesson_id)}
+                  key={lesson.lesson_id}
+                >
+                  {lesson.lesson_title}
+                </LessonLink>
+              ))}
+            </div>
+          </SyllabusCard>
+        </div>
+      ))
+    ) : (
+      <div className="column">No content available</div>
+    );
   };
 
   return (
@@ -186,6 +190,7 @@ const SyllabusCard = styled.div`
 
 const BackToCoursesLink = styled(PrimaryButtonLink)`
   display: inline-block;
+  margin-right: 10px;
 `;
 
 const SyllabusCardTitle = styled.div`
