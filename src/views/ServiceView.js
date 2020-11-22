@@ -4,51 +4,14 @@ import queryString from 'query-string';
 import serviceConstants from '../constants/serviceConstants';
 import styled from 'styled-components';
 import LogoSrc from '../svgs/logo.svg';
-import SVG from '../components/SVG';
 import { StyledMobileNavButton } from '../components/SSNavbar';
-import { navigate } from '@reach/router';
 import AnimationContainer from '../components/AnimationContainer';
 import debounced from '../functions/debounced.func';
 import SSNavbar from '../components/SSNavbar';
 import InlineSVG from 'react-inlinesvg';
+import { navigate } from '@reach/router';
 
 const debounceBuilder = debounced(200);
-
-const ServiceContainer = styled.div`
-  height: 100%;
-  width: 100%;
-  position: relative;
-  z-index: 999;
-  background-color: ${(props) => props.theme.colors.white};
-
-  ${StyledMobileNavButton} {
-    position: absolute;
-    bottom: 20px;
-    left: 10px;
-  }
-`;
-
-const IframeContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: ${(props) => `${props.vpHeight}px`};
-  overflow: hidden;
-  //padding-top: 100%; /* 1:1 Aspect Ratio */
-
-  iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-  }
-`;
-
-IframeContainer.defaultProps = {
-  vpHeight: window.innerHeight,
-};
 
 const ServiceView = (props) => {
   const { name } = queryString.parse(props.location.search);
@@ -101,18 +64,73 @@ const ServiceView = (props) => {
   return (
     <React.Fragment>
       <SSNavbar />
-      <ServiceContainer>
-        <IframeContainer vpHeight={vpHeight}>
+      <S.ServiceContainer>
+        <S.IframeContainer vpHeight={vpHeight - 50}>
           {getIframe()}
-        </IframeContainer>
-        <AnimationContainer animatedClassName="animate__fadeInLeft">
-          <StyledMobileNavButton onClick={() => navigate('/')}>
+        </S.IframeContainer>
+        <AnimationContainer animatedClassName="animate__fadeInUp">
+          <S.ExitButton onClick={() => navigate('/')}>
+            <span>Exit</span>
             <InlineSVG src={LogoSrc} />
-          </StyledMobileNavButton>
+          </S.ExitButton>
         </AnimationContainer>
-      </ServiceContainer>
+      </S.ServiceContainer>
     </React.Fragment>
   );
 };
 
 export default themed(ServiceView);
+
+const S = {};
+
+S.ServiceContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  position: relative;
+  z-index: 999;
+  background-color: ${(props) => props.theme.colors.white};
+
+  .exit-button {
+    position: absolute;
+    bottom: 20px;
+    left: 0px;
+  }
+`;
+
+S.IframeContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: ${(props) => `${props.vpHeight}px`};
+  overflow: hidden;
+  //padding-top: 100%; /* 1:1 Aspect Ratio */
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }
+`;
+S.IframeContainer.defaultProps = {
+  vpHeight: window.innerHeight,
+};
+
+S.ExitButton = styled.button`
+  background-color: ${(props) => props.theme.colors.tertiary};
+  border: none;
+  color: white;
+  height: 50px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > svg {
+    width: 25px;
+    height: auto;
+    margin-left: 10px;
+  }
+`;
