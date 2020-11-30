@@ -4,7 +4,6 @@ import queryString from 'query-string';
 import serviceConstants from '../constants/serviceConstants';
 import styled from 'styled-components';
 import LogoSrc from '../svgs/logo.svg';
-import { StyledMobileNavButton } from '../components/SSNavbar';
 import AnimationContainer from '../components/AnimationContainer';
 import debounced from '../functions/debounced.func';
 import SSNavbar from '../components/SSNavbar';
@@ -15,18 +14,38 @@ const debounceBuilder = debounced(200);
 
 const ServiceView = (props) => {
   const { name } = queryString.parse(props.location.search);
-  const [vpHeight, setVpHeight] = React.useState(window.innerHeight);
+  const [vpHeight, setVpHeight] = React.useState(window.outerHeight);
 
-  const handleWindowResize = (e = {}) => {
+  const handleWindowResize = React.useCallback((e = {}) => {
     const height = e.target.outerHeight;
     debounceBuilder(() => setVpHeight(height));
-  };
+  }, []);
 
   React.useEffect(() => {
     window.addEventListener('resize', handleWindowResize);
     return () =>
       window.removeEventListener('resize', handleWindowResize);
+  }, [handleWindowResize]);
+
+  const handleScreenRotation = React.useCallback(() => {
+    const newHeight = window.outerHeight;
+    window.setTimeout(() => {
+      setVpHeight(newHeight);
+    }, 200);
   }, []);
+
+  React.useEffect(() => {
+    window.addEventListener(
+      'orientationchange',
+      handleScreenRotation,
+    );
+    return () => {
+      window.removeEventListener(
+        'orientationchange',
+        handleScreenRotation,
+      );
+    };
+  }, [handleScreenRotation]);
 
   const getIframe = () => {
     switch (true) {
