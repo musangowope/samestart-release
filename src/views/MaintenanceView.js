@@ -7,6 +7,7 @@ import InstagramSrc from 'svgs/instagram.svg';
 import LinkedInSrc from 'svgs/linkedin.svg';
 import MailSrc from 'svgs/mail.svg';
 import InlineSVG from 'react-inlinesvg';
+import getUrlParams from '../functions/getUrlParams.func';
 
 const StyledMaintenanceContainer = styled.div`
   position: relative;
