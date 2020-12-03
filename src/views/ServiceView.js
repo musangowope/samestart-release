@@ -146,6 +146,8 @@ S.ExitButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: fixed;
+  bottom: 0;
 
   & > svg {
     width: 25px;
