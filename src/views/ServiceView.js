@@ -14,10 +14,12 @@ const debounceBuilder = debounced(200);
 
 const ServiceView = (props) => {
   const { name } = queryString.parse(props.location.search);
-  const [vpHeight, setVpHeight] = React.useState(window.outerHeight);
+  const [vpHeight, setVpHeight] = React.useState(
+    window.screen.availHeight,
+  );
 
-  const handleWindowResize = React.useCallback((e = {}) => {
-    const height = e.target.outerHeight;
+  const handleWindowResize = React.useCallback(() => {
+    const height = window.screen.availHeight;
     debounceBuilder(() => setVpHeight(height));
   }, []);
 
@@ -28,7 +30,7 @@ const ServiceView = (props) => {
   }, [handleWindowResize]);
 
   const handleScreenRotation = React.useCallback(() => {
-    const newHeight = window.outerHeight;
+    const newHeight = window.screen.availHeight;
     window.setTimeout(() => {
       setVpHeight(newHeight);
     }, 200);
@@ -132,7 +134,7 @@ S.IframeContainer = styled.div`
   }
 `;
 S.IframeContainer.defaultProps = {
-  vpHeight: window.innerHeight,
+  vpHeight: window.screen.availHeight,
 };
 
 S.ExitButton = styled.button`
