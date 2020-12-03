@@ -37,10 +37,7 @@ const SSNavbar = () => {
                     isSelected={isSameNavButtonActive(pathname)}
                     onClick={() => navigate('/subjects')}
                   >
-                    <InlineSVG
-                      loaderComponent={BlockLoader}
-                      src={LogoSrc}
-                    />
+                    <InlineSVG src={LogoSrc} />
                   </StyledMobileNavButton>
                 </MobileNavItem>
               </div>

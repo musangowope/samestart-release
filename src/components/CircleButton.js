@@ -58,12 +58,12 @@ const CircleButton = ({
 };
 
 CircleButton.propTypes = {
-  buttonText: PropTypes.string,
+  buttonText: PropTypes.any,
   actionCallback: PropTypes.func,
   isSelected: PropTypes.bool,
 };
 CircleButton.defaultProps = {
-  buttonText: '',
+  buttonText: null,
   actionCallback: () => false,
   isSelected: false,
 };
