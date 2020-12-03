@@ -89,10 +89,10 @@ const ServiceView = (props) => {
         <S.IframeContainer vpHeight={vpHeight - 50}>
           {getIframe()}
         </S.IframeContainer>
-        {/*<S.ExitButton onClick={() => navigate('/')}>*/}
-        {/*  <span>Exit</span>*/}
-        {/*  <InlineSVG src={LogoSrc} />*/}
-        {/*</S.ExitButton>*/}
+        <S.ExitButton onClick={() => navigate('/')}>
+          <span>Exit</span>
+          <InlineSVG src={LogoSrc} />
+        </S.ExitButton>
       </S.ServiceContainer>
     </React.Fragment>
   );
