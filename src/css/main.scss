@@ -3,6 +3,10 @@
     font-family: 'Montserrat', sans-serif !important;
 }
 
+html {
+    overflow: auto;
+}
+
 html,
 body,
 div[id='root'] {
