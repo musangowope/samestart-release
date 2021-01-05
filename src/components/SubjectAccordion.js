@@ -7,8 +7,12 @@ import Accordion from './Accordion';
 import DownArrowIcon from '../svgs/down-arrow-icon.svg';
 import CircleButton from '../components/CircleButton';
 import { navigate } from '@reach/router';
-import BlockLoader from './BlockLoader';
 import InlineSVG from 'react-inlinesvg';
+
+const orderGradeSelection = (grades = []) =>
+  grades.sort((a, b) => {
+    return a.grade_label - b.grade_label;
+  });
 
 const SubjectAccordion = ({ subjectName, gradesSelection }) => {
   return (
@@ -31,17 +35,19 @@ const SubjectAccordion = ({ subjectName, gradesSelection }) => {
           </GradeSelectionTitle>
           {gradesSelection.length ? (
             <GradeSelectionGrades className="grade-selection__grades">
-              {gradesSelection.map((gradeItem) => (
-                <CircleButton
-                  key={gradeItem.course_id}
-                  buttonText={gradeItem.grade_label}
-                  actionCallback={() =>
-                    navigate(
-                      `/syllabus?courseId=${gradeItem.course_id}`,
-                    )
-                  }
-                />
-              ))}
+              {orderGradeSelection(gradesSelection).map(
+                (gradeItem) => (
+                  <CircleButton
+                    key={gradeItem.course_id}
+                    buttonText={gradeItem.grade_label}
+                    actionCallback={() =>
+                      navigate(
+                        `/syllabus?courseId=${gradeItem.course_id}`,
+                      )
+                    }
+                  />
+                ),
+              )}
             </GradeSelectionGrades>
           ) : null}
         </GradeSelection>
@@ -67,7 +73,6 @@ export default themed(SubjectAccordion);
 
 const SubjectContainer = styled.div`
   overflow: hidden;
-  //margin-bottom: 5px;
   border-radius: 10px;
   background-color: ${(props) => props.theme.colors.primary};
 `;
