@@ -4,16 +4,16 @@ import queryString from 'query-string';
 import serviceConstants from '../constants/serviceConstants';
 import styled from 'styled-components';
 import LogoSrc from '../svgs/logo.svg';
-import AnimationContainer from '../components/AnimationContainer';
 import debounced from '../functions/debounced.func';
 import SSNavbar from '../components/SSNavbar';
 import InlineSVG from 'react-inlinesvg';
 import { navigate } from '@reach/router';
+import PropTypes from 'prop-types';
 
 const debounceBuilder = debounced(200);
 
-const ServiceView = (props) => {
-  const { name } = queryString.parse(props.location.search);
+const ServiceView = ({ location }) => {
+  const { name } = queryString.parse(location.search);
   const [vpHeight, setVpHeight] = React.useState(
     window.screen.availHeight,
   );
@@ -98,6 +98,14 @@ const ServiceView = (props) => {
   );
 };
 
+ServiceView.propTypes = {
+  location: PropTypes.object,
+};
+
+ServiceView.defaultProps = {
+  location: {},
+};
+
 export default themed(ServiceView);
 
 const S = {};
@@ -123,7 +131,6 @@ S.IframeContainer = styled.div`
   width: 100%;
   height: ${(props) => `${props.vpHeight}px`};
   overflow: hidden;
-  //padding-top: 100%; /* 1:1 Aspect Ratio */
 
   iframe {
     width: 100%;
