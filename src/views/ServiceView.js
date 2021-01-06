@@ -5,7 +5,6 @@ import serviceConstants from '../constants/serviceConstants';
 import styled from 'styled-components';
 import LogoSrc from '../svgs/logo.svg';
 import debounced from '../functions/debounced.func';
-import SSNavbar from '../components/SSNavbar';
 import InlineSVG from 'react-inlinesvg';
 import { navigate } from '@reach/router';
 import PropTypes from 'prop-types';
@@ -83,18 +82,15 @@ const ServiceView = ({ location }) => {
     }
   };
   return (
-    <React.Fragment>
-      <SSNavbar />
-      <S.ServiceContainer>
-        <S.IframeContainer vpHeight={vpHeight - 50}>
-          {getIframe()}
-        </S.IframeContainer>
-        <S.ExitButton onClick={() => navigate('/')}>
-          <span>Exit</span>
-          <InlineSVG src={LogoSrc} />
-        </S.ExitButton>
-      </S.ServiceContainer>
-    </React.Fragment>
+    <S.ServiceContainer>
+      <S.IframeContainer vpHeight={vpHeight - 50}>
+        {getIframe()}
+      </S.IframeContainer>
+      <S.ExitButton onClick={() => navigate('/')}>
+        <span>Exit</span>
+        <InlineSVG src={LogoSrc} />
+      </S.ExitButton>
+    </S.ServiceContainer>
   );
 };
 
@@ -116,21 +112,15 @@ S.ServiceContainer = styled.div`
   position: relative;
   z-index: 999;
   background-color: ${(props) => props.theme.colors.white};
-
-  .exit-button {
-    position: absolute;
-    bottom: 20px;
-    left: 0px;
-  }
+  display: flex;
+  flex-direction: column;
 `;
 
 S.IframeContainer = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: ${(props) => `${props.vpHeight}px`};
-  overflow: hidden;
+  height: 100%;
+  flex-grow: 1;
+  overflow: scroll;
 
   iframe {
     width: 100%;
@@ -150,8 +140,6 @@ S.ExitButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: fixed;
-  bottom: 0;
 
   & > svg {
     width: 25px;
