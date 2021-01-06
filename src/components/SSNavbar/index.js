@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import themed from '../../functions/themed';
-import SVG from '../SVG';
 import LogoSrc from 'svgs/logo.svg';
 import YenzaSrc from 'svgs/yenza-logo.svg';
 import RLSrc from 'svgs/rl.svg';
@@ -9,7 +8,6 @@ import SnapplifySrc from 'images/snapplify.png';
 import { navigate, Location } from '@reach/router';
 import { darken } from 'polished';
 import serviceConstants from '../../constants/serviceConstants';
-import BlockLoader from '../BlockLoader';
 import InlineSVG from 'react-inlinesvg';
 
 const isSameNavButtonActive = (pathname = '') => {
@@ -119,10 +117,6 @@ const StyledMobileNavContainer = styled.div`
   padding: 10px;
   display: block;
 `;
-
-StyledMobileNavContainer.defaultProps = {
-  mobileNavbarActive: true,
-};
 
 const MobileNavItem = styled.div`
   display: flex;
