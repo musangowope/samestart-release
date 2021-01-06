@@ -12,7 +12,6 @@ const EntranceView = () => {
     <ShapedBackground>
       <GenericSection title="Begin your journey">
         <div className="mb-5">
-          <div>{window.location.href}</div>
           <ActionCardLink
             to={`/service?name=${serviceConstants.YENZA_SERVICE}`}
             cardTitle="Career"
