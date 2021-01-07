@@ -120,6 +120,7 @@ S.IframeContainer = styled.div`
   width: 100%;
   height: 100%;
   flex-grow: 1;
+  overflow: scroll;
 
   iframe {
     width: 100%;
