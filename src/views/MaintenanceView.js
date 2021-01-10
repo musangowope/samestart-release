@@ -1,13 +1,11 @@
 import React from 'react';
 import ThembiSrc from 'images/thembi-cell.png';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import themed from '../functions/themed';
 import InstagramSrc from 'svgs/instagram.svg';
 import LinkedInSrc from 'svgs/linkedin.svg';
 import MailSrc from 'svgs/mail.svg';
 import InlineSVG from 'react-inlinesvg';
-import getUrlParams from '../functions/getUrlParams.func';
 
 const StyledMaintenanceContainer = styled.div`
   position: relative;
