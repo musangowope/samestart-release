@@ -4,30 +4,12 @@ import queryString from 'query-string';
 import serviceConstants from '../constants/serviceConstants';
 import styled from 'styled-components';
 import LogoSrc from '../svgs/logo.svg';
-import debounced from '../functions/debounced.func';
 import InlineSVG from 'react-inlinesvg';
 import { navigate } from '@reach/router';
 import PropTypes from 'prop-types';
 
-const debounceBuilder = debounced(200);
-
 const ServiceView = ({ location }) => {
   const { name } = queryString.parse(location.search);
-  const [vpHeight, setVpHeight] = React.useState(
-    window.screen.availHeight,
-  );
-
-  const handleWindowResize = React.useCallback(() => {
-    const height = window.screen.availHeight;
-    debounceBuilder(() => setVpHeight(height));
-  }, []);
-
-  React.useEffect(() => {
-    window.addEventListener('resize', handleWindowResize);
-    return () =>
-      window.removeEventListener('resize', handleWindowResize);
-  }, [handleWindowResize]);
-
   const getIframe = () => {
     switch (true) {
       case name === serviceConstants.YENZA_SERVICE:
@@ -66,9 +48,7 @@ const ServiceView = ({ location }) => {
   };
   return (
     <S.ServiceContainer>
-      <S.IframeContainer vpHeight={vpHeight - 50}>
-        {getIframe()}
-      </S.IframeContainer>
+      <S.IframeContainer>{getIframe()}</S.IframeContainer>
       <S.ExitButton onClick={() => navigate('/')}>
         <span>Exit</span>
         <InlineSVG src={LogoSrc} />
