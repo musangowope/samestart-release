@@ -1,47 +1,47 @@
 import React from 'react';
-import { Router } from '@reach/router';
-import HomeView from './views/HomeView';
+import { createGlobalStyle } from 'styled-components';
+import { Router, Location } from '@reach/router';
 import SubjectsView from './views/SubjectsView';
 import LessonView from './views/LessonView';
-import SSNavbar from './components/SSNavbar';
 import SyllabusView from './views/SyllabusView';
 import ServiceView from './views/ServiceView';
-import { getAyoba } from './functions/getAyoba.func';
 import MaintenanceView from './views/MaintenanceView';
 import EntranceView from './views/EntranceView';
 
-const baseContextState = {
-  contextState: {
-    mobileNavbarActive: true,
-  },
-  setContext: () => null,
-};
-
-export const GlobalContext = React.createContext(baseContextState);
+const ServiceViewGlobalStylOverride = createGlobalStyle`
+html,
+body,
+div[id='root'] {
+    height: calc(100vh - 50px);
+   
+}
+`;
 
 const App = () => {
-  const [context, setContext] = React.useState(baseContextState);
-  const contextObj = {
-    contextState: context.contextState,
-    setContext,
-  };
   let inAyoba = process.env.REACT_APP_IN_AYOBA === 'true';
   return (
-    <GlobalContext.Provider value={contextObj}>
-      <Router>
-        {inAyoba ? (
-          <React.Fragment>
-            <EntranceView path="/" />
-            <SyllabusView path="syllabus" />
-            <SubjectsView path="subjects" />
-            <LessonView path="lesson" />
-            <ServiceView path="service" />
-          </React.Fragment>
-        ) : (
-          <MaintenanceView path="/" />
-        )}
-      </Router>
-    </GlobalContext.Provider>
+    <Location>
+      {({ location: { pathname } }) => (
+        <React.Fragment>
+          {pathname === '/service' ? (
+            <ServiceViewGlobalStylOverride />
+          ) : null}
+          <Router>
+            {inAyoba ? (
+              <React.Fragment>
+                <EntranceView path="/" />
+                <SyllabusView path="syllabus" />
+                <SubjectsView path="subjects" />
+                <LessonView path="lesson" />
+                <ServiceView path="service" />
+              </React.Fragment>
+            ) : (
+              <MaintenanceView path="/" />
+            )}
+          </Router>
+        </React.Fragment>
+      )}
+    </Location>
   );
 };
 App.propTypes = {};
