@@ -28,26 +28,6 @@ const ServiceView = ({ location }) => {
       window.removeEventListener('resize', handleWindowResize);
   }, [handleWindowResize]);
 
-  const handleScreenRotation = React.useCallback(() => {
-    const newHeight = window.screen.availHeight;
-    window.setTimeout(() => {
-      setVpHeight(newHeight);
-    }, 200);
-  }, []);
-
-  React.useEffect(() => {
-    window.addEventListener(
-      'orientationchange',
-      handleScreenRotation,
-    );
-    return () => {
-      window.removeEventListener(
-        'orientationchange',
-        handleScreenRotation,
-      );
-    };
-  }, [handleScreenRotation]);
-
   const getIframe = () => {
     switch (true) {
       case name === serviceConstants.YENZA_SERVICE:
@@ -56,6 +36,7 @@ const ServiceView = ({ location }) => {
             height="100%"
             width="100%"
             src="https://app.yenza.me/"
+            title="Yenza"
             allowFullScreen={true}
           />
         );
@@ -64,6 +45,7 @@ const ServiceView = ({ location }) => {
           <iframe
             height="100%"
             width="100%"
+            title="Reflective Learning"
             src="https://reflectivelearning.co.za/"
             allowFullScreen={true}
           />
@@ -73,6 +55,7 @@ const ServiceView = ({ location }) => {
           <iframe
             height="100%"
             width="100%"
+            title="Snapplify"
             src="https://www.snapplify.com/za/freeaccess"
             allowFullScreen={true}
           />
@@ -119,7 +102,7 @@ S.ServiceContainer = styled.div`
 S.IframeContainer = styled.div`
   width: 100%;
   height: 100%;
-  flex-grow: 1;
+  flex: 1;
   overflow: scroll;
 
   iframe {
@@ -127,9 +110,6 @@ S.IframeContainer = styled.div`
     height: 100%;
   }
 `;
-S.IframeContainer.defaultProps = {
-  vpHeight: window.screen.availHeight,
-};
 
 S.ExitButton = styled.button`
   background-color: ${(props) => props.theme.colors.tertiary};
