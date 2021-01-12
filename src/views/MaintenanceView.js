@@ -7,6 +7,57 @@ import LinkedInSrc from 'svgs/linkedin.svg';
 import MailSrc from 'svgs/mail.svg';
 import InlineSVG from 'react-inlinesvg';
 
+const MaintenanceView = () => {
+  return (
+    <StyledMaintenanceContainer>
+      <StyledBackgroundCircle />
+      <StyledTrapezium />
+      <StyledMaintenceContent>
+        <StyledMaintenanceTextContainer>
+          <StyledMaintenancePrimaryHeading>
+            Same Start
+          </StyledMaintenancePrimaryHeading>
+          <StyledMaintenanceSecondaryHeading>
+            Click{' '}
+            <a
+              href="https://play.google.com/store/apps/details?id=com.ayoba.ayoba&hl=en_ZA&gl=US"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              here
+            </a>{' '}
+            to download Ayoba and access our app data free
+          </StyledMaintenanceSecondaryHeading>
+          <StyledSocialIconsContainer>
+            <StyledSocialIconItemLink
+              href="https://www.instagram.com/same_start/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <InlineSVG src={InstagramSrc} />
+            </StyledSocialIconItemLink>
+            <StyledSocialIconItemLink
+              href="https://www.linkedin.com/company/same-start/?viewAsMember=true"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <InlineSVG src={LinkedInSrc} />
+            </StyledSocialIconItemLink>
+            <StyledSocialIconItemLink href="mailto:admin@samestart.com">
+              <InlineSVG src={MailSrc} />
+            </StyledSocialIconItemLink>
+          </StyledSocialIconsContainer>
+        </StyledMaintenanceTextContainer>
+        <StyledMaintenanceImgWrapper>
+          <img src={ThembiSrc} alt="coming-soon" />
+        </StyledMaintenanceImgWrapper>
+      </StyledMaintenceContent>
+    </StyledMaintenanceContainer>
+  );
+};
+
+export default themed(MaintenanceView);
+
 const StyledMaintenanceContainer = styled.div`
   position: relative;
   height: 100%;
@@ -80,23 +131,35 @@ const StyledMaintenanceTextContainer = styled.div`
     justify-content: center;
     flex-direction: column;
     text-align: center;
+    padding: ${(props) => props.theme.marginPaddings[2]};
   }
 `;
 
 const StyledMaintenancePrimaryHeading = styled.div`
   font-size: ${(props) => props.theme.fontSizes[7]};
-  //text-transform: uppercase;
   font-weight: bold;
   color: ${(props) => props.theme.colors.primary};
   margin-bottom: 10px;
+  @media screen and (max-width: ${(props) =>
+      props.theme.breakpoints.md}) {
+    font-size: ${(props) => props.theme.fontSizes[5]};
+  }
 `;
 
 const StyledMaintenanceSecondaryHeading = styled.div`
-  font-size: ${(props) => props.theme.fontSizes[5]};
+  font-size: ${(props) => props.theme.fontSizes[4]};
   color: ${(props) => props.theme.colors.secondary};
-  //text-transform: uppercase;
   font-weight: bold;
   margin-bottom: 10px;
+
+  @media screen and (max-width: ${(props) =>
+      props.theme.breakpoints.md}) {
+    font-size: ${(props) => props.theme.fontSizes[3]};
+  }
+
+  a {
+    color: ${(props) => props.theme.colors.tertiary};
+  }
 `;
 
 const StyledMaintenanceImgWrapper = styled.div`
@@ -136,49 +199,3 @@ const StyledSocialIconItemLink = styled.a`
     margin-right: 0;
   }
 `;
-
-const MaintenanceView = () => {
-  return (
-    <StyledMaintenanceContainer>
-      <StyledBackgroundCircle />
-      <StyledTrapezium />
-      <StyledMaintenceContent>
-        <StyledMaintenanceTextContainer>
-          <StyledMaintenancePrimaryHeading>
-            Same Start
-          </StyledMaintenancePrimaryHeading>
-          <StyledMaintenanceSecondaryHeading>
-            Coming Soon..
-          </StyledMaintenanceSecondaryHeading>
-          <StyledSocialIconsContainer>
-            <StyledSocialIconItemLink
-              href="https://www.instagram.com/same_start/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <InlineSVG src={InstagramSrc} />
-            </StyledSocialIconItemLink>
-            <StyledSocialIconItemLink
-              href="https://www.linkedin.com/company/same-start/?viewAsMember=true"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <InlineSVG src={LinkedInSrc} />
-            </StyledSocialIconItemLink>
-            <StyledSocialIconItemLink href="mailto:admin@samestart.com">
-              <InlineSVG src={MailSrc} />
-            </StyledSocialIconItemLink>
-          </StyledSocialIconsContainer>
-        </StyledMaintenanceTextContainer>
-        <StyledMaintenanceImgWrapper>
-          <img src={ThembiSrc} alt="coming-soon" />
-        </StyledMaintenanceImgWrapper>
-      </StyledMaintenceContent>
-    </StyledMaintenanceContainer>
-  );
-};
-
-MaintenanceView.propTypes = {};
-MaintenanceView.defaultProps = {};
-
-export default themed(MaintenanceView);
