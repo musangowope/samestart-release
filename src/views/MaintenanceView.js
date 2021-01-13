@@ -15,7 +15,7 @@ const MaintenanceView = () => {
       <StyledMaintenceContent>
         <StyledMaintenanceTextContainer>
           <StyledMaintenancePrimaryHeading>
-            Same Start
+            Same<span className="alt-color">Start</span>
           </StyledMaintenancePrimaryHeading>
           <StyledMaintenanceSecondaryHeading>
             Click{' '}
@@ -26,7 +26,9 @@ const MaintenanceView = () => {
             >
               here
             </a>{' '}
-            to download Ayoba and access our app data free
+            to download Ayoba and access SameStart. Also feel free to
+            connect with us on Instagram and LinkedIn or contact us
+            directly via mail
           </StyledMaintenanceSecondaryHeading>
           <StyledSocialIconsContainer>
             <StyledSocialIconItemLink
@@ -114,6 +116,7 @@ const StyledMaintenceContent = styled.div`
 `;
 
 const StyledMaintenanceTextContainer = styled.div`
+  flex-basis: 40%;
   align-self: center;
   margin-right: 5rem;
   @media screen and (max-width: ${(props) =>
@@ -137,20 +140,26 @@ const StyledMaintenanceTextContainer = styled.div`
 
 const StyledMaintenancePrimaryHeading = styled.div`
   font-size: ${(props) => props.theme.fontSizes[7]};
-  font-weight: bold;
+  font-weight: 400;
   color: ${(props) => props.theme.colors.primary};
   margin-bottom: 10px;
+  text-transform: uppercase;
   @media screen and (max-width: ${(props) =>
       props.theme.breakpoints.md}) {
     font-size: ${(props) => props.theme.fontSizes[5]};
+  }
+
+  .alt-color {
+    color: ${(props) => props.theme.colors.tertiary};
   }
 `;
 
 const StyledMaintenanceSecondaryHeading = styled.div`
   font-size: ${(props) => props.theme.fontSizes[4]};
   color: ${(props) => props.theme.colors.secondary};
-  font-weight: bold;
-  margin-bottom: 10px;
+  //font-weight: bold;
+  margin-bottom: 25px;
+  //max-width: 60%;
 
   @media screen and (max-width: ${(props) =>
       props.theme.breakpoints.md}) {
@@ -158,7 +167,7 @@ const StyledMaintenanceSecondaryHeading = styled.div`
   }
 
   a {
-    color: ${(props) => props.theme.colors.tertiary};
+    color: ${(props) => props.theme.colors.primary};
   }
 `;
 
@@ -192,8 +201,17 @@ const StyledSocialIconsContainer = styled.div`
 `;
 
 const StyledSocialIconItemLink = styled.a`
-  display: block;
+  display: flex;
+  border-radius: 30px;
+  align-items: center;
+  justify-content: center;
   margin-right: 20px;
+  height: 65px;
+  width: 65px;
+  border: 2px solid ${(props) => props.theme.colors.secondary};
+  svg {
+    width: 40px;
+  }
 
   &:last-child {
     margin-right: 0;
