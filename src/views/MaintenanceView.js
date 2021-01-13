@@ -28,7 +28,7 @@ const MaintenanceView = () => {
             </a>{' '}
             to download Ayoba and access SameStart. Also feel free to
             connect with us on Instagram and LinkedIn or contact us
-            directly via mail
+            directly via email
           </StyledMaintenanceSecondaryHeading>
           <StyledSocialIconsContainer>
             <StyledSocialIconItemLink
@@ -109,7 +109,7 @@ const StyledMaintenceContent = styled.div`
   @media screen and (max-width: ${(props) =>
       props.theme.breakpoints.md}) {
     display: block;
-    padding: 0;
+    padding: 20px;
     width: 100%;
     height: 100%;
   }
@@ -146,7 +146,7 @@ const StyledMaintenancePrimaryHeading = styled.div`
   text-transform: uppercase;
   @media screen and (max-width: ${(props) =>
       props.theme.breakpoints.md}) {
-    font-size: ${(props) => props.theme.fontSizes[5]};
+    font-size: ${(props) => props.theme.fontSizes[6]};
   }
 
   .alt-color {
