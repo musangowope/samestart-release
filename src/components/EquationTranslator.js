@@ -7,10 +7,6 @@ import { removeWhiteSpaces } from '../functions/removeWhiteSpaces.func';
 
 addStyles();
 
-const EditableMathField = MathQuill
-  ? MathQuill.EditableMathField
-  : null;
-
 const DisableLayer = styled.div`
   position: absolute;
   width: 100%;
@@ -59,7 +55,6 @@ const EquationTranslator = ({
   passedDownLatex,
   editable,
   inline,
-  editorTitle,
   onChange,
 }) => {
   const [latex, setLatex] = React.useState(
