@@ -5,7 +5,6 @@ import { createMarkup } from '../functions/createMarkup.func';
 import styled from 'styled-components';
 import themed from '../functions/themed';
 import EllipsisIconSrc from 'svgs/ellipsis.svg';
-import SVG from './SVG';
 import InlineSVG from 'react-inlinesvg';
 
 const TranslatableIconContainer = styled.div`
@@ -16,9 +15,7 @@ const TranslatableIconContainer = styled.div`
   }
 `;
 
-const BlockContentContainer = styled.div`
-  //margin-bottom: 15px;
-`;
+const BlockContentContainer = styled.div``;
 
 const BlockContent = styled.div`
   transition: 500ms ease-in-out;
@@ -96,6 +93,7 @@ const BlockTypeInterpreter = ({
   translatable,
 }) => {
   const handleBlockClick = (e) => {
+    /*AWEZA Term logic*/
     const element = e.target.closest('[data-aweza-id]');
     if (element && e.currentTarget.contains(element)) {
       const awezaId = element.dataset.awezaId;

@@ -12,23 +12,17 @@ const AwezaTitle = styled.div`
 
 const AwezaContent = ({
   termTitle,
-  audio,
   langValue,
   langLabel,
   termDescription,
   langOpts,
-  tts,
-  categories,
   translations,
 }) => {
   const [termTitleState, setTermTitle] = React.useState(termTitle);
   const [langValueState, setLangValue] = React.useState(langValue);
-  const [audioState, setAudio] = React.useState(audio);
   const [termDescriptionState, setTermDescription] = React.useState(
     termDescription,
   );
-  const [ttsState, setTts] = React.useState(tts);
-  const [categoriesState, setCategories] = React.useState(categories);
 
   React.useEffect(() => {
     const translateTermData = translations.filter(
@@ -37,8 +31,6 @@ const AwezaContent = ({
     if (translateTermData) {
       setTermTitle(translateTermData.text);
       setTermDescription(translateTermData.description);
-      setAudio(translateTermData.audio);
-      setTts(translateTermData.tts);
     }
   }, [langValueState, translations]);
 
