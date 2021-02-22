@@ -8,21 +8,6 @@ import SimpleModal from './SimpleModal';
 import CloseSrc from '../svgs/close.svg';
 import CircleButton from './CircleButton';
 
-const StyledHelpButton = styled.button`
-  background-color: ${(props) => props.theme.colors.secondary};
-  color: ${(props) => props.theme.colors.white};
-  //border-radius: 50%;
-  border: none;
-  padding: 0;
-  height: 50px;
-  width: 50px;
-  font-size: ${(props) => props.theme.fontSizes[4]};
-  position: absolute;
-  right: 0;
-  top: 0;
-  display: none;
-`;
-
 const StyledLink = styled(Link)`
   border: 3px solid ${(props) => props.theme.colors.tertiary};
   border-radius: 15px;
