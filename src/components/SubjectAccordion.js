@@ -81,12 +81,6 @@ const SVGWrapper = styled.span`
   margin-right: 10px;
 `;
 
-const StyledBlockLoaderWrapper = styled.div`
-  .block-loader {
-    border-radius: 50%;
-  }
-`;
-
 const SubjectContainerHeader = styled(TextButton)`
   display: flex;
   justify-content: space-between;
