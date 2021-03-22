@@ -26,10 +26,10 @@ const SSNavbar = () => {
     <Location>
       {({ location: { pathname, search } }) => {
         return (
-          <StyledMobileNavContainer className="mobile-nav-container">
+          <StyledMobileNavContainer className="nav-container">
             <div className="columns is-mobile">
               <div className="column is-one-quarter">
-                <MobileNavItem>
+                <StyledMobileNavItem>
                   <StyledMobileNavButton
                     disabled
                     isSelected={isSameNavButtonActive(pathname)}
@@ -37,10 +37,10 @@ const SSNavbar = () => {
                   >
                     <InlineSVG src={LogoSrc} />
                   </StyledMobileNavButton>
-                </MobileNavItem>
+                </StyledMobileNavItem>
               </div>
               <div className="column is-one-quarter">
-                <MobileNavItem>
+                <StyledMobileNavItem>
                   <StyledYenzaNavButton
                     isSelected={
                       pathname.includes('/service') &&
@@ -56,10 +56,10 @@ const SSNavbar = () => {
                   >
                     <InlineSVG src={YenzaSrc} />
                   </StyledYenzaNavButton>
-                </MobileNavItem>
+                </StyledMobileNavItem>
               </div>
               <div className="column is-one-quarter">
-                <MobileNavItem>
+                <StyledMobileNavItem>
                   <StyledSnapplifyNavButton
                     disabled
                     isSelected={
@@ -76,10 +76,10 @@ const SSNavbar = () => {
                   >
                     <img src={SnapplifySrc} alt="snapplify" />
                   </StyledSnapplifyNavButton>
-                </MobileNavItem>
+                </StyledMobileNavItem>
               </div>
               <div className="column is-one-quarter">
-                <MobileNavItem>
+                <StyledMobileNavItem>
                   <StyledRLNavButton
                     disabled
                     onClick={() =>
@@ -96,7 +96,7 @@ const SSNavbar = () => {
                   >
                     <InlineSVG src={RLSrc} />
                   </StyledRLNavButton>
-                </MobileNavItem>
+                </StyledMobileNavItem>
               </div>
             </div>
           </StyledMobileNavContainer>
@@ -108,17 +108,20 @@ const SSNavbar = () => {
 
 export default themed(SSNavbar);
 
+export const NavMenuHeight = 74;
+
 const StyledMobileNavContainer = styled.div`
   background-color: ${(props) => props.theme.colors.secondary};
   position: fixed;
-  z-index: 99;
+  z-index: 9;
   width: 100%;
   bottom: 0;
   padding: 10px;
   display: block;
+  height: ${() => `${NavMenuHeight}px`};
 `;
 
-const MobileNavItem = styled.div`
+const StyledMobileNavItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
