@@ -3,64 +3,32 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Loader from './Loader';
 import AnimationContainer from './AnimationContainer';
-
-const GenericSectTitle = styled.div`
-  background-color: ${(props) => props.theme.colors.secondary};
-  color: ${(props) => props.theme.colors.white};
-  margin-bottom: 40px;
-  padding: 10px 10px 10px 20px;
-  border-bottom-right-radius: 40px;
-  border-top-left-radius: 40px;
-  font-size: ${(props) => props.theme.fontSizes[4]};
-`;
-
-const GenericContent = styled.div`
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-`;
-
-const GenericContainer = styled.div`
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 20px;
-  height: 100%;
-  display: flex;
-  flex-flow: column nowrap;
-  flex-grow: 1;
-`;
-
-const LoaderContainer = styled.div`
-  margin-top: auto;
-  margin-bottom: auto;
-`;
+import { NavMenuHeight } from './SSNavbar';
 
 const GenericSection = ({ children, title, contentIsLoading }) => {
   return (
-    <GenericContent className="generic-section">
+    <StyledGenericContent className="generic-section">
       {contentIsLoading ? (
-        <GenericContainer className="generic-section__container">
-          <LoaderContainer>
+        <StyledGenericContainer className="generic-section__container">
+          <StyledLoaderContainer>
             <Loader />
-          </LoaderContainer>
-        </GenericContainer>
+          </StyledLoaderContainer>
+        </StyledGenericContainer>
       ) : (
         <AnimationContainer animatedClassName="animate__fadeIn">
-          <GenericContainer className="generic-section__container">
+          <StyledGenericContainer className="generic-section__container">
             {title && (
-              <GenericSectTitle className="generic-section__container__title">
+              <StyledGenericSectTitle className="generic-section__container__title">
                 {title}
-              </GenericSectTitle>
+              </StyledGenericSectTitle>
             )}
-            <GenericContent className="generic-section__container__content">
+            <StyledGenericContent className="generic-section__container__content">
               {children}
-            </GenericContent>
-          </GenericContainer>
+            </StyledGenericContent>
+          </StyledGenericContainer>
         </AnimationContainer>
       )}
-    </GenericContent>
+    </StyledGenericContent>
   );
 };
 
@@ -76,3 +44,37 @@ GenericSection.defaultProps = {
 };
 
 export default GenericSection;
+
+const StyledGenericSectTitle = styled.div`
+  background-color: ${(props) => props.theme.colors.secondary};
+  color: ${(props) => props.theme.colors.white};
+  margin-bottom: 40px;
+  padding: 10px 10px 10px 20px;
+  border-bottom-right-radius: 40px;
+  border-top-left-radius: 40px;
+  font-size: ${(props) => props.theme.fontSizes[4]};
+`;
+
+const StyledGenericContent = styled.div`
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-bottom: ${() => `${NavMenuHeight}px`};
+`;
+
+const StyledGenericContainer = styled.div`
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  flex-grow: 1;
+`;
+
+const StyledLoaderContainer = styled.div`
+  margin-top: auto;
+  margin-bottom: auto;
+`;
