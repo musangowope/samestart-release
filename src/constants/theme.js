@@ -51,6 +51,7 @@ export default {
   radii: ['0px', '2px', '4px', '8px'],
   borderRadius: '6px',
   colors: {
+    black: '#000000',
     primary: '#ff8600',
     secondary: '#00ACD4',
     tertiary: '#2B4570',
