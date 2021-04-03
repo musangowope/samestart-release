@@ -20,5 +20,6 @@ export default () => {
 
   const handleOrientationChange = (e) =>
     setScreenOrientation(e.target.screen.orientation.type);
+
   return screenOrientation;
 };
