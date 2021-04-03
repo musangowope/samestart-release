@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { handleOutsideElementClick } from 'functions/handleOutsideElementClick.func';
-import styled, { css } from 'styled-components';
+import styled  from 'styled-components';
 import { transparentize } from 'polished';
 import themed from 'functions/themed';
 import ReactDOM from 'react-dom';
