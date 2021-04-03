@@ -8,6 +8,118 @@ import EllipsisIconSrc from 'svgs/ellipsis.svg';
 import InlineSVG from 'react-inlinesvg';
 import Gallery from '../components/Gallery';
 
+const getEquationElement = (html = '') => {
+  const katexNode = document.createElement('div');
+  katexNode.innerHTML = html;
+  const katex = katexNode.querySelector(
+    '.wp-block-katex-display-block',
+  ).innerHTML;
+  return <EquationTranslator passedDownLatex={katex} />;
+};
+
+const getGalleryComponent = (html = '') => {
+  const domNode = document.createElement('div');
+  domNode.innerHTML = html;
+  const galleryCaptionElement = domNode.querySelector(
+    '.blocks-gallery-caption',
+  );
+  const galleryCaption = galleryCaptionElement.innerText;
+  const galleryNodeList = [
+    ...domNode.querySelectorAll('.blocks-gallery-item'),
+  ];
+  if (galleryNodeList.length) {
+    const galleryItems = galleryNodeList.map((item) => {
+      const imgElement = item.querySelector('figure img');
+      const imgSrc = imgElement.src;
+      const slideCaptionElement = item.querySelector(
+        '.blocks-gallery-item__caption',
+      );
+      const slideCaption = slideCaptionElement.innerHTML;
+      return {
+        imgSrc,
+        slideCaption,
+      };
+    });
+    return (
+      <Gallery
+        galleryItems={galleryItems}
+        galleryCaption={galleryCaption}
+      />
+    );
+  }
+  return <div />;
+};
+
+const BlockTypeInterpreter = ({
+  blockName,
+  innerHTML,
+  // setAwezaId,
+  isActive,
+  translatable,
+}) => {
+  // const handleBlockClick = (e) => {
+  //   /*AWEZA Term logic*/
+  //   const element = e.target.closest('[data-aweza-id]');
+  //   if (element && e.currentTarget.contains(element)) {
+  //     const awezaId = element.dataset.awezaId;
+  //     setAwezaId(awezaId);
+  //   }
+  // };
+
+  const getBlockContent = () => {
+    switch (blockName) {
+      case 'katex/display-block':
+        return getEquationElement(innerHTML);
+      case 'core/gallery':
+        return getGalleryComponent(innerHTML);
+      default: {
+        return (
+          <BlockContent
+            translatable={translatable}
+            isActive={isActive}
+            dangerouslySetInnerHTML={createMarkup(innerHTML)}
+            // onKeyPress={() => null}
+            role="button"
+            tabIndex={1}
+            // onClick={handleBlockClick}
+          />
+        );
+      }
+    }
+  };
+
+  return (
+    <BlockContentContainer>
+      {getBlockContent()}
+      {translatable && (
+        <TranslatableIconContainer>
+          <InlineSVG src={EllipsisIconSrc} />
+        </TranslatableIconContainer>
+      )}
+    </BlockContentContainer>
+  );
+};
+
+BlockTypeInterpreter.propTypes = {
+  blockName: PropTypes.string,
+  innerBlocks: PropTypes.array,
+  innerHTML: PropTypes.any,
+  innerContent: PropTypes.any,
+  setAwezaId: PropTypes.func,
+  isActive: PropTypes.bool,
+  translatable: PropTypes.bool,
+};
+BlockTypeInterpreter.defaultProps = {
+  blockName: '',
+  innerBlocks: [],
+  innerHTML: '',
+  setAwezaId: () => false,
+  isActive: false,
+  translatable: false,
+};
+
+export default themed(BlockTypeInterpreter);
+
 const TranslatableIconContainer = styled.div`
   svg {
     width: 35px;
@@ -76,115 +188,3 @@ const BlockContent = styled.div`
       ? props.theme.colors.primary
       : props.theme.colors.base};
 `;
-
-const getEquationElement = (html = '') => {
-  const katexNode = document.createElement('div');
-  katexNode.innerHTML = html;
-  const katex = katexNode.querySelector(
-    '.wp-block-katex-display-block',
-  ).innerHTML;
-  return <EquationTranslator passedDownLatex={katex} />;
-};
-
-const getGalleryComponent = (html = '') => {
-  const domNode = document.createElement('div');
-  domNode.innerHTML = html;
-  const galleryCaptionElement = domNode.querySelector(
-    '.blocks-gallery-caption',
-  );
-  const galleryCaption = galleryCaptionElement.innerText;
-  const galleryNodeList = [
-    ...domNode.querySelectorAll('.blocks-gallery-item'),
-  ];
-  if (galleryNodeList.length) {
-    const galleryItems = galleryNodeList.map((item) => {
-      const imgElement = item.querySelector('figure img');
-      const imgSrc = imgElement.src;
-      const slideCaptionElement = item.querySelector(
-        '.blocks-gallery-item__caption',
-      );
-      const slideCaption = slideCaptionElement.innerHTML;
-      return {
-        imgSrc,
-        slideCaption,
-      };
-    });
-    return (
-      <Gallery
-        galleryItems={galleryItems}
-        galleryCaption={galleryCaption}
-      />
-    );
-  }
-  return <div></div>;
-};
-
-const BlockTypeInterpreter = ({
-  blockName,
-  innerHTML,
-  setAwezaId,
-  isActive,
-  translatable,
-}) => {
-  const handleBlockClick = (e) => {
-    /*AWEZA Term logic*/
-    const element = e.target.closest('[data-aweza-id]');
-    if (element && e.currentTarget.contains(element)) {
-      const awezaId = element.dataset.awezaId;
-      setAwezaId(awezaId);
-    }
-  };
-
-  const getBlockContent = () => {
-    switch (blockName) {
-      case 'katex/display-block':
-        return getEquationElement(innerHTML);
-      case 'core/gallery':
-        return getGalleryComponent(innerHTML);
-      default: {
-        return (
-          <BlockContent
-            translatable={translatable}
-            isActive={isActive}
-            dangerouslySetInnerHTML={createMarkup(innerHTML)}
-            // onKeyPress={() => null}
-            role="button"
-            tabIndex={1}
-            // onClick={handleBlockClick}
-          />
-        );
-      }
-    }
-  };
-
-  return (
-    <BlockContentContainer>
-      {getBlockContent()}
-      {translatable && (
-        <TranslatableIconContainer>
-          <InlineSVG src={EllipsisIconSrc} />
-        </TranslatableIconContainer>
-      )}
-    </BlockContentContainer>
-  );
-};
-
-BlockTypeInterpreter.propTypes = {
-  blockName: PropTypes.string,
-  innerBlocks: PropTypes.array,
-  innerHTML: PropTypes.any,
-  innerContent: PropTypes.any,
-  setAwezaId: PropTypes.func,
-  isActive: PropTypes.bool,
-  translatable: PropTypes.bool,
-};
-BlockTypeInterpreter.defaultProps = {
-  blockName: '',
-  innerBlocks: [],
-  innerHTML: '',
-  setAwezaId: () => false,
-  isActive: false,
-  translatable: false,
-};
-
-export default themed(BlockTypeInterpreter);
