@@ -15,11 +15,15 @@ const ZoomController = ({
   zoomInFn,
   zoomOutFn,
   closeFn,
+  resetZoomFn,
   currentZoomPercentage,
 }) => {
   return (
     <StyledZoomControllerWrapper>
       <StyledZoomButtonContainer>
+        <StyledResetButton onClick={resetZoomFn}>
+          Reset
+        </StyledResetButton>
         <StyledOutlineButton onClick={zoomInFn}>
           <InlineSVG src={PlusIconSrc} />
         </StyledOutlineButton>
@@ -42,17 +46,34 @@ ZoomController.propTypes = {
   zoomInFn: PropTypes.func,
   zoomOutFn: PropTypes.func,
   closeFn: PropTypes.func,
+  resetZoomFn: PropTypes.func,
   currentZoomPercentage: PropTypes.string,
 };
 ZoomController.defaultProps = {
   zoomInFn: () => false,
   zoomOutFn: () => false,
   closeFn: () => false,
+  resetZoomFn: () => false,
   currentZoomPercentage: '100%',
 };
 
+const StyledResetButton = styled.button`
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  padding: 0;
+  margin-right: 10px;
+  border-radius: 15px;
+  height: 30px;
+  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const StyledZoomControllerWrapper = styled(StyledControllerWrapper)`
-  width: 220px;
+  min-width: 270px;
+  width: auto;
 `;
 
 const StyledZoomButtonContainer = styled.div`

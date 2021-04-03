@@ -7,21 +7,24 @@ import EyeSrc from '../../svgs/eye.svg';
 import DownArrowSrc from '../../svgs/down-arrow.svg';
 import themed from '../../functions/themed';
 import { transparentize } from 'polished';
-import SimpleModal from '../SimpleModal';
-import Accordion from '../Accordion';
 import PrismaZoom from 'react-prismazoom';
 import SlideController from './SlideController';
 import ZoomController from './ZoomController';
+import Accordion from '../Accordion';
+import SimpleModal from '../SimpleModal';
+import orientations from '../../constants/orientations';
 import {
   closeFullScreen,
   requestFullScreen,
 } from '../../functions/toggleFullScreen.func';
 
-console.log(css);
+import useOrientationChange from '../../custom-hooks/useOrientationChange';
 
 const Gallery = ({ galleryItems, galleryCaption }) => {
   const prismaRef = React.useRef();
   const isMobileVpWidth = useIsMobile();
+
+  const screenOrientation = useOrientationChange();
 
   const toggle_accordion = 'toggle_accordion';
   const open_gallery_modal = 'open_gallery_modal';
@@ -103,6 +106,9 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
 
   const handleCloseGalleryModal = () => {
     if (galleryState.isModalOpen) {
+      if (prismaRef) {
+        prismaRef.current.reset();
+      }
       dispatch({
         type: close_gallery_modal,
       });
@@ -158,6 +164,12 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
         zoom,
       },
     });
+
+  const handleResetZoom = () => {
+    if (prismaRef) {
+      prismaRef.current.reset();
+    }
+  };
 
   return (
     <React.Fragment>
@@ -227,24 +239,29 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
                 src={
                   galleryItems[galleryState.currentSlideNumber].imgSrc
                 }
-                alt="Some Image"
+                alt={galleryCaption}
               />
             </div>
           </PrismaZoom>
         </ZoomWrapper>
 
-        <StyledZoomControllerWrapper>
+        <StyledZoomControllerWrapper
+          screenOrientation={screenOrientation}
+        >
           <ZoomController
             zoomInFn={handleGalleryZoomIn}
             zoomOutFn={handleGalleryZoomOut}
             closeFn={handleCloseGalleryModal}
+            resetZoomFn={handleResetZoom}
             currentZoomPercentage={`${
               parseInt(galleryState.zoom) * 100
             }%`}
           />
         </StyledZoomControllerWrapper>
 
-        <StyledControllerWrapper>
+        <StyledControllerWrapper
+          screenOrientation={screenOrientation}
+        >
           <SlideController
             currentSlideNumber={galleryState.currentSlideNumber}
             nextBtnFn={handleIncrementSlideNumber}
@@ -417,14 +434,26 @@ const StyledControllerWrapper = styled.div`
   left: 0;
   bottom: 0;
   top: 0;
-  margin-top: auto;
-  margin-bottom: auto;
-  margin-left: auto;
-  margin-right: -60px;
-  transform: rotate(-90deg);
   width: 200px;
   height: 65px;
+  margin: auto;
+
+  ${({ screenOrientation }) => {
+    if (screenOrientation === orientations.landscape_secondary) {
+      return css`
+        margin-bottom: 25px;
+      `;
+    }
+    return css`
+      margin-right: -60px;
+      transform: rotate(-90deg);
+    `;
+  }}
 `;
+
+StyledControllerWrapper.defaultProps = {
+  screenOrientation: orientations.portrait_primary,
+};
 
 const StyledZoomControllerWrapper = styled.div`
   position: fixed;
@@ -432,14 +461,28 @@ const StyledZoomControllerWrapper = styled.div`
   left: 0;
   bottom: 0;
   top: 0;
-  margin-top: 100px;
-  margin-bottom: auto;
-  margin-left: -65px;
-  margin-right: auto;
-  transform: rotate(-90deg);
+  margin: auto;
   width: 220px;
   height: 65px;
+  ${({ screenOrientation }) => {
+    if (screenOrientation === orientations.landscape_secondary) {
+      return css`
+        margin-right: 25px;
+        margin-top: 25px;
+      `;
+    }
+    return css`
+      margin-top: 135px;
+      margin-left: -65px;
+      margin-right: auto;
+      transform: rotate(-90deg);
+    `;
+  }}
 `;
+
+StyledZoomControllerWrapper.defaultProps = {
+  screenOrientation: orientations.portrait_primary,
+};
 
 const ZoomWrapper = styled.div`
   height: 100%;
