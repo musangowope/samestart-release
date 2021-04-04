@@ -131,6 +131,7 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
 
   const handleIncrementSlideNumber = () => {
     if (galleryState.currentSlideNumber < galleryItems.length - 1) {
+      handleResetZoom();
       dispatch({
         type: increment_slide_number,
       });
@@ -139,6 +140,7 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
 
   const handleDecrementSlideNumber = () => {
     if (galleryState.currentSlideNumber > 0) {
+      handleResetZoom();
       dispatch({
         type: decrement_slide_number,
       });
@@ -436,19 +438,21 @@ const StyledControllerWrapper = styled.div`
   top: 0;
   width: 200px;
   height: 65px;
-  margin: auto;
+  margin: auto auto 25px;
 
-  ${({ screenOrientation }) => {
-    if (screenOrientation === orientations.landscape_secondary) {
-      return css`
-        margin-bottom: 25px;
-      `;
-    }
-    return css`
-      margin-right: -60px;
-      transform: rotate(-90deg);
-    `;
-  }}
+  @media screen and (max-width: ${(props) =>
+      props.theme.breakpoints.sm}) {
+    ${({ screenOrientation }) => {
+      if (screenOrientation !== orientations.landscape_secondary) {
+        return css`
+          margin-right: -60px;
+          margin-bottom: auto;
+          transform: rotate(-90deg);
+        `;
+      }
+      return css``;
+    }}
+  }
 `;
 
 StyledControllerWrapper.defaultProps = {
@@ -461,23 +465,24 @@ const StyledZoomControllerWrapper = styled.div`
   left: 0;
   bottom: 0;
   top: 0;
-  margin: auto;
   width: 220px;
   height: 65px;
-  ${({ screenOrientation }) => {
-    if (screenOrientation === orientations.landscape_secondary) {
-      return css`
-        margin-right: 25px;
-        margin-top: 25px;
-      `;
-    }
-    return css`
-      margin-top: 135px;
-      margin-left: -65px;
-      margin-right: auto;
-      transform: rotate(-90deg);
-    `;
-  }}
+  margin: 25px 65px auto auto;
+
+  @media screen and (max-width: ${(props) =>
+      props.theme.breakpoints.sm}) {
+    ${({ screenOrientation }) => {
+      if (screenOrientation !== orientations.landscape_secondary) {
+        return css`
+          margin-top: 135px;
+          margin-left: -65px;
+          margin-right: auto;
+          transform: rotate(-90deg);
+        `;
+      }
+      return css``;
+    }}
+  }
 `;
 
 StyledZoomControllerWrapper.defaultProps = {
@@ -506,7 +511,7 @@ const ZoomWrapper = styled.div`
     .prisma-zoom__inner__image {
       height: 100vh;
       @media screen and (max-width: ${(props) =>
-          props.theme.breakpoints.sm}) {
+          props.theme.breakpoints.md}) {
         height: auto;
       }
     }
