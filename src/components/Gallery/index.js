@@ -226,7 +226,7 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
         closeAction={handleCloseGalleryModal}
         extraModalContentStyles={css`
           max-width: 100%;
-          overflow-x: auto;
+          overflow: hidden;
         `}
       >
         <ZoomWrapper isMobileVpWidth={isMobileVpWidth}>
