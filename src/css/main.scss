@@ -7,6 +7,10 @@ html {
     overflow: auto;
 }
 
+html {
+  overscroll-behavior-y: contain;
+}
+
 html,
 body,
 div[id='root'] {

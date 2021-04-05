@@ -15,6 +15,7 @@ import TertiaryButtonLink from '../../components/elements/buttons/TertiaryButton
 import SSNavbar from '../../components/SSNavbar';
 import useAxios from '../../custom-hooks/useAxios';
 import Loader from '../../components/Loader';
+import PropTypes from 'prop-types';
 
 const LessonButtonsContainer = styled.div`
   margin-bottom: 20px;
@@ -29,8 +30,6 @@ export const QuizLoaderWrapper = styled.div`
   transform: translateY(-50%);
   top: 50%;
 `;
-
-const ModalContainer = styled.div``;
 
 const CloseButtonWrapper = styled.div`
   margin-bottom: 20px;
@@ -100,59 +99,59 @@ const LessonView = (props) => {
           </React.Fragment>
         )}
       </GenericSection>
-      <ModalContainer>
-        <SimpleModal
-          isOpen={hasValue(termId)}
-          closeAction={() => setTermId('')}
-        >
-          <CloseButtonWrapper>
-            <TertiaryButton onClick={() => setTermId('')}>
-              Close
-            </TertiaryButton>
-          </CloseButtonWrapper>
-          {termId && <AwezaTranslator termId={termId} />}
-        </SimpleModal>
-      </ModalContainer>
-      <ModalContainer>
-        <SimpleModal
-          isOpen={isQuizModalActive}
-          closeAction={() => setQuizModalActivity(false)}
-        >
-          {quizRequest.failed && (
-            <div className="p2">
-              <div className="has-text-right mb-1">
-                <TertiaryButton
-                  onClick={() => setQuizModalActivity(false)}
-                >
-                  Close
-                </TertiaryButton>
-              </div>
-              <div>Could not load data</div>
+      <SimpleModal
+        isOpen={hasValue(termId)}
+        closeAction={() => setTermId('')}
+      >
+        <CloseButtonWrapper>
+          <TertiaryButton onClick={() => setTermId('')}>
+            Close
+          </TertiaryButton>
+        </CloseButtonWrapper>
+        {termId && <AwezaTranslator termId={termId} />}
+      </SimpleModal>
+      <SimpleModal
+        isOpen={isQuizModalActive}
+        closeAction={() => setQuizModalActivity(false)}
+      >
+        {quizRequest.failed && (
+          <div className="p2">
+            <div className="has-text-right mb-1">
+              <TertiaryButton
+                onClick={() => setQuizModalActivity(false)}
+              >
+                Close
+              </TertiaryButton>
             </div>
-          )}
-          {quizRequest.loading && (
-            <QuizLoaderWrapper>
-              <Loader />
-            </QuizLoaderWrapper>
-          )}
-          {quizRequest.success && (
-            <React.Fragment>
-              <Quiz
-                title={quizTitle}
-                questions={questions}
-                triggerQuizReset={!isQuizModalActive}
-                onQuizFinishCb={() => setQuizModalActivity(false)}
-              />
-            </React.Fragment>
-          )}
-        </SimpleModal>
-      </ModalContainer>
+            <div>Could not load data</div>
+          </div>
+        )}
+        {quizRequest.loading && (
+          <QuizLoaderWrapper>
+            <Loader />
+          </QuizLoaderWrapper>
+        )}
+        {quizRequest.success && (
+          <React.Fragment>
+            <Quiz
+              title={quizTitle}
+              questions={questions}
+              triggerQuizReset={!isQuizModalActive}
+              onQuizFinishCb={() => setQuizModalActivity(false)}
+            />
+          </React.Fragment>
+        )}
+      </SimpleModal>
     </React.Fragment>
   );
 };
 
 LessonView.propTypes = {
-  location: LessonView.object,
+  location: PropTypes.object,
+};
+
+LessonView.defaultProps = {
+  location: {},
 };
 
 export default themed(LessonView);

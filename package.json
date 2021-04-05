@@ -24,9 +24,14 @@
     "react-dom": "^16.13.1",
     "react-inlinesvg": "^1.2.0",
     "react-mathquill": "^0.2.5",
+    "react-prismazoom": "^2.0.1-rc0",
+    "react-redux": "^7.2.2",
     "react-scripts": "3.4.1",
     "react-select": "^3.1.0",
-    "react-tippy": "^1.4.0"
+    "react-tippy": "^1.4.0",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
+    "screenfull": "^5.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
