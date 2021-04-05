@@ -17,6 +17,7 @@ const SimpleModal = ({
   extraOuterStyles,
   extraOverlayStyles,
   extraModalContentStyles,
+  lockScreenScroll,
 }) => {
   const modalRef = useRef();
   const [blockScroll, allowScroll] = useScrollBlock();
@@ -37,12 +38,12 @@ const SimpleModal = ({
   }, [modalRef, closeAction]);
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && lockScreenScroll) {
       blockScroll();
     } else {
       allowScroll();
     }
-  }, [allowScroll, blockScroll, isOpen]);
+  }, [allowScroll, blockScroll, isOpen, lockScreenScroll]);
 
   useEffect(() => {
     if (isOpen) {
@@ -75,6 +76,7 @@ const SimpleModal = ({
 };
 
 SimpleModal.propTypes = {
+  lockScreenScroll: PropTypes.bool,
   isOpen: PropTypes.bool,
   closeAction: PropTypes.func.isRequired,
   children: PropTypes.any,
@@ -86,6 +88,7 @@ SimpleModal.propTypes = {
   extraModalContentStyles: PropTypes.object,
 };
 SimpleModal.defaultProps = {
+  lockScreenScroll: false,
   isOpen: false,
   children: null,
   transitionDuration: 250,
