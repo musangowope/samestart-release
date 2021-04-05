@@ -431,7 +431,7 @@ const StyledIconWrapper = styled.div`
 `;
 
 const StyledControllerWrapper = styled.div`
-  position: fixed;
+  position: absolute;
   right: 0;
   left: 0;
   bottom: 0;
@@ -460,7 +460,7 @@ StyledControllerWrapper.defaultProps = {
 };
 
 const StyledZoomControllerWrapper = styled.div`
-  position: fixed;
+  position: absolute;
   right: 0;
   left: 0;
   bottom: 0;
