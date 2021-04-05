@@ -19,9 +19,12 @@ import {
 } from '../../functions/toggleFullScreen.func';
 
 import useOrientationChange from '../../custom-hooks/useOrientationChange';
+import { scrollToElement } from '../../functions/scrollToElement.func';
 
 const Gallery = ({ galleryItems, galleryCaption }) => {
   const prismaRef = React.useRef();
+  const galleryContainerRef = React.useRef();
+
   const isMobileVpWidth = useIsMobile();
 
   const screenOrientation = useOrientationChange();
@@ -113,6 +116,10 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
         type: close_gallery_modal,
       });
       closeFullScreen();
+
+      window.setTimeout(() => {
+        scrollToElement(galleryContainerRef.current, 0, 'auto');
+      }, 250);
     }
   };
 
@@ -174,7 +181,7 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
   };
 
   return (
-    <React.Fragment>
+    <div ref={galleryContainerRef}>
       <StyledActionHeader>
         <div>
           <StyledPretitle>Gallery Study</StyledPretitle>
@@ -222,6 +229,7 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
       </Accordion>
 
       <SimpleModal
+        lockScreenScroll
         isOpen={galleryState.isModalOpen}
         closeAction={handleCloseGalleryModal}
         extraModalContentStyles={css`
@@ -271,7 +279,7 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
           />
         </StyledControllerWrapper>
       </SimpleModal>
-    </React.Fragment>
+    </div>
   );
 };
 
