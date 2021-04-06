@@ -23,9 +23,8 @@ const EntranceView = () => {
         <ActionCardLink
           to={`/subjects`}
           cardTitle="Learn"
-          cardBody="Coming Soon"
+          cardBody="Kickstart your schooling career with some great learning resources"
           svgSrc={MultilingualEduSrc}
-          disabled={true}
         />
       </GenericSection>
     </ShapedBackground>
