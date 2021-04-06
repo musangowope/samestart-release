@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import useIsMobile from '../../custom-hooks/useIsMobile';
 import styled, { css } from 'styled-components';
@@ -22,11 +22,22 @@ import useOrientationChange from '../../custom-hooks/useOrientationChange';
 import { scrollToElement } from '../../functions/scrollToElement.func';
 
 const Gallery = ({ galleryItems, galleryCaption }) => {
+  const [displayControllers, setDisplayControllers] = React.useState(
+    false,
+  );
+  let controllerTimeout = useRef();
+  React.useEffect(() => {
+    if (displayControllers) {
+      controllerTimeout.current = setTimeout(() => {
+        setDisplayControllers(false);
+      }, 4000);
+      return () => clearTimeout(controllerTimeout);
+    }
+  }, [displayControllers]);
+
   const prismaRef = React.useRef();
   const galleryContainerRef = React.useRef();
-
   const isMobileVpWidth = useIsMobile();
-
   const screenOrientation = useOrientationChange();
 
   const toggle_accordion = 'toggle_accordion';
@@ -115,6 +126,7 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
       dispatch({
         type: close_gallery_modal,
       });
+
       closeFullScreen();
 
       window.setTimeout(() => {
@@ -166,18 +178,25 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
     }
   };
 
-  const onZoomChange = (zoom = 1) =>
+  const onZoomChange = (zoom = 1) => {
+    setDisplayControllers(true);
     dispatch({
       type: set_zoom,
       payload: {
         zoom,
       },
     });
+  };
 
   const handleResetZoom = () => {
     if (prismaRef) {
       prismaRef.current.reset();
     }
+  };
+
+  const onModalTap = () => {
+    clearTimeout(controllerTimeout.current);
+    setDisplayControllers((prevState) => !prevState);
   };
 
   return (
@@ -237,7 +256,13 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
           overflow: hidden;
         `}
       >
-        <ZoomWrapper isMobileVpWidth={isMobileVpWidth}>
+        <ZoomWrapper
+          isMobileVpWidth={isMobileVpWidth}
+          onKeyPress={() => null}
+          role="button"
+          tabIndex={1}
+          onClick={onModalTap}
+        >
           <PrismaZoom
             onZoomChange={onZoomChange}
             className="prisma-zoom"
@@ -256,6 +281,7 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
         </ZoomWrapper>
 
         <StyledZoomControllerWrapper
+          showController={displayControllers}
           screenOrientation={screenOrientation}
         >
           <ZoomController
@@ -270,6 +296,7 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
         </StyledZoomControllerWrapper>
 
         <StyledControllerWrapper
+          showController={displayControllers}
           screenOrientation={screenOrientation}
         >
           <SlideController
@@ -447,6 +474,9 @@ const StyledControllerWrapper = styled.div`
   width: 200px;
   height: 65px;
   margin: auto auto 25px;
+  opacity: ${({ showController }) => (showController ? 1 : 0)};
+  visibility: ${({ showController }) => (showController ? 1 : 0)};
+  transition: opacity 500ms ease-in-out, visibility ease-in-out 500ms;
 
   @media screen and (max-width: ${(props) =>
       props.theme.breakpoints.sm}) {
@@ -465,6 +495,7 @@ const StyledControllerWrapper = styled.div`
 
 StyledControllerWrapper.defaultProps = {
   screenOrientation: orientations.portrait_primary,
+  showController: false,
 };
 
 const StyledZoomControllerWrapper = styled.div`
@@ -476,6 +507,9 @@ const StyledZoomControllerWrapper = styled.div`
   width: 220px;
   height: 65px;
   margin: 25px 65px auto auto;
+  opacity: ${({ showController }) => (showController ? 1 : 0)};
+  visibility: ${({ showController }) => (showController ? 1 : 0)};
+  transition: opacity 500ms ease-in-out, visibility ease-in-out 500ms;
 
   @media screen and (max-width: ${(props) =>
       props.theme.breakpoints.sm}) {
@@ -495,6 +529,7 @@ const StyledZoomControllerWrapper = styled.div`
 
 StyledZoomControllerWrapper.defaultProps = {
   screenOrientation: orientations.portrait_primary,
+  showController: false,
 };
 
 const ZoomWrapper = styled.div`
