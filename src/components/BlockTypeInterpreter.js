@@ -23,7 +23,9 @@ const getGalleryComponent = (html = '') => {
   const galleryCaptionElement = domNode.querySelector(
     '.blocks-gallery-caption',
   );
-  const galleryCaption = galleryCaptionElement.innerText;
+  const galleryCaption = galleryCaptionElement
+    ? galleryCaptionElement.innerText
+    : '';
   const galleryNodeList = [
     ...domNode.querySelectorAll('.blocks-gallery-item'),
   ];
@@ -34,7 +36,9 @@ const getGalleryComponent = (html = '') => {
       const slideCaptionElement = item.querySelector(
         '.blocks-gallery-item__caption',
       );
-      const slideCaption = slideCaptionElement.innerHTML;
+      const slideCaption = slideCaptionElement
+        ? slideCaptionElement.innerHTML
+        : '';
       return {
         imgSrc,
         slideCaption,
