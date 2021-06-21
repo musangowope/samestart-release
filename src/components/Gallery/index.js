@@ -22,9 +22,8 @@ import useOrientationChange from '../../custom-hooks/useOrientationChange';
 import { scrollToElement } from '../../functions/scrollToElement.func';
 
 const Gallery = ({ galleryItems, galleryCaption }) => {
-  const [displayControllers, setDisplayControllers] = React.useState(
-    false,
-  );
+  const [displayControllers, setDisplayControllers] =
+    React.useState(false);
   let controllerTimeout = useRef();
   React.useEffect(() => {
     if (displayControllers) {
@@ -541,11 +540,11 @@ const ZoomWrapper = styled.div`
   .prisma-zoom__inner {
     @media screen and (max-width: ${(props) =>
         props.theme.breakpoints.sm}) {
-      height: 100%;
+      height: 100vw;
       transform: rotate(-90deg);
       transform-origin: left top;
       width: 100vh;
-      overflow-x: scroll;
+      overflow: auto;
       position: absolute;
       top: 100%;
       left: 0;

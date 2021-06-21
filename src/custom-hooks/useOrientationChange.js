@@ -1,8 +1,14 @@
 import React from 'react';
 
+const getInitialOrientation = () => {
+  if (window.innerHeight > window.innerWidth)
+    return 'portrait-primary';
+  else return 'landscape-primary';
+};
+
 export default () => {
   const [screenOrientation, setScreenOrientation] = React.useState(
-    window.screen.orientation.type,
+    getInitialOrientation(),
   );
 
   React.useEffect(() => {
