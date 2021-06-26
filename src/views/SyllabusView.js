@@ -22,9 +22,8 @@ const SyllabusView = (props) => {
     props.location.search,
   );
 
-  const [showExamSections, setShowExamSections] = React.useState(
-    false,
-  );
+  const [showExamSections, setShowExamSections] =
+    React.useState(false);
 
   const toggleShowExamSectionsState = () =>
     setShowExamSections((prevState) => !prevState);
@@ -56,9 +55,8 @@ const SyllabusView = (props) => {
     500,
   );
 
-  const {
-    response: { title: quizTitle = '', questions = [] } = {},
-  } = quizRequest;
+  const { response: { title: quizTitle = '', questions = [] } = {} } =
+    quizRequest;
 
   const renderSections = (sections = []) => {
     return sections.length ? (
@@ -205,6 +203,7 @@ const LessonLink = styled(Link)`
   display: block;
   color: ${(props) => props.theme.colors.tertiary};
   text-decoration: none;
+  margin-bottom: 10px;
   &:hover {
     color: ${(props) => props.theme.colors.tertiary};
   }
