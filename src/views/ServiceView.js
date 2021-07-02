@@ -18,7 +18,7 @@ const ServiceView = ({ location }) => {
           <iframe
             height="100%"
             width="100%"
-            src="https://app.yenza.me/"
+            src="https://yenza.me/"
             title="Yenza"
             allowFullScreen={true}
           />
@@ -49,9 +49,7 @@ const ServiceView = ({ location }) => {
   };
   return (
     <S.ServiceContainer>
-      <S.IframeContainer>
-        {getIframe()}
-      </S.IframeContainer>
+      <S.IframeContainer>{getIframe()}</S.IframeContainer>
       <S.ExitButton onClick={() => navigate('/')}>
         <span>Exit</span>
         <InlineSVG src={LogoSrc} />
