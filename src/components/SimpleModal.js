@@ -29,13 +29,15 @@ const SimpleModal = ({
   }, [onTransitionEnd, transitionDuration]);
 
   useEffect(() => {
-    const handleOutsideClick = (e) =>
-      handleOutsideElementClick(modalRef, e, closeAction);
-    window.addEventListener('mousedown', handleOutsideClick);
-    return () => {
-      window.removeEventListener('mousedown', handleOutsideClick);
-    };
-  }, [modalRef, closeAction]);
+    if (isOpen) {
+      const handleOutsideClick = (e) =>
+        handleOutsideElementClick(modalRef, e, closeAction);
+      window.addEventListener('mousedown', handleOutsideClick);
+      return () => {
+        window.removeEventListener('mousedown', handleOutsideClick);
+      };
+    }
+  }, [modalRef, closeAction, isOpen]);
 
   useEffect(() => {
     if (isOpen && lockScreenScroll) {
@@ -85,7 +87,7 @@ SimpleModal.propTypes = {
   onModalOpen: PropTypes.func,
   extraOuterStyles: PropTypes.object,
   extraOverlayStyles: PropTypes.object,
-  extraModalContentStyles: PropTypes.object,
+  extraModalContentStyles: PropTypes.array,
 };
 SimpleModal.defaultProps = {
   lockScreenScroll: false,
@@ -96,7 +98,7 @@ SimpleModal.defaultProps = {
   onModalOpen: () => false,
   extraOuterStyles: {},
   extraOverlayStyles: {},
-  extraModalContentStyles: {},
+  extraModalContentStyles: [],
 };
 
 export default themed(SimpleModal);

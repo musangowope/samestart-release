@@ -81,6 +81,19 @@ const Quiz = ({ questions, onQuizFinishCb, triggerQuizReset }) => {
       : '';
   };
 
+  const onPrevButtonClick = () => {
+    setShowCongradsMsg(false);
+    setActiveQIndex(activeQIndex - 1);
+    setAnswer('');
+    setIsHelpActive(false);
+  };
+
+  const onNextButtonClick = () => {
+    setShowCongradsMsg(false);
+    setActiveQIndex(activeQIndex + 1);
+    setAnswer('');
+  };
+
   return (
     <QuizContainer className="quiz-container">
       <QuestionHeader className="quiz-container__header">
@@ -95,21 +108,16 @@ const Quiz = ({ questions, onQuizFinishCb, triggerQuizReset }) => {
           <CircleButton
             disabled={activeQIndex === 0}
             buttonText={<InlineSVG src={ArrowLeftSrc} />}
-            actionCallback={() => {
-              setShowCongradsMsg(false);
-              setActiveQIndex(activeQIndex - 1);
-              setAnswer('');
-            }}
+            actionCallback={onPrevButtonClick}
           />
           <CircleButton
-            onClick={() => {
-              setShowCongradsMsg(false);
-              setActiveQIndex(activeQIndex + 1);
-              setAnswer('');
-            }}
+            onClick={onNextButtonClick}
             buttonText={<InlineSVG src={ArrowRightSrc} />}
             type="button"
-            disabled={activeQIndex + 1 === questions.length}
+            disabled={
+              activeQIndex + 1 === questions.length ||
+              !questions.length
+            }
           >
             <InlineSVG src={ArrowRightSrc} />
           </CircleButton>

@@ -21,7 +21,16 @@ import {
 import useOrientationChange from '../../custom-hooks/useOrientationChange';
 import { scrollToElement } from '../../functions/scrollToElement.func';
 
-const Gallery = ({ galleryItems, galleryCaption }) => {
+const Gallery = ({
+  galleryItems,
+  galleryCaption,
+  activeSlideNumber,
+  isGalleryModalOpen,
+  onNextSlideClick,
+  onPrevSlideClick,
+  onCloseClick,
+  onOpenButtonClick,
+}) => {
   const [displayControllers, setDisplayControllers] =
     React.useState(false);
   let controllerTimeout = useRef();
@@ -39,130 +48,51 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
   const isMobileVpWidth = useIsMobile();
   const screenOrientation = useOrientationChange();
 
-  const toggle_accordion = 'toggle_accordion';
-  const open_gallery_modal = 'open_gallery_modal';
-  const close_gallery_modal = 'close_gallery_modal';
-  const increment_slide_number = 'increment_slide_number';
-  const decrement_slide_number = 'decrement_slide_number';
-  const set_zoom = 'set_zoom';
-
   const accordianRef = React.useRef();
-  const [galleryState, dispatch] = React.useReducer(
-    (state, action) => {
-      switch (action.type) {
-        case toggle_accordion:
-          return {
-            ...state,
-            readyForAccordionLogic: true,
-            isAccordionOpen: !state.isAccordionOpen,
-          };
-        case open_gallery_modal:
-          return {
-            ...state,
-            isModalOpen: true,
-            currentSlideNumber: action.payload.currentSlideNumber,
-          };
-
-        case decrement_slide_number:
-          return {
-            ...state,
-            currentSlideNumber: state.currentSlideNumber - 1,
-          };
-
-        case increment_slide_number:
-          return {
-            ...state,
-            currentSlideNumber: state.currentSlideNumber + 1,
-          };
-
-        case set_zoom:
-          return {
-            ...state,
-            zoom: action.payload.zoom,
-          };
-        case close_gallery_modal:
-          return {
-            ...state,
-            isModalOpen: false,
-            zoom: 1,
-          };
-        default:
-          return state;
-      }
-    },
-    {
-      isAccordionOpen: false,
-      isModalOpen: false,
-      currentSlideNumber: 0,
-      readyForAccordionLogic: false,
-      zoom: 1,
-    },
-  );
+  const [isAccordionOpen, setIsAccordionOpen] = React.useState(false);
+  const [zoom, setZoom] = React.useState(1);
 
   React.useEffect(() => {
-    if (accordianRef && galleryState.readyForAccordionLogic) {
-      if (galleryState.isAccordionOpen) {
+    if (accordianRef) {
+      if (isAccordionOpen) {
         accordianRef.current.open();
       } else {
         accordianRef.current.close();
       }
     }
-  }, [
-    galleryState.isAccordionOpen,
-    galleryState.readyForAccordionLogic,
-  ]);
+  }, [isAccordionOpen]);
 
   const handleToggleBtnClick = () =>
-    dispatch({
-      type: toggle_accordion,
-    });
+    setIsAccordionOpen((prev) => !prev);
 
   const handleCloseGalleryModal = () => {
-    if (galleryState.isModalOpen) {
+    if (isGalleryModalOpen) {
       if (prismaRef) {
         prismaRef.current.reset();
       }
-      dispatch({
-        type: close_gallery_modal,
-      });
-
+      onCloseClick();
       closeFullScreen();
-
       window.setTimeout(() => {
         scrollToElement(galleryContainerRef.current, 0, 'auto');
       }, 250);
     }
   };
 
-  const handleOpenGallery = (nextSlideNumber = 0) => {
+  const handleOpenGallery = () => {
     if (isMobileVpWidth) {
       requestFullScreen();
     }
-
-    dispatch({
-      type: open_gallery_modal,
-      payload: {
-        currentSlideNumber: nextSlideNumber,
-      },
-    });
+    onOpenButtonClick();
   };
 
   const handleIncrementSlideNumber = () => {
-    if (galleryState.currentSlideNumber < galleryItems.length - 1) {
-      handleResetZoom();
-      dispatch({
-        type: increment_slide_number,
-      });
-    }
+    handleResetZoom();
+    onNextSlideClick(activeSlideNumber);
   };
 
   const handleDecrementSlideNumber = () => {
-    if (galleryState.currentSlideNumber > 0) {
-      handleResetZoom();
-      dispatch({
-        type: decrement_slide_number,
-      });
-    }
+    handleResetZoom();
+    onPrevSlideClick(activeSlideNumber);
   };
 
   const handleGalleryZoomOut = () => {
@@ -179,12 +109,7 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
 
   const onZoomChange = (zoom = 1) => {
     setDisplayControllers(true);
-    dispatch({
-      type: set_zoom,
-      payload: {
-        zoom,
-      },
-    });
+    setZoom(zoom);
   };
 
   const handleResetZoom = () => {
@@ -213,7 +138,7 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
           </StyledViewGalleryButton>
           <StyledVisibilityButton
             onClick={handleToggleBtnClick}
-            isAccordionOpen={galleryState.isAccordionOpen}
+            isAccordionOpen={isAccordionOpen}
           >
             <InlineSVG src={DownArrowSrc} />
           </StyledVisibilityButton>
@@ -248,8 +173,8 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
 
       <SimpleModal
         lockScreenScroll
-        isOpen={galleryState.isModalOpen}
-        closeAction={handleCloseGalleryModal}
+        isOpen={isGalleryModalOpen}
+        closeAction={onCloseClick}
         extraModalContentStyles={css`
           max-width: 100%;
           overflow: hidden;
@@ -270,9 +195,7 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
             <div className="prisma-zoom__inner">
               <img
                 className="prisma-zoom__inner__image"
-                src={
-                  galleryItems[galleryState.currentSlideNumber].imgSrc
-                }
+                src={galleryItems[activeSlideNumber].imgSrc}
                 alt={galleryCaption}
               />
             </div>
@@ -288,9 +211,7 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
             zoomOutFn={handleGalleryZoomOut}
             closeFn={handleCloseGalleryModal}
             resetZoomFn={handleResetZoom}
-            currentZoomPercentage={`${
-              parseInt(galleryState.zoom) * 100
-            }%`}
+            currentZoomPercentage={`${parseInt(zoom) * 100}%`}
           />
         </StyledZoomControllerWrapper>
 
@@ -299,7 +220,7 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
           screenOrientation={screenOrientation}
         >
           <SlideController
-            currentSlideNumber={galleryState.currentSlideNumber}
+            currentSlideNumber={activeSlideNumber}
             nextBtnFn={handleIncrementSlideNumber}
             prevBtnFn={handleDecrementSlideNumber}
           />
@@ -311,17 +232,31 @@ const Gallery = ({ galleryItems, galleryCaption }) => {
 
 Gallery.propTypes = {
   galleryCaption: PropTypes.string,
+  blockKey: PropTypes.string,
   galleryItems: PropTypes.arrayOf(
     PropTypes.shape({
       imgSrc: PropTypes.string,
       slideCaption: PropTypes.string,
     }),
   ),
+  activeSlideNumber: PropTypes.number,
+  isGalleryModalOpen: PropTypes.bool,
+  onNextSlideClick: PropTypes.func,
+  onPrevSlideClick: PropTypes.func,
+  onCloseClick: PropTypes.func,
+  onOpenButtonClick: PropTypes.func,
 };
 
 Gallery.defaultProps = {
   galleryCaption: '',
   galleryItems: [],
+  blockKey: '',
+  activeSlideNumber: false,
+  isGalleryModalOpen: false,
+  onNextSlideClick: () => false,
+  onPrevSlideClick: () => false,
+  onCloseClick: () => false,
+  onOpenButtonClick: () => false,
 };
 
 export default themed(Gallery);

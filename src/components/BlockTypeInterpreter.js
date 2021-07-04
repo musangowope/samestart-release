@@ -7,6 +7,7 @@ import themed from '../functions/themed';
 import EllipsisIconSrc from 'svgs/ellipsis.svg';
 import InlineSVG from 'react-inlinesvg';
 import Gallery from '../components/Gallery';
+import GalleryController from './GalleryController';
 
 const getEquationElement = (html = '') => {
   const katexNode = document.createElement('div');
@@ -17,7 +18,7 @@ const getEquationElement = (html = '') => {
   return <EquationTranslator passedDownLatex={katex} />;
 };
 
-const getGalleryComponent = (html = '') => {
+const getGalleryComponent = (html = '', blockKey) => {
   const domNode = document.createElement('div');
   domNode.innerHTML = html;
   const galleryCaptionElement = domNode.querySelector(
@@ -45,7 +46,8 @@ const getGalleryComponent = (html = '') => {
       };
     });
     return (
-      <Gallery
+      <GalleryController
+        blockKey={blockKey}
         galleryItems={galleryItems}
         galleryCaption={galleryCaption}
       />
@@ -57,35 +59,24 @@ const getGalleryComponent = (html = '') => {
 const BlockTypeInterpreter = ({
   blockName,
   innerHTML,
-  // setAwezaId,
   isActive,
   translatable,
+  blockKey,
 }) => {
-  // const handleBlockClick = (e) => {
-  //   /*AWEZA Term logic*/
-  //   const element = e.target.closest('[data-aweza-id]');
-  //   if (element && e.currentTarget.contains(element)) {
-  //     const awezaId = element.dataset.awezaId;
-  //     setAwezaId(awezaId);
-  //   }
-  // };
-
   const getBlockContent = () => {
     switch (blockName) {
       case 'katex/display-block':
-        return getEquationElement(innerHTML);
+        return getEquationElement(innerHTML, blockKey);
       case 'core/gallery':
-        return getGalleryComponent(innerHTML);
+        return getGalleryComponent(innerHTML, blockKey);
       default: {
         return (
           <BlockContent
             translatable={translatable}
             isActive={isActive}
             dangerouslySetInnerHTML={createMarkup(innerHTML)}
-            // onKeyPress={() => null}
             role="button"
             tabIndex={1}
-            // onClick={handleBlockClick}
           />
         );
       }
@@ -105,19 +96,19 @@ const BlockTypeInterpreter = ({
 };
 
 BlockTypeInterpreter.propTypes = {
+  blockKey: PropTypes.string,
   blockName: PropTypes.string,
   innerBlocks: PropTypes.array,
   innerHTML: PropTypes.any,
   innerContent: PropTypes.any,
-  setAwezaId: PropTypes.func,
   isActive: PropTypes.bool,
   translatable: PropTypes.bool,
 };
 BlockTypeInterpreter.defaultProps = {
+  blockKey: '',
   blockName: '',
   innerBlocks: [],
   innerHTML: '',
-  setAwezaId: () => false,
   isActive: false,
   translatable: false,
 };
