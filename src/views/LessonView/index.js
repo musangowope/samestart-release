@@ -3,9 +3,7 @@ import queryString from 'query-string';
 import api from 'constants/api';
 import styled from 'styled-components';
 import GenericSection from '../../components/GenericSection';
-import AwezaTranslator from '../../components/AwezaTranslator';
 import SimpleModal from '../../components/SimpleModal';
-import { hasValue } from '../../functions/hasValue.func';
 import PrimaryButton from '../../components/elements/buttons/PrimaryButton';
 import Quiz from '../../components/Quiz';
 import TertiaryButton from '../../components/elements/buttons/TertiaryButton';
@@ -16,6 +14,7 @@ import SSNavbar from '../../components/SSNavbar';
 import useAxios from '../../custom-hooks/useAxios';
 import Loader from '../../components/Loader';
 import PropTypes from 'prop-types';
+import { navigate } from '@reach/router';
 
 const LessonButtonsContainer = styled.div`
   margin-bottom: 20px;
@@ -31,23 +30,34 @@ export const QuizLoaderWrapper = styled.div`
   top: 50%;
 `;
 
-const CloseButtonWrapper = styled.div`
-  margin-bottom: 20px;
-  text-align: right;
-`;
-
 const LessonView = (props) => {
-  const { lessonId, courseId } = queryString.parse(
-    props.location.search,
-  );
-  const [termId, setTermId] = React.useState('');
-  const [isQuizModalActive, setQuizModalActivity] = React.useState(
-    false,
-  );
+  const {
+    lessonId,
+    courseId,
+    quizId: quizIdParam,
+  } = queryString.parse(props.location.search);
+
+  const [quizId, setQuizId] = React.useState(quizIdParam);
+
+  React.useEffect(() => {
+    setQuizId(quizIdParam);
+  }, [quizIdParam]);
+
+  const onTakeQuiz = () => {
+    const url = new URL(props.location.href);
+    url.searchParams.set('quizId', lessonId);
+    navigate(url.href);
+  };
+
+  const exitQuiz = () => {
+    const url = new URL(props.location.href);
+    url.searchParams.delete('quizId');
+    navigate(url.href, { replace: true });
+  };
 
   const lessonRequest = useAxios(api.getLesson(lessonId));
   const quizRequest = useAxios(
-    isQuizModalActive ? api.getQuizByLessonId(lessonId) : '',
+    quizId ? api.getQuizByLessonId(quizId) : '',
     'get',
     null,
     500,
@@ -62,9 +72,8 @@ const LessonView = (props) => {
     },
   } = lessonRequest;
 
-  const {
-    response: { title: quizTitle = '', questions = [] } = {},
-  } = quizRequest;
+  const { response: { title: quizTitle = '', questions = [] } = {} } =
+    quizRequest;
 
   return (
     <React.Fragment>
@@ -77,11 +86,7 @@ const LessonView = (props) => {
           <TertiaryButtonLink to={`/syllabus?courseId=${courseId}`}>
             Back
           </TertiaryButtonLink>
-          <PrimaryButton
-            onClick={() => {
-              setQuizModalActivity(true);
-            }}
-          >
+          <PrimaryButton onClick={onTakeQuiz}>
             Take Quiz
           </PrimaryButton>
         </LessonButtonsContainer>
@@ -99,27 +104,11 @@ const LessonView = (props) => {
           </React.Fragment>
         )}
       </GenericSection>
-      <SimpleModal
-        isOpen={hasValue(termId)}
-        closeAction={() => setTermId('')}
-      >
-        <CloseButtonWrapper>
-          <TertiaryButton onClick={() => setTermId('')}>
-            Close
-          </TertiaryButton>
-        </CloseButtonWrapper>
-        {termId && <AwezaTranslator termId={termId} />}
-      </SimpleModal>
-      <SimpleModal
-        isOpen={isQuizModalActive}
-        closeAction={() => setQuizModalActivity(false)}
-      >
+      <SimpleModal isOpen={quizId} closeAction={exitQuiz}>
         {quizRequest.failed && (
           <div className="p2">
             <div className="has-text-right mb-1">
-              <TertiaryButton
-                onClick={() => setQuizModalActivity(false)}
-              >
+              <TertiaryButton onClick={exitQuiz}>
                 Close
               </TertiaryButton>
             </div>
@@ -136,8 +125,8 @@ const LessonView = (props) => {
             <Quiz
               title={quizTitle}
               questions={questions}
-              triggerQuizReset={!isQuizModalActive}
-              onQuizFinishCb={() => setQuizModalActivity(false)}
+              triggerQuizReset={!quizId}
+              onQuizFinishCb={exitQuiz}
             />
           </React.Fragment>
         )}
