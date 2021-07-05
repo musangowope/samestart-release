@@ -16,8 +16,8 @@ const StyledMaintenanceContainer = styled.div`
 `;
 
 const StyledBackgroundCircle = styled.div`
-  height: 600px;
   width: 600px;
+  height: 600px;
   background-color: ${(props) => props.theme.colors.primary};
   position: absolute;
   left: -150px;
