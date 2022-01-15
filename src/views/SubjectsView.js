@@ -22,7 +22,6 @@ const SubjectsView = () => {
     response: subjects = [],
   } = subjectsRequest;
 
-
   return (
     <React.Fragment>
       <SSNavbar />
