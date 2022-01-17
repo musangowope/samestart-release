@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import themed from '../functions/themed';
 import EllipsisIconSrc from 'svgs/ellipsis.svg';
 import InlineSVG from 'react-inlinesvg';
-import Gallery from '../components/Gallery';
 import GalleryController from './GalleryController';
 
 const getEquationElement = (html = '') => {
