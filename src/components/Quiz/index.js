@@ -197,7 +197,7 @@ Quiz.defaultProps = {
 
 export default themed(Quiz);
 
-const QuestionHeader = styled.div`
+export const QuestionHeader = styled.div`
   background-color: ${(props) => props.theme.colors.secondary};
   padding: 10px;
   color: ${(props) => props.theme.colors.white};
@@ -208,7 +208,7 @@ const QuestionHeader = styled.div`
   align-items: center;
 `;
 
-const NavigationButtonWrapper = styled.div`
+export const NavigationButtonWrapper = styled.div`
   display: flex;
   flex-flow: nowrap row;
   .ss-circle-button {
@@ -219,7 +219,7 @@ const NavigationButtonWrapper = styled.div`
   }
 `;
 
-const CloseButtonWrapper = styled.div`
+export const CloseButtonWrapper = styled.div`
   .ss-circle-button {
     background-color: ${(props) => props.theme.colors.error};
     border-color: ${(props) => props.theme.colors.error};
