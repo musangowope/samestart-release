@@ -7,6 +7,9 @@ every student the same start.
 Due to the hurdles of life development for this project was discontinued. This is a light demo of the front end
 of the application using dummy data showing what the application intended to be
 
+## Requirements 
+Use node v16
+
 ## Getting started:
 
 `yarn install`
